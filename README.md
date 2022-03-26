@@ -2,7 +2,7 @@
 
 ## Lollipop plots
 
-Lightning talk given at an [R-Ladies Freiburg](https://www.meetup.com/rladies-freiburg/) meetup in December 2020.
+Lightning talk I gave at an [R-Ladies Freiburg](https://www.meetup.com/rladies-freiburg/) meetup in December 2020.
 
 Using [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday) data about the TV show "Chopped", I covered **lollipop plots** with style options (colour, size, dot and line types):
 
