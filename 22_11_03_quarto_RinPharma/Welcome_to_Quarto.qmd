@@ -1,6 +1,6 @@
 ---
 title: "Welcome to Quarto!"
-description: Showing some neat features of Quarto!
+description: Creating documents and slides with Quarto
 date: today # other options: now, last-modified
 author: Julia Müller 
 format:
@@ -10,6 +10,13 @@ format:
     footer: "Workshop at the R in Pharma conference"
 ---
 
+## Who am I?
+- working on PhD in English linguistics (re: the interaction between a person's first and second language and how the former affects the latter during language processing)  
+- co-organiser of R-Ladies Freiburg and Julia Gender Inclusive  
+- favourite tasks in R: creating elaborate graphics (spending hours on picking a colour scheme and font), fitting and evaluating mixed effects regression models  
+- currently learning: Bayesian methods
+- really into grandmotherly activities: cooking, embroidery, sewing clothes  
+- total cat lady  
 
 # What is Quarto?
 - publishing system that effortlessly combine R code, output (such as plots or tables or model estimates) and text
@@ -26,8 +33,7 @@ format:
 - it also has a bunch of additional features
 
 ## Installation
-If you want to follow along with my demonstrations/try Quarto for yourself later:
-
+If you want to follow along with my demonstrations/try Quarto for yourself later:  
 - download Quarto at: https://quarto.org/docs/get-started/
 - ...and install it
 
@@ -35,6 +41,15 @@ If you want to follow along with my demonstrations/try Quarto for yourself later
 - once Quarto is installed, it'll be an option when you create a new document  
 - enter title (and author), choose output, theme, options (but this can also be changed/added later)  
 
+## Structure of the workshop
+- all materials available on my Github  
+- show features on these slides ("Welcome to Quarto")  
+- invite you to try them by working on the file "Quarto demonstration - START HERE"  
+
+### What you can (and can't) expect
+- thorough overview of the main features  
+- lots of features for html documents (many of which transfer to Word and pdf)  
+- ...and for html slides  
 
 ## Quarto documents in html format
 - When you create and save a new Quarto document, the working directory is set to wherever you save that document  
