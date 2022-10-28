@@ -11,12 +11,12 @@ format:
 ---
 
 ## Who am I?
-- working on PhD in English linguistics (re: the interaction between a person's first and second language and how the former affects the latter during language processing)  
+- working on PhD in English linguistics (re: the interaction between a person's first and second language during language processing)  
 - co-organiser of R-Ladies Freiburg and Julia Gender Inclusive  
 - favourite tasks in R: creating elaborate graphics (spending hours on picking a colour scheme and font), fitting and evaluating mixed effects regression models  
 - currently learning: Bayesian methods
 - really into grandmotherly activities: cooking, embroidery, sewing clothes  
-- total cat lady  
+- total cat lady (stick around for pictures!)  
 
 # What is Quarto?
 - publishing system that effortlessly combine R code, output (such as plots or tables or model estimates) and text
@@ -33,25 +33,32 @@ format:
 - it also has a bunch of additional features
 
 ## Installation
-If you want to follow along with my demonstrations/try Quarto for yourself later:  
-- download Quarto at: https://quarto.org/docs/get-started/
-- ...and install it
 
-**Getting started with Quarto in RStudio**
+If you want to follow along with my demonstrations/try Quarto for yourself later:  
+- download Quarto at: https://quarto.org/docs/get-started/  
+- ...and install it  
+
+**Getting started with Quarto in RStudio**  
 - once Quarto is installed, it'll be an option when you create a new document  
 - enter title (and author), choose output, theme, options (but this can also be changed/added later)  
 
 ## Structure of the workshop
 - all materials available on my Github  
-- show features on these slides ("Welcome to Quarto")  
-- invite you to try them by working on the file "Quarto demonstration - START HERE"  
+- show features on these slides ("Welcome to Quarto.html")
+    - will open in your browser  
+- invite you to try them by working on the file "Quarto demonstration - START HERE.qmd"
+    - will open in RStudio  
+
+---
 
 ### What you can (and can't) expect
 - thorough overview of the main features  
-- lots of features for html documents (many of which transfer to Word and pdf)  
+- description of lots of features for html documents (many of which transfer to Word and pdf)  
 - ...and for html slides  
+- a quicker look at Word and pdf documents  
+- language and environment: R and RStudio  
 
-## Quarto documents in html format
+## Working directory and rendering
 - When you create and save a new Quarto document, the working directory is set to wherever you save that document  
 - You can directly read in files that are in the same folder  
 - Output (e.g. exporting graphs or data files) are also saved in that place, as is the rendered document  
@@ -61,19 +68,19 @@ If you want to follow along with my demonstrations/try Quarto for yourself later
 
 ### YAML
 
-The YAML header is the first section - it's at the top of the document, framed by three hyphens.
+- The YAML header is the first section - it's at the top of the document, framed by three hyphens  
+- By default, this will contain the title you entered, your name, the date, and the output format - but we can change this and add a lot more here!  
+- Additionally, we can put the title and subtitle into a banner (a box that can be a specific colour or even a picture!)  
 
-By default, this will contain the title you entered, your name, the date, and the output format - but we can change this and add a lot more here!
-
-Additionally, we can put the title and subtitle into a banner (a box that can be a specific colour or even a picture!)
-
+---
 
 #### Try it
-Have a look at the demonstration file and play around with:
-- title and description
-- date options: enter a specific date, or one of: today, now, last-modified
-- the author options: enter your name, a link to your website/Twitter, your affiliation and a link to it
-- Change the `true` in `title-block-banner: true` to a colour/hex code/path to a picture
+
+Have a look at the demonstration file and play around with:  
+- title and description  
+- date options: enter a specific date, or one of: today, now, last-modified  
+- the author options: enter your name, a link to your website/Twitter, your affiliation and a link to it  
+- Change the `true` in `title-block-banner: true` to a colour/hex code/path to a picture  
 
 ---
 
@@ -85,8 +92,17 @@ Have a look at the demonstration file and play around with:
 - highlight (background and font colour of code chunks):
   default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, breezedark, textmate (or null to prevent syntax highlighting)
 
+---
+
 #### Try it
 Take a few minutes to pick a theme and a highlight you like.
+```{r}
+#| eval: false
+format:
+  html:
+    theme: lumen
+    highlight: espresso
+```
 
 ---
 
@@ -94,12 +110,12 @@ Take a few minutes to pick a theme and a highlight you like.
 
 ### Line breaks and empty lines
 - For a line break, add two spaces at the end of the line before you hit Enter.  
-- Or hit Enter twice
-- For an empty line, use <br> - simply adding more line breaks won't do it!
+- Or hit Enter twice  
+- For an empty line, use \\<br\\> - simply adding more line breaks won't do it!  
 
 ### Headers
-- Use # to define headers, and ## or ### (and so on) to create subheadings
-- These will translate into formatting, with font sizes decreasing.
+- Use # to define headers, and ## or ### (and so on) to create subheadings  
+- These will translate into formatting, with font sizes decreasing  
 
 ---
 
@@ -111,6 +127,7 @@ and double asterisks to **make text bold**.
 ```
 Use one set of asterisks around text to *create italics*   
 and double asterisks to **make text bold**.
+<br><br>
 
 ### Blockquotes
 Use the bigger than sign for a blockquote:
@@ -173,15 +190,16 @@ superscript^2^
 ---
 
 #### Try it 
-Turn the half-sentence "penguins are very cute!" into a blockquote.  
-Format the link to Allison Horst's Github page.  
-Convert the list under "First, we need to" into a numbered list and the items underneath "Some ideas for graphs" into an unordered list.  
+
+- Turn the half-sentence "penguins are very cute!" into a blockquote.  
+- Format the link to Allison Horst's Github page.  
+- Convert the list under "First, we need to" into a numbered list and the items underneath "Some ideas for graphs" into an unordered list.  
 
 
 ---
 
 ### Table of contents
-In the YAML:
+In the YAML:  
 - add a colon and a line break after `format` and another after `html`  
 - add `toc: true`  
 - the depth of the table of contents (`toc_depth` - this is optional, the default is 3)  
@@ -189,6 +207,8 @@ In the YAML:
   - `collapsed: false` to make sure the TOC is open by default  
 - sections can be numbered using `number_sections: true`  
   - this will number the sections in both the body and the TOC!  
+
+---
 
 ```{r}
 #| eval: false
@@ -208,23 +228,26 @@ Add a table of contents with numbered sections.
 ## Code
 
 ### Code chunks & output options
-All code needs to be in a code chunk
-- insert a new one by clicking on the green drop-down menu at the top
-  keyboard shortcut: Command + Option + I or Ctrl + Alt + I
-- code chunks can be labelled for better navigation
-- chunk names can be several words, but need to be unique
+
+All code needs to be in a code chunk  
+- insert a new one by clicking on the green drop-down menu at the top in RStudio  
+    - keyboard shortcut: Command + Option + I or Ctrl + Alt + I  
+- code chunks can be labelled for better navigation  
+- chunk names can be several words, but need to be unique  
 
 ---
 
-How the output and the code itself shows up in the knitted document can also be modified:
-- `#| echo: false` for output, but not code, to be visible
-- `#| include: false` hides both output and code
-- `#| warning: false` to suppress warning messages (also works for errors)
-- `#| eval: false`: code is not run
+How the output and the code itself shows up in the knitted document can also be modified by using these options at the top of a code chunk:  
+- `#| echo: false` for output, but not code, to be visible  
+- `#| include: false` hides both output and code  
+- `#| warning: false` to suppress warning messages (also works for errors)  
+- `#| eval: false`: code is not run  
+
+---
 
 ### Code folding
 Code chunks can also be "folded", i.e., hidden at first, but the user can click on a "Code" button to reveal the code block  
-Use `#| code-fold: true` at the beginning of a code chunk if you want to fold it.
+Use `#| code-fold: true` at the beginning of a code chunk if you want to fold it.  
 
 ### Global options
 In the YAML, you can also set these as global options.  
@@ -237,14 +260,17 @@ format:
     warning: false
 ```
 
+---
 
 #### Try it
-Add an option in the code chunk so that only the output but not the code of the second chunk (the one that says `head(penguins)`) is visible.  
-Fold the first code chunk.  
+- Add an option in the code chunk so that only the output but not the code of the second chunk (the one that says `head(penguins)`) is visible.  
+- Fold the first code chunk.  
 
+---
 
 ### Inline code
-Inline code is also possible, i.e., in the text, write `r `. Whatever code is included in the backticks will be run and the output will be shown in the text. This is useful for printing measures such as the mean or elements of a model summary without having to copy-paste numbers (especially if these numbers might still change). 
+Inline code is also possible, i.e., in the text, write `r `. Whatever code is included in the backticks will be run and the output will be shown in the text.  
+This is useful for printing measures such as the mean or elements of a model summary without having to copy-paste numbers (especially if these numbers might still change). 
 
 #### Try it
 In the sentence that starts with "We've removed missing values here" you can see inline code to automatically add the number of rows in the data frame we're working with.  
@@ -261,7 +287,7 @@ To add pictures, use:
 ![Quarto logo](quarto_logo.png){fig-logo}
 ```
 
-![Quarto logo](quarto_logo.png){fig-logo}
+![Quarto logo](quarto_logo.png){fig-logo}  
 
 The label of the picture (the text in curly brackets) can be used for in-text references, for example:
 ```{r}
@@ -277,14 +303,17 @@ This code assumes that this file is in the same folder as the Quarto document. I
 ![Quarto logo](sub/quarto_logo.png){fig-logo}
 ```
 
-#### Try it
-Underneath the headline "Some descriptive statistics", add the penguin drawing by Allison Horst (penguin_species.png) and the illustration that explains bill dimensions (culmen_depth.png). Both files are saved in the subfolder "pics".  
-Also label them fig-penguins and fig-bill, respectively. 
+---
 
+#### Try it
+- Underneath the headline "Some descriptive statistics", add the penguin drawing by Allison Horst (penguin_species.png) and the illustration that explains bill dimensions (culmen_depth.png). Both files are saved in the subfolder "pics".  
+- Also label them fig-penguins and fig-bill, respectively. 
+
+---
 
 ### Arranging pictures
 
-Several pictures can be arranged using layout-ncol or layout-nrow - for example, the code below places the two pictures next to each other:
+Several pictures can be arranged using `layout-ncol` or `layout-nrow` - for example, the code below places the two pictures next to each other:
 ```{r}
 #| eval: false
 ::: {layout-ncol=2}
@@ -293,13 +322,17 @@ Several pictures can be arranged using layout-ncol or layout-nrow - for example,
 :::
 ```
 
+---
 
 ::: {layout-ncol=2}
 ![It's a trap!](pics/belly_up_cat.png)
 ![Comfy kitty](pics/cozy_cat.png)
 :::
 
+
 Custom layouts are also possible - more info [here](https://quarto.org/docs/authoring/figures.html)
+
+---
 
 ### Arranging text
 Similarly, text can also be arranged into columns. Their widths can be expressed in percentages:
@@ -330,6 +363,7 @@ This is a larger column. Note that more than two columns are also possible!
 
 ::::
 
+---
 
 ### Labelling graphs
 In the code block in which a graph is created or called, you can add options such as labels  with `#| label: fig-yourLabel` and captions with `#| fig-cap: Your caption`  
@@ -338,7 +372,8 @@ The caption will be displayed underneath the graph. Graphs will automatically be
 ```{r}
 #| warning: false
 #| message: false
-#| code_fold: true
+#| echo: false
+#| code-fold: true
 #| label: fig-flametree
 #| fig-cap: Flametree made with the package of the same name by Danielle Navarro (@djnavarro)
 
@@ -349,7 +384,7 @@ library(flametree)
 shades <- c("#450016", "#46112F", "#3F2243", "#353151", "#4A817A", "#55414A")
 
 # data structure defining the trees
-dat <- flametree_grow(time = 10, trees = 10)
+dat <- flametree_grow(time = 4, trees = 4)
 
 # draw the plot
 dat %>% 
@@ -364,54 +399,60 @@ The illustration in @fig-flametree is made using the flametree package, availabl
 
 You can similarly label and crossreference tables - more information [here](https://quarto.org/docs/authoring/tables.html)
 
+---
 
 #### Try it
-Add a label and a caption to the first penguin graph. Underneath, write a sentence that references it and the drawing that explains how bill length and depth are measured.  
-Bonus: Arrange the two penguin pictures you added earlier so they are displayed next to each other. You can also format the text underneath so it's displayed in two columns.
+- Add a label and a caption to the first penguin graph.  
+- Underneath, write a sentence that references it and the drawing that explains how bill length and depth are measured.  
+- Bonus: Arrange the two penguin pictures you added earlier so they are displayed next to each other. You can also format the text underneath so it's displayed in two columns.  
 
 
 ## References
-In an academic article, you'll need to have references (usually, the author and year a text that you're referring to/quoting from) in the body of the text, plus a bibliography section at the end of the text. You can insert these into Quarto.
+In many works such as academic articles, you'll need to have references (usually, the author and year a text that you're referring to/quoting from) in the body of the text, plus a bibliography section at the end of the text. You can insert these into Quarto.
 
 It's easiest if you use reference management software such as Zotero or Citavi. Those programs can export the citations you'll need into a .bib file. Put that in the same folder as your Markdown document.
 
-In the YAML, add:
-`bibliography: my_references.bib`
-`link-citations: yes`
-The first line links to your references file, so make sure to type the correct name. The second line enables in-line citations.
+In the YAML, add:  
+`bibliography: my_references.bib`  
+`link-citations: yes`  
+The first line links to your references file, so make sure to type the correct name. The second line enables in-line citations.  
 
-In the .bib file, information on each source is summarised, and each source is assigned a reference ID, preceded by a curly bracket {. The ID is what you need to refer to the item in Markdown, like so:
-@referenceID
-- Use square brackets if the reference should be in brackets:
-  [@referenceID]
-- For several references:
-  @ref1, @ref2
-  [@ref1; @ref2]
-- For page numbers:
-  @ref1[25]
-  [@ref1{23}]
+---
+
+In the .bib file, information on each source is summarised, and each source is assigned a reference ID, preceded by a curly bracket. The ID is what you need to refer to the item in Markdown, like so:  
+@referenceID  
+- Use square brackets if the reference should be in brackets:  
+  [@referenceID]  
+- For several references:  
+  @ref1, @ref2  
+  [@ref1; @ref2]  
+- For page numbers:  
+  @ref1[25]  
+  [@ref1{23}]  
   
 ---
 
-Quarto will automatically add the references at the bottom of the document under a headline "References".  
-The citation style can be altered by adding a .csl (citation style language) in the YAML: `csl: my_style.csl`
-Download .csl files from, e.g. [Zotero](https://www.zotero.org/styles)
+Quarto will automatically add the references at the bottom of the document under a headline "References".    
+The citation style can be altered by adding a .csl (citation style language) in the YAML: `csl: my_style.csl`  
+Download .csl files from, e.g. [Zotero](https://www.zotero.org/styles)  
 
 #### Try it
-In the YAML, add the penguins.bib file as the bibliography for the document. Link citations, and change the citation style (either using the provided file apa-single-spaced.csl or downloading another csl file).  
-In the sentence "This data can also be used via the {palmerpenguins} package and was originally introduced in Gorman and colleagues' article", add a reference to the palmerpenguins package and replace "Gorman and colleagues' article" by a reference to that paper.
+- In the YAML, add the penguins.bib file as the bibliography for the document and link citations.  
+- Cange the citation style (either using the provided file apa-single-spaced.csl or downloading another csl file).  
+- In the sentence "This data can also be used via the {palmerpenguins} package and was originally introduced in Gorman and colleagues' article", add a reference to the palmerpenguins package and replace "Gorman and colleagues' article" by a reference to that paper.  
 
 
 ## Callout blocks
 
 Callouts are small textblocks that draw the reader's attention.
 
-The five callout blocks:
-- note
-- tip
-- warning
-- caution
-- important
+The five callout blocks:  
+
+- note  
+- tip  
+- warning  
+- caution  
+- important  
 
 Callout blocks are framed by :::{callout-TypeOfCallout} and :::
 
@@ -437,13 +478,14 @@ More info [here](https://quarto.org/docs/authoring/callouts.html)
 
 ## Placing content in the margins
 
-To put footnotes and references in the margins of the document instead of at the bottom, we can add the following lines to the YAML:
-`reference-location: margin`
-`citation-location: margin`
+To put footnotes and references in the margins of the document instead of at the bottom, we can add the following lines to the YAML:  
+`reference-location: margin`  
+`citation-location: margin`  
 
-Figure captions can also be placed in the margin with `#| cap-location: margin` in the code chunk.
+Figure captions can also be placed in the margin with `#| cap-location: margin` in the code chunk.  
 
 You can also add asides in the margins:
+
 ```{r}
 #| eval: false
 [This is an aside, text that will be displayed in the margin.]{.aside}
@@ -474,7 +516,6 @@ Tabsets let the user switch between different tabs (for example, to show differe
 ::: {.panel-tabset}
 #### Flametree - voronoi style
 ``` {.r}
-#| code_fold: true
 dat %>% 
   flametree_plot(
     background = "#BFA5A7",
@@ -485,8 +526,6 @@ dat %>%
 
 #### Flametree - native flora style
 ``` {.r}
-#| code_fold: true
-
 dat %>% 
   flametree_plot(
     background = "#BFA5A7",
@@ -500,10 +539,10 @@ dat %>%
 ---
 
 #### Try it
-Turn the sentence "By "right format", we mean that the data is tidy, and ready to be summarised and graphed" into an aside.
-Convert one of the explanatory sentences in the preparation section into a callout block (of your choice).  
-Add a footnote of your choice to your document.
-Bonus: Convert the "Comparing base R and tidyverse syntax" section to a tabset.
+- Turn the sentence "By "right format", we mean that the data is tidy, and ready to be summarised and graphed" into an aside.  
+- Convert one of the explanatory sentences in the preparation section into a callout block (of your choice).  
+- Add a footnote of your choice to your document.  
+- Bonus: Convert the "Comparing base R and tidyverse syntax" section to a tabset.  
 
 
 ## Presentations in html format
@@ -512,10 +551,10 @@ When creating a new document, select "Quarto Presentation".
 We'll focus on the html format with Reveal JS, but MS Powerpoint and pdf formats are available, too.  
 
 ### The YAML
-Important note: Code isn't shown by default!  
-Use `#| echo: true` in individual code blocks or in the YAML:
+- Important note: Code isn't shown by default!  
+- Use `#| echo: true` in individual code blocks or in the YAML  
 
-Other YAML options:
+Other YAML options:  
 - title  
 - description  
 - date  
@@ -531,13 +570,14 @@ format:
 ```
 
 #### Appearance and style
-- theme (“simple”, “dark”, “black”, “sky”, “beige”, “serif”, “solarized”, “blood”, “moon”, “night”, “league”, or “white”)
-- highlight (“default”, “tango”, “pygments”, “kate”, “monochrome”, “espresso”, “zenburn”, “haddock”, or “breezedark” or null)
-- center: should content be vertically centered on the slides? Options: true/false
+- theme (simple, dark, black, sky, beige, serif, solarized, blood, moon, night, league, or white)  
+- highlight (default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, or breezedark or null)  
+- center: should content be vertically centered on the slides? Options: true/false  
 
+---
 
 ### Slide breaks
-...will happen automatically for new first- and second-level headlines, or use --- for a manual slide break
+...will happen automatically for new first- and second-level headlines, or use \\-\\-\\- for a manual slide break
 
 ### Slide transitions
 - transition for moving between slides
@@ -555,8 +595,8 @@ format:
 
 ### Highlighting lines of code
 
-On slides, you can highlight specific lines of code by using `#| code-line-numbers: 1-3` to highlight (here) the first three lines of code.  
-Alternatively, you can highlight some lines first, and then other lines. The option `#| code-line-numbers: 5|7`, for example, highlights line 5 first, then line 7.  
+- On slides, you can highlight specific lines of code by using `#| code-line-numbers: 1-3` to highlight (here) the first three lines of code.    
+- Alternatively, you can highlight some lines first, and then other lines. The option `#| code-line-numbers: 5|7`, for example, highlights line 5 first, then line 7.  
 
 ---
 
@@ -564,14 +604,19 @@ Alternatively, you can highlight some lines first, and then other lines. The opt
 
 Like R Markdown documents, Quarto documents can be rendered to Word and PDF
 
-For output formats such as Word and PDFs, page breaks can be added using:
+For output formats such as Word and PDFs, page breaks can be added using
+```{r}
+#| eval: false
 {{< pagebreak >}}
+```
 
+---
 
 ### pdf
 
 In a fresh R session, run:
 ```{r}
+#| eval: false
 install.packages("tinytex")
 tinytex::install_tinytex()
 ```
@@ -584,8 +629,32 @@ Or change `output: pdf_document` in the YAML
 
 ### MS Word
 
-You shouldn't need additional R packages, but a version of Word (or Libre/Open Office).
-When opening a new R Markdown, select the Word option - or change `output: word_document`
+You shouldn't need additional R packages, but a version of Word (or Libre/Open Office).  
+When opening a new R Markdown, select the Word option - or change `output: word_document`  
 
+---
+
+#### Using a custom reference document
+
+To automatically make a newly rendered Word document conform to a template (in terms of, e.g., page dimensions, font, font sizes, margins, settings for headlines...):  
+- create a simple Quarto document that contains all the features you need (e.g., all headline levels you'll use)  
+- render it to Word  
+- open it and make changes as you wish  
+- in your main Quarto document's YAML, refer to your reference document by writing:  
+```{r}
+#| eval: false
+format:
+  docx:
+    reference-doc: custom-reference-doc.docx
+```
+
+
+# Thank you!
+
+Any further questions?  
+
+Get in touch with me via [Twitter](https://twitter.com/JuliaMuellerFr)
+
+**Enjoy the rest of the conference!**
 
 [^1]: This is the footnote.

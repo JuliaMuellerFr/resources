@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.1.163">
 
   <meta name="author" content="Julia Müller">
-  <meta name="dcterms.date" content="2022-10-14">
+  <meta name="dcterms.date" content="2022-10-28">
   <title>Welcome to Quarto!</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -391,9 +391,24 @@
 <section id="title-slide" class="center">
   <h1 class="title">Welcome to Quarto!</h1>
   <p class="author">Julia Müller</p>
-  <p class="date">10/14/22</p>
+  <p class="date">10/28/22</p>
 </section>
 
+<section id="who-am-i" class="slide level2">
+<h2>Who am I?</h2>
+<ul>
+<li>working on PhD in English linguistics (re: the interaction between a person’s first and second language and how the former affects the latter during language processing)<br>
+</li>
+<li>co-organiser of R-Ladies Freiburg and Julia Gender Inclusive<br>
+</li>
+<li>favourite tasks in R: creating elaborate graphics (spending hours on picking a colour scheme and font), fitting and evaluating mixed effects regression models<br>
+</li>
+<li>currently learning: Bayesian methods</li>
+<li>really into grandmotherly activities: cooking, embroidery, sewing clothes<br>
+</li>
+<li>total cat lady (stick around for pictures!)</li>
+</ul>
+</section>
 <section>
 <section id="what-is-quarto" class="title-slide slide level1 center">
 <h1>What is Quarto?</h1>
@@ -417,28 +432,74 @@
 </section>
 <section id="installation" class="slide level2">
 <h2>Installation</h2>
-<p>If you want to follow along with my demonstrations/try Quarto for yourself later:</p>
-<ul>
-<li>download Quarto at: https://quarto.org/docs/get-started/</li>
-<li>…and install it</li>
-</ul>
-<p><em>Getting started with Quarto in RStudio</em> - once Quarto is installed, it’ll be an option when you create a new document - enter title (and author), choose output, theme, options (but this can also be changed/added later)</p>
+<p>If you want to follow along with my demonstrations/try Quarto for yourself later:<br>
+- download Quarto at: https://quarto.org/docs/get-started/<br>
+- …and install it</p>
+<p><strong>Getting started with Quarto in RStudio</strong><br>
+- once Quarto is installed, it’ll be an option when you create a new document<br>
+- enter title (and author), choose output, theme, options (but this can also be changed/added later)</p>
 </section>
-<section id="anatomy-of-a-quarto-document" class="slide level2">
-<h2>Anatomy of a Quarto document</h2>
+<section id="structure-of-the-workshop" class="slide level2">
+<h2>Structure of the workshop</h2>
 <ul>
-<li>When you create and save a new R Markdown document, the working directory is set to wherever you save that document</li>
-<li>You can directly read in files that are in the same folder</li>
-<li>Output (e.g.&nbsp;exporting graphs or data files) are also saved in that place, as is the knitted document</li>
+<li>all materials available on my Github<br>
+</li>
+<li>show features on these slides (“Welcome to Quarto.html”)
+<ul>
+<li>will open in your browser<br>
+</li>
+</ul></li>
+<li>invite you to try them by working on the file “Quarto demonstration - START HERE.qmd”
+<ul>
+<li>will open in RStudio</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="what-you-can-and-cant-expect">What you can (and can’t) expect</h3>
+<ul>
+<li>thorough overview of the main features<br>
+</li>
+<li>description of lots of features for html documents (many of which transfer to Word and pdf)<br>
+</li>
+<li>…and for html slides<br>
+</li>
+<li>a quicker look at Word and pdf documents<br>
+</li>
+<li>language and environment: R and RStudio</li>
+</ul>
+</section>
+<section id="working-directory-and-rendering" class="slide level2">
+<h2>Working directory and rendering</h2>
+<ul>
+<li>When you create and save a new Quarto document, the working directory is set to wherever you save that document<br>
+</li>
+<li>You can directly read in files that are in the same folder<br>
+</li>
+<li>Output (e.g.&nbsp;exporting graphs or data files) are also saved in that place, as is the rendered document<br>
+</li>
+<li>To render (convert from .qmd to .html or other format), click on the Render button at the top</li>
 </ul>
 </section>
 <section class="slide level2">
 
 <h3 id="yaml">YAML</h3>
-<p>The YAML header is the first section - it’s at the top of the document, framed by three hyphens —</p>
-<p>By default, this will contain the title you entered, your name, the date, and the output format - but we can change this and add a lot more here!</p>
+<ul>
+<li>The YAML header is the first section - it’s at the top of the document, framed by three hyphens<br>
+</li>
+<li>By default, this will contain the title you entered, your name, the date, and the output format - but we can change this and add a lot more here!<br>
+</li>
+<li>Additionally, we can put the title and subtitle into a banner (a box that can be a specific colour or even a picture!)</li>
+</ul>
+</section>
+<section class="slide level2">
+
 <h4 id="try-it">Try it</h4>
-<p>Have a look at the demonstration file and play around with: - title and description - date options: enter a specific date, or one of: today, now, last-modified - the author options: enter your name, a link to your website/Twitter, your affiliation and a link to it</p>
+<p>Have a look at the demonstration file and play around with: - title and description<br>
+- date options: enter a specific date, or one of: today, now, last-modified<br>
+- the author options: enter your name, a link to your website/Twitter, your affiliation and a link to it<br>
+- Change the <code>true</code> in <code>title-block-banner: true</code> to a colour/hex code/path to a picture</p>
 </section>
 <section class="slide level2">
 
@@ -451,38 +512,48 @@
 </ul></li>
 <li>highlight (background and font colour of code chunks): default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, breezedark, textmate (or null to prevent syntax highlighting)</li>
 </ul>
-<h4 id="try-it-1">Try it</h4>
-<p>Take a few minutes to pick a theme and a highlight you like.</p>
 </section>
 <section class="slide level2">
 
-<h3 id="text-options">Text options</h3>
-<h4 id="line-breaks-and-empty-lines">Line breaks and empty lines</h4>
+<h4 id="try-it-1">Try it</h4>
+<p>Take a few minutes to pick a theme and a highlight you like.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>format<span class="sc">:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>  html<span class="sc">:</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>    theme<span class="sc">:</span> lumen</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    highlight<span class="sc">:</span> espresso</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="text-options" class="slide level2">
+<h2>Text options</h2>
+<h3 id="line-breaks-and-empty-lines">Line breaks and empty lines</h3>
 <ul>
 <li>For a line break, add two spaces at the end of the line before you hit Enter.<br>
 </li>
-<li>Or hit Enter twice</li>
-<li>For an empty line, use <br> - simply adding more line breaks won’t do it!</li>
+<li>Or hit Enter twice<br>
+</li>
+<li>For an empty line, use \&lt;br\&gt; - simply adding more line breaks won’t do it!</li>
 </ul>
-<h4 id="headers">Headers</h4>
+<h3 id="headers">Headers</h3>
 <ul>
-<li>Use # to define headers, and ## or ### (and so on) to create subheadings</li>
-<li>These will translate into formatting, with font sizes decreasing.</li>
+<li>Use # to define headers, and ## or ### (and so on) to create subheadings<br>
+</li>
+<li>These will translate into formatting, with font sizes decreasing</li>
 </ul>
 </section>
 <section class="slide level2">
 
-<h4 id="bold-and-italics">Bold and italics</h4>
+<h3 id="bold-and-italics">Bold and italics</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>Use one set of asterisks around text to <span class="sc">*</span>create italics<span class="sc">*</span> </span>
-<span id="cb1-2"><a href="#cb1-2"></a>and double asterisks to <span class="sc">**</span>make text bold<span class="sc">**</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Use one set of asterisks around text to <span class="sc">*</span>create italics<span class="sc">*</span> </span>
+<span id="cb2-2"><a href="#cb2-2"></a>and double asterisks to <span class="sc">**</span>make text bold<span class="sc">**</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Use one set of asterisks around text to <em>create italics</em><br>
-and double asterisks to <strong>make text bold</strong>.</p>
-<h4 id="blockquotes">Blockquotes</h4>
+and double asterisks to <strong>make text bold</strong>. <br><br></p>
+<h3 id="blockquotes">Blockquotes</h3>
 <p>Use the bigger than sign for a blockquote:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="sc">&gt;</span> This is a blockquote</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="sc">&gt;</span> This is a blockquote</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote>
 <p>This is a blockquote</p>
@@ -490,7 +561,7 @@ and double asterisks to <strong>make text bold</strong>.</p>
 </section>
 <section class="slide level2">
 
-<h4 id="lists">Lists</h4>
+<h3 id="lists">Lists</h3>
 <ul>
 <li>Use one hyphen at the beginning of a line for an unordered list item<br>
 </li>
@@ -498,19 +569,40 @@ and double asterisks to <strong>make text bold</strong>.</p>
 </li>
 <li>In both cases, use two tabs (or four spaces) for the next level</li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="sc">-</span> list item  </span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="sc">-</span> another list item  </span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="sc">-</span> more items  </span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="sc">-</span> even more items  </span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="dv">1</span> Now this is numbered  </span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="dv">2</span> As is this  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>list item<br>
+</li>
+<li>another list item
+<ul>
+<li>more items<br>
+</li>
+<li>even more items</li>
+</ul></li>
+</ul>
+<p>1 Now this is numbered<br>
+2 As is this</p>
 </section>
 <section class="slide level2">
 
-<h4 id="links">Links</h4>
+<h3 id="links">Links</h3>
 <p>Links can be simply copy-pasted and will work as-is, but if you want some other text to act as a link, use:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>[Quarto website](https<span class="sc">:</span><span class="er">//</span>quarto.org<span class="sc">/</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>[Quarto website](https<span class="sc">:</span><span class="er">//</span>quarto.org<span class="sc">/</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><a href="https://quarto.org/">Quarto website</a></p>
-<h4 id="misc">Misc</h4>
+<h3 id="misc">Misc</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>superscript<span class="sc">^</span><span class="dv">2</span><span class="sc">^</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="er">~~</span>strikethrough<span class="sc">~</span><span class="er">~</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>superscript<span class="sc">^</span><span class="dv">2</span><span class="sc">^</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="er">~~</span>strikethrough<span class="sc">~</span><span class="er">~</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Turns into:</p>
 <p>superscript<sup>2</sup></p>
@@ -518,127 +610,432 @@ and double asterisks to <strong>make text bold</strong>.</p>
 </section>
 <section class="slide level2">
 
-<h3 id="code-output-options">Code &amp; output options</h3>
-<p>All code needs to be in a code chunk - insert a new one by clicking on the green drop-down menu at the top keyboard shortcut: Command + Option + I or Ctrl + Alt + I - code chunks can be labelled for better navigation - chunk names can be several words, but need to be unique</p>
-<div class="cell">
-
-</div>
-<p>How the output and the code itself shows up in the knitted document can also be modified: - <code>echo = FALSE</code> for output, but not code, to be visible - <code>include = FALSE</code> hides both output and code - <code>warning = FALSE</code> to suppress warning messages (also works for errors and messages) - <code>eval = FALSE</code>: code is not run</p>
-<h4 id="global-options">Global options</h4>
-<p>You can also set global options with <code>opts_chunk$set</code>. Usually, this is the first code chunk. This example will stop all subsequent code from running, but you can also set, e.g., a default graphic size.</p>
-<h4 id="inline-code">Inline code</h4>
-<p>Inline code is also possible, i.e., in the text, write <code>r</code>. Whatever code is included in the backticks will be run and the output will be shown in the text. This is useful for printing measures such as the mean or elements of a model summary without having to copy-paste numbers (especially if these numbers might still change).</p>
-<h4 id="code-folding">Code folding</h4>
-<p>Another option you’re able to set is whether code blocks should be visible or hidden by default, with the user being able to click a button to see or hide the block: <code>code_folding: hide</code> or <code>code_folding: show</code> in the YAML - this is the default for the entire document {r class.source = ‘fold-show’} or {r class.source = ‘fold-hide’} to override the default for specific code blocks</p>
-<h3 id="pictures">Pictures</h3>
-<p>In a code chunk, run <code>include_graphics("file_name")</code> to show a picture that is saved in the same place as your Markdown. If it’s in a subfolder, run <code>include_graphics("subfolder/file_name")</code> instead.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">include_graphics</span>(<span class="st">"yourFile.fileEnding"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>In the code chunk options, you can either use <code>fig.width</code> and <code>fig.height</code> (measured in inches) or <code>out.width</code> and <code>out.height</code> to control the width and height (as percentages), and <code>fig.align</code> with options “left”, “right” and “center” for alignment.</p>
-<p>Alternatively, use: <img data-src="penguin_species.png" style="width:50.0%" alt="Penguin species drawing by Allison Horst"></p>
-<h3 id="table-of-contents">Table of contents</h3>
-<p>In the YAML: - add a colon and a line break after <code>html_document</code> - add <code>toc: true</code> - the depth of the table of contents (<code>toc_depth</code> - this is optional, the default is 3). - add <code>toc_float: true</code> to place the table of contents to the left of the document - <code>collapsed: false</code> to make sure the TOC is open by default - sections can be numbered using <code>number_sections: true</code> in <code>html_document</code> - this will number the sections in both the body and the TOC!</p>
+<h4 id="try-it-2">Try it</h4>
+<ul>
+<li>Turn the half-sentence “penguins are very cute!” into a blockquote.<br>
+</li>
+<li>Format the link to Allison Horst’s Github page.<br>
+</li>
+<li>Convert the list under “First, we need to” into a numbered list and the items underneath “Some ideas for graphs” into an unordered list.</li>
+</ul>
 </section>
-<section id="formats" class="slide level2">
-<h2>Formats</h2>
-<h3 id="other-output-formats">Other output formats</h3>
-<h4 id="pdf">pdf</h4>
-<p>In a fresh R session, run:</p>
+<section class="slide level2">
+
+<h3 id="table-of-contents">Table of contents</h3>
+<p>In the YAML:<br>
+- add a colon and a line break after <code>format</code> and another after <code>html</code><br>
+- add <code>toc: true</code><br>
+- the depth of the table of contents (<code>toc_depth</code> - this is optional, the default is 3)<br>
+- add <code>toc_float: true</code> to place the table of contents to the left of the document<br>
+- <code>collapsed: false</code> to make sure the TOC is open by default<br>
+- sections can be numbered using <code>number_sections: true</code><br>
+- this will number the sections in both the body and the TOC!</p>
+</section>
+<section class="slide level2">
+
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">install.packages</span>(<span class="st">"tinytex"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>format<span class="sc">:</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  html<span class="sc">:</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>    toc<span class="sc">:</span> true</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    toc_depth<span class="sc">:</span> <span class="dv">4</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>    toc_float<span class="sc">:</span> true</span>
+<span id="cb7-6"><a href="#cb7-6"></a>    collapsed<span class="sc">:</span> false</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This lets you use LaTeX in R, which is necessary for knitting to pdf.</p>
-<p>Then, when you create a new Markdown document, select Output: pdf Or change <code>output: pdf_document</code> in the YAML</p>
-<h4 id="ms-word">MS Word</h4>
-<p>You shouldn’t need additional R packages, but a version of Word (or Libre/Open Office). When opening a new R Markdown, select the Word option - or change <code>output: word_document</code></p>
-<h3 id="journal-articles">Journal articles</h3>
-<h4 id="references">References</h4>
-<p>In an academic article, you’ll need to have references (usually, the author and year a text that you’re referring to/quoting from) in the body of the text, plus a bibliography section at the end of the text. You can insert these into Markdown.</p>
+<h4 id="try-it-3">Try it</h4>
+<p>Add a table of contents with numbered sections.</p>
+</section>
+<section id="code" class="slide level2">
+<h2>Code</h2>
+<h3 id="code-chunks-output-options">Code chunks &amp; output options</h3>
+<p>All code needs to be in a code chunk<br>
+- insert a new one by clicking on the green drop-down menu at the top in RStudio<br>
+- keyboard shortcut: Command + Option + I or Ctrl + Alt + I<br>
+- code chunks can be labelled for better navigation<br>
+- chunk names can be several words, but need to be unique</p>
+</section>
+<section class="slide level2">
+
+<p>How the output and the code itself shows up in the knitted document can also be modified by using these options at the top of a code chunk:<br>
+- <code>#| echo: false</code> for output, but not code, to be visible<br>
+- <code>#| include: false</code> hides both output and code<br>
+- <code>#| warning: false</code> to suppress warning messages (also works for errors)<br>
+- <code>#| eval: false</code>: code is not run</p>
+</section>
+<section class="slide level2">
+
+<h3 id="code-folding">Code folding</h3>
+<p>Code chunks can also be “folded”, i.e., hidden at first, but the user can click on a “Code” button to reveal the code block<br>
+Use <code>#| code-fold: true</code> at the beginning of a code chunk if you want to fold it.</p>
+<h3 id="global-options">Global options</h3>
+<p>In the YAML, you can also set these as global options.<br>
+This is treated as the default, but can be overridden in code chunks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>format<span class="sc">:</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  html<span class="sc">:</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    code<span class="sc">-</span>fold<span class="sc">:</span> true</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    warning<span class="sc">:</span> false</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h4 id="try-it-4">Try it</h4>
+<ul>
+<li>Add an option in the code chunk so that only the output but not the code of the second chunk (the one that says <code>head(penguins)</code>) is visible.<br>
+</li>
+<li>Fold the first code chunk.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="inline-code">Inline code</h3>
+<p>Inline code is also possible, i.e., in the text, write <code>r</code>. Whatever code is included in the backticks will be run and the output will be shown in the text.<br>
+This is useful for printing measures such as the mean or elements of a model summary without having to copy-paste numbers (especially if these numbers might still change).</p>
+<h4 id="try-it-5">Try it</h4>
+<p>In the sentence that starts with “We’ve removed missing values here” you can see inline code to automatically add the number of rows in the data frame we’re working with.<br>
+Below, where the document mentions the average bill length and depth as well as when the data was collected, add inline code.</p>
+</section>
+<section id="pictures-and-graphs" class="slide level2">
+<h2>Pictures and graphs</h2>
+<h3 id="adding-external-files">Adding external files</h3>
+<p>To add pictures, use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="sc">!</span>[Quarto logo](quarto_logo.png){fig<span class="sc">-</span>logo}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img data-src="quarto_logo.png" alt="Quarto logo">{fig-logo}</p>
+<p>The label of the picture (the text in curly brackets) can be used for in-text references, for example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>Refer to <span class="sc">@</span>fig<span class="sc">-</span>logo <span class="cf">for</span> the Quarto logo.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Refer to <strong>?@fig-logo</strong> for the Quarto logo.</p>
+<p>This code assumes that this file is in the same folder as the Quarto document. If it’s in a subfolder, use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="sc">!</span>[Quarto logo](sub<span class="sc">/</span>quarto_logo.png){fig<span class="sc">-</span>logo}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h4 id="try-it-6">Try it</h4>
+<ul>
+<li>Underneath the headline “Some descriptive statistics”, add the penguin drawing by Allison Horst (penguin_species.png) and the illustration that explains bill dimensions (culmen_depth.png). Both files are saved in the subfolder “pics”.<br>
+</li>
+<li>Also label them fig-penguins and fig-bill, respectively.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="arranging-pictures">Arranging pictures</h3>
+<p>Several pictures can be arranged using <code>layout-ncol</code> or <code>layout-nrow</code> - for example, the code below places the two pictures next to each other:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="sc">:::</span> {layout<span class="sc">-</span>ncol<span class="ot">=</span><span class="dv">2</span>}</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="sc">!</span>[It<span class="st">'s a trap!](pics/belly_up_cat.png)</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="st">![Comfy kitty](cozy_cat.png)</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="pics/belly_up_cat.png" alt="It’s a trap!"> <img data-src="pics/cozy_cat.png" alt="Comfy kitty"></p>
+</div>
+</div>
+</div>
+<p>Custom layouts are also possible - more info <a href="https://quarto.org/docs/authoring/figures.html">here</a></p>
+</section>
+<section class="slide level2">
+
+<h3 id="arranging-text">Arranging text</h3>
+<p>Similarly, text can also be arranged into columns. Their widths can be expressed in percentages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="sc">:::</span><span class="er">:</span> {.columns}</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="sc">:::</span> {.column width<span class="ot">=</span><span class="st">"20%"</span>}</span>
+<span id="cb13-4"><a href="#cb13-4"></a>This is a small column.</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="sc">:::</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="er">:::</span> {.column width<span class="ot">=</span><span class="st">"80%"</span>}</span>
+<span id="cb13-8"><a href="#cb13-8"></a>This is a larger column. Note that more than two columns are also possible<span class="sc">!</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="er">:::</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="er">::::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="columns">
+<div class="column" style="width:20%;">
+<p>This is a small column.</p>
+</div><div class="column" style="width:80%;">
+<p>This is a larger column. Note that more than two columns are also possible!</p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="labelling-graphs">Labelling graphs</h3>
+<p>In the code block in which a graph is created or called, you can add options such as labels with <code>#| label: fig-yourLabel</code> and captions with <code>#| fig-cap: Your caption</code><br>
+The caption will be displayed underneath the graph. Graphs will automatically be numbered, and you can use the label you set for in-text references.</p>
+
+<img data-src="Welcome_to_Quarto_files/figure-revealjs/fig-flametree-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;1: Flametree made with the package of the same name by Danielle Navarro (<span class="citation" data-cites="djnavarro">@djnavarro</span>)</p><p>The illustration in <a href="#/fig-flametree">Figure&nbsp;1</a> is made using the flametree package, available <a href="https://github.com/djnavarro/flametree">here</a></p>
+<p>You can similarly label and crossreference tables - more information <a href="https://quarto.org/docs/authoring/tables.html">here</a></p>
+</section>
+<section class="slide level2">
+
+<h4 id="try-it-7">Try it</h4>
+<ul>
+<li>Add a label and a caption to the first penguin graph.<br>
+</li>
+<li>Underneath, write a sentence that references it and the drawing that explains how bill length and depth are measured.<br>
+</li>
+<li>Bonus: Arrange the two penguin pictures you added earlier so they are displayed next to each other. You can also format the text underneath so it’s displayed in two columns.</li>
+</ul>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
+<p>In many works such as academic articles, you’ll need to have references (usually, the author and year a text that you’re referring to/quoting from) in the body of the text, plus a bibliography section at the end of the text. You can insert these into Quarto.</p>
 <p>It’s easiest if you use reference management software such as Zotero or Citavi. Those programs can export the citations you’ll need into a .bib file. Put that in the same folder as your Markdown document.</p>
-<p>In the YAML, add: <code>bibliography: my_references.bib</code> <code>link-citations: yes</code> The first line links to your references file, so make sure to type the correct name. The second line enables in-line citations.</p>
-<p>In the .bib file, information on each source is summarised, and each source is assigned a reference ID, preceded by a curly bracket {. The ID is what you need to refer to the item in Markdown, like so: <span class="citation" data-cites="referenceID">@referenceID</span> - Use square brackets if the reference should be in brackets: <span class="citation" data-cites="referenceID">[@referenceID]</span> - For several references: <span class="citation" data-cites="ref1">@ref1</span>, <span class="citation" data-cites="ref2 ref1 ref2">@ref2 [@ref1; @ref2]</span> - For page numbers: <span class="citation" data-cites="ref1">@ref1 [25]</span> <span class="citation" data-cites="ref1">[@ref1{23}]</span></p>
-<p>R Markdown will automatically add the references at the bottom of the document, so add a # References heading at the end</p>
-<p>By default, R Markdown uses the Chicago format, but this can be altered by adding a .csl (citation style language) in the YAML: <code>csl: my_style.csl</code> Download .csl files from, e.g., https://www.zotero.org/styles</p>
-<h4 id="journal-templates">Journal templates</h4>
-<p>The {rticles} package contains templates for many academic journals so your submissions fit their guidelines.</p>
-<p>When that package is installed, templates will become available when you create a new R Markdown file.</p>
-<p>Here’s an overview: https://github.com/rstudio/rticles</p>
-<h3 id="slides">Slides</h3>
-<p>It’s also possible to make slides with R Markdown! There are several packages available (and the inbuilt R Presentation format is also good) but we’ll focus on the {revealjs} package today - install it if you don’t have it.</p>
-<p>When you create a new Markdown file, select Sildes and HTML as output. In the YAML, put <code>output: revealjs::revealjs_presentation</code>.</p>
-<h4 id="slide-breaks">Slide breaks</h4>
-<p>…will happen automatically for new first- and second-level headlines or use —- for a manual slide break</p>
+<p>In the YAML, add:<br>
+<code>bibliography: my_references.bib</code><br>
+<code>link-citations: yes</code><br>
+The first line links to your references file, so make sure to type the correct name. The second line enables in-line citations.</p>
+</section>
+<section class="slide level2">
+
+<p>In the .bib file, information on each source is summarised, and each source is assigned a reference ID, preceded by a curly bracket. The ID is what you need to refer to the item in Markdown, like so:<br>
+<span class="citation" data-cites="referenceID">@referenceID</span><br>
+- Use square brackets if the reference should be in brackets:<br>
+<span class="citation" data-cites="referenceID">[@referenceID]</span><br>
+- For several references:<br>
+<span class="citation" data-cites="ref1">@ref1</span>, <span class="citation" data-cites="ref2 ref1 ref2">@ref2 [@ref1; @ref2]</span><br>
+- For page numbers:<br>
+<span class="citation" data-cites="ref1">@ref1 [25]</span><br>
+<span class="citation" data-cites="ref1">[@ref1{23}]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Quarto will automatically add the references at the bottom of the document under a headline “References”.<br>
+The citation style can be altered by adding a .csl (citation style language) in the YAML: <code>csl: my_style.csl</code><br>
+Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zotero</a></p>
+<h4 id="try-it-8">Try it</h4>
+<ul>
+<li>In the YAML, add the penguins.bib file as the bibliography for the document and link citations.<br>
+</li>
+<li>Cange the citation style (either using the provided file apa-single-spaced.csl or downloading another csl file).<br>
+</li>
+<li>In the sentence “This data can also be used via the {palmerpenguins} package and was originally introduced in Gorman and colleagues’ article”, add a reference to the palmerpenguins package and replace “Gorman and colleagues’ article” by a reference to that paper.</li>
+</ul>
+</section>
+<section id="callout-blocks" class="slide level2">
+<h2>Callout blocks</h2>
+<p>Callouts are small textblocks that draw the reader’s attention.</p>
+<p>The five callout blocks:</p>
+<ul>
+<li>note<br>
+</li>
+<li>tip<br>
+</li>
+<li>warning<br>
+</li>
+<li>caution<br>
+</li>
+<li>important</li>
+</ul>
+<p>Callout blocks are framed by :::{callout-TypeOfCallout} and :::</p>
+</section>
+<section class="slide level2">
+
+<p>For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="sc">:::</span>{.callout<span class="sc">-</span>caution collapse<span class="ot">=</span><span class="st">"true"</span>}</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="do">## This is the callout's title - click to expand</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>This callout is <span class="fu">folded</span> (similar to how code chunks can be folded). The option collapse <span class="ot">=</span> <span class="st">"true"</span> determines that it<span class="st">'s collapsed by default, "false" would show it open (but the user could click to hide the contents).</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="st">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-caution callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>This is the callout’s title - click to expand</strong></p>
+</div>
+<div class="callout-content">
+<p>This callout is folded (similar to how code chunks can be folded). The option collapse = “true” determines that it’s collapsed by default, “false” would show it open (but the user could click to hide the contents).</p>
+</div>
+</div>
+</div>
+<p>More info <a href="https://quarto.org/docs/authoring/callouts.html">here</a></p>
+</section>
+<section id="placing-content-in-the-margins" class="slide level2">
+<h2>Placing content in the margins</h2>
+<p>To put footnotes and references in the margins of the document instead of at the bottom, we can add the following lines to the YAML:<br>
+<code>reference-location: margin</code><br>
+<code>citation-location: margin</code></p>
+<p>Figure captions can also be placed in the margin with <code>#| cap-location: margin</code> in the code chunk.</p>
+<p>You can also add asides in the margins:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>[This is an aside, text that will be displayed <span class="cf">in</span> the margin.]{.aside}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="aside column-margin">This is an aside, text that will be displayed in the margin.</span></p>
+</section>
+<section id="footnotes" class="slide level2">
+<h2>Footnotes</h2>
+<p>Footnotes can be added like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>This sentence needs a footnote[<span class="sc">^</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This sentence needs a footnote<sup>1</sup></p>
+<p>The text of the footnote is placed at the bottom of the document:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>[<span class="sc">^</span><span class="dv">1</span>]<span class="sc">:</span> This is the footnote.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>This is the footnote.</p></li></ol></aside></section>
+<section id="tabsets" class="slide level2">
+<h2>Tabsets</h2>
+<p>Tabsets let the user switch between different tabs (for example, to show different plots or code).</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Flametree - voronoi style</a></li><li><a href="#tabset-1-2">Flametree - native flora style</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">flametree_plot</span>(</span>
+<span id="cb18-3"><a href="#cb18-3"></a>    <span class="at">background =</span> <span class="st">"#BFA5A7"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="at">palette =</span> shades, </span>
+<span id="cb18-5"><a href="#cb18-5"></a>    <span class="at">style =</span> <span class="st">"voronoi"</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-2">
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">flametree_plot</span>(</span>
+<span id="cb19-3"><a href="#cb19-3"></a>    <span class="at">background =</span> <span class="st">"#BFA5A7"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4"></a>    <span class="at">palette =</span> shades, </span>
+<span id="cb19-5"><a href="#cb19-5"></a>    <span class="at">style =</span> <span class="st">"nativeflora"</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h4 id="try-it-9">Try it</h4>
+<ul>
+<li>Turn the sentence “By”right format”, we mean that the data is tidy, and ready to be summarised and graphed” into an aside.<br>
+</li>
+<li>Convert one of the explanatory sentences in the preparation section into a callout block (of your choice).<br>
+</li>
+<li>Add a footnote of your choice to your document.<br>
+</li>
+<li>Bonus: Convert the “Comparing base R and tidyverse syntax” section to a tabset.</li>
+</ul>
+</section>
+<section id="presentations-in-html-format" class="slide level2">
+<h2>Presentations in html format</h2>
+<p>When creating a new document, select “Quarto Presentation”.<br>
+We’ll focus on the html format with Reveal JS, but MS Powerpoint and pdf formats are available, too.</p>
+<h3 id="the-yaml">The YAML</h3>
+<ul>
+<li>Important note: Code isn’t shown by default!<br>
+</li>
+<li>Use <code>#| echo: true</code> in individual code blocks or in the YAML</li>
+</ul>
+<p>Other YAML options:<br>
+- title<br>
+- description<br>
+- date<br>
+- author<br>
+- footer</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>format<span class="sc">:</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>  revealjs<span class="sc">:</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    echo<span class="sc">:</span> true</span>
+<span id="cb20-4"><a href="#cb20-4"></a>    footer<span class="sc">:</span> This is the text that goes into the footer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <h4 id="appearance-and-style-1">Appearance and style</h4>
 <ul>
-<li>theme (available themes are “simple”, “dark”, “black”, “sky”, “beige”, “serif”, “solarized”, “blood”, “moon”, “night”, “league”, or “white”)</li>
-<li>highlight (“default”, “tango”, “pygments”, “kate”, “monochrome”, “espresso”, “zenburn”, “haddock”, or “breezedark” or null)</li>
+<li>theme (simple, dark, black, sky, beige, serif, solarized, blood, moon, night, league, or white)<br>
+</li>
+<li>highlight (default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, or breezedark or null)<br>
+</li>
 <li>center: should content be vertically centered on the slides? Options: true/false</li>
 </ul>
-<h4 id="incremental-bullet-points">Incremental bullet points</h4>
+</section>
+<section class="slide level2">
+
+<h3 id="slide-breaks">Slide breaks</h3>
+<p>…will happen automatically for new first- and second-level headlines, or use \-\-\- for a manual slide break</p>
+<h3 id="slide-transitions">Slide transitions</h3>
+<ul>
+<li>transition for moving between slides</li>
+<li>available transitions are “convex”, “fade”, “slide”, “concave”, “zoom”, or “none”</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="incremental-bullet-points">Incremental bullet points</h3>
 <ul>
 <li>as a global option: <code>incremental: true</code> in the YAML</li>
 <li>or: frame bullet points with ::: incremental (or ::: nonincremental) and :::</li>
 <li>for other text, use . . .</li>
 <li>or: ::: fragment :::</li>
 </ul>
-<h4 id="slide-transitions">Slide transitions</h4>
+</section>
+<section class="slide level2">
+
+<h3 id="highlighting-lines-of-code">Highlighting lines of code</h3>
 <ul>
-<li>transition for moving between slides</li>
-<li>available transitions are “convex”, “fade”, “slide”, “concave”, “zoom”, or “none”</li>
+<li>On slides, you can highlight specific lines of code by using <code>#| code-line-numbers: 1-3</code> to highlight (here) the first three lines of code.<br>
+</li>
+<li>Alternatively, you can highlight some lines first, and then other lines. The option <code>#| code-line-numbers: 5|7</code>, for example, highlights line 5 first, then line 7.</li>
 </ul>
 </section>
-<section id="the-same-as-in-r-markdown" class="slide level2">
-<h2>The same as in R Markdown</h2>
-<ul>
-<li>a lot of the YAML (sometimes, R Markdown uses an underscore where Quarto uses a hyphen)</li>
-<li>text formatting options, e.g., headlines, bold and italics, lists</li>
-<li>references (but Quarto automatically adds a headline that reads “References”)</li>
-<li>inserting pictures (but see layout options below)</li>
-</ul>
-</section>
-<section id="different-to-r-markdown" class="slide level2">
-<h2>Different to R Markdown</h2>
-<h3 id="labelling-figures">Labelling figures</h3>
-<p>In the code block in which a graph is created or called, you can add options such as labels (#| label: ) and captions (#| fig-cap: ) Both will be displayed underneath the graph.</p>
-<p>Pictures can also get a label: {#fig-label}</p>
-<p>The labels can be used for in-text references with <strong>?@fig-label</strong></p>
-<h3 id="on-slides-code-isnt-shown-by-default">On slides: Code isn’t shown by default</h3>
-<p>Use:</p>
+<section id="other-output-formats" class="slide level2">
+<h2>Other output formats</h2>
+<p>Like R Markdown documents, Quarto documents can be rendered to Word and PDF</p>
+<p>For output formats such as Word and PDFs, page breaks can be added using</p>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>{{<span class="sc">&lt;</span> pagebreak <span class="sc">&gt;</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>…in individual code blocks</p>
-<p>Or: echo: true in the YAML</p>
 </section>
-<section id="new-additions" class="slide level2">
-<h2>New additions</h2>
-<h3 id="arranging-pictures">Arranging pictures</h3>
-<p>Pictures can still be inserted using: <img data-src="file.png" alt="Caption"></p>
-<p>Several pictures can be arranged more easily using layout-ncol or layout-nrow - for example: ::: {layout-ncol=2} <img data-src="file1.png" alt="Caption"> <img data-src="file2.png" alt="Caption"> :::</p>
-<p>Custom layouts are also possible - more info: https://quarto.org/docs/authoring/figures.html</p>
-<h3 id="callout-blocks">Callout blocks</h3>
-<p>The five callout blocks: - note - tip - warning - caution - important</p>
-<p>Callout blocks are framed by :::{callout-TypeOfCallout} and :::</p>
-<p>More info: https://quarto.org/docs/authoring/callouts.html</p>
-<h3 id="placing-content-in-the-margins">Placing content in the margins</h3>
-<p>To put footnotes and references in the margins of the document instead of at the bottom, we can add the following lines to the YAML: reference-location: margin citation-location: margin</p>
-<p>You can also add asides in the margins: <span class="aside column-margin">This is an aside, text that will be displayed in the margin.</span></p>
-<p>Figure captions can also be placed in the margin:</p>
-<div class="cell caption-margin">
+<section class="slide level2">
 
+<h3 id="pdf">pdf</h3>
+<p>In a fresh R session, run:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">install.packages</span>(<span class="st">"tinytex"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This lets you use LaTeX in R, which is necessary for knitting to pdf.</p>
+<p>Then, when you create a new Markdown document, select Output: pdf Or change <code>output: pdf_document</code> in the YAML</p>
+</section>
+<section class="slide level2">
+
+<h3 id="ms-word">MS Word</h3>
+<p>You shouldn’t need additional R packages, but a version of Word (or Libre/Open Office).<br>
+When opening a new R Markdown, select the Word option - or change <code>output: word_document</code></p>
+</section>
+<section class="slide level2">
+
+<h4 id="using-a-custom-reference-document">Using a custom reference document</h4>
+<p>To automatically make a newly rendered Word document conform to a template (in terms of, e.g., page dimensions, font, font sizes, margins, settings for headlines…):<br>
+- create a simple Quarto document that contains all the features you need (e.g., all headline levels you’ll use)<br>
+- render it to Word<br>
+- open it and make changes as you wish<br>
+- in your main Quarto document’s YAML, refer to your reference document by writing:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>format<span class="sc">:</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  docx<span class="sc">:</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>    reference<span class="sc">-</span>doc<span class="sc">:</span> custom<span class="sc">-</span>reference<span class="sc">-</span>doc.docx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
-<section id="other-output-formats-1" class="title-slide slide level1 center">
-<h1>Other output formats</h1>
-<p>Like R Markdown documents, Quarto documents can be rendered to Word and PDF</p>
-<p>For output formats such as Word and PDFs, page breaks can be added using:</p>
-<p></p>
+<section id="thank-you" class="title-slide slide level1 center">
+<h1>Thank you!</h1>
+<p>Any further questions?</p>
+<p>Get in touch with me via <a href="https://twitter.com/JuliaMuellerFr">Twitter</a></p>
+<p><strong>Enjoy the rest of the conference!</strong></p>
 <div class="footer footer-default">
 <p>Workshop at the R in Pharma conference</p>
 </div>
 </section>
+
+
     </div>
   </div>
 

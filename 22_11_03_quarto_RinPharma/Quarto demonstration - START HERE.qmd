@@ -8,9 +8,7 @@ author:
     affiliation: 
     affiliation-url: 
 title-block-banner: true
-format:
-  html:
-    theme: 
+format: html 
 ---
 
 
@@ -102,7 +100,7 @@ The following graphs are slightly simplified versions from the vignette for the 
 
 
 ### Entire data
-```{r}
+```{r graph entire}
 mass_flipper <- ggplot(data = penguins,
                        aes(x = flipper_length_mm,
                            y = body_mass_g)) +
@@ -120,7 +118,7 @@ mass_flipper
 
 
 ### Separated by species
-```{r}
+```{r graph species}
 mass_flipper_species <- ggplot(data = penguins,
                        aes(x = flipper_length_mm,
                            y = body_mass_g)) +
@@ -142,7 +140,7 @@ mass_flipper_species
 ```
 
 ### Separated by species and sex
-```{r}
+```{r graph species sex}
 mass_flipper_species +
   facet_wrap(~sex)
 ```

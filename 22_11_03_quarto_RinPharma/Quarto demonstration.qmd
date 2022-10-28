@@ -48,9 +48,9 @@ This data can also be used via the {palmerpenguins} package [@Horst.2020] and wa
 ## Loading packages & reading data
 
 First, we need to:  
-1. load **packages**  
-2. read in **data**  
-3. check if that data is *in the right format*  
+1 load **packages**  
+2 read in **data**  
+3 check if that data is *in the right format*  
 
 [By "right format", we mean that the data is tidy, and ready to be summarised and graphed.]{.aside}
 
@@ -121,12 +121,12 @@ penguins %>% select(bill_length_mm)
 
 Some ideas for graphs:
 
-* penguin weight by flipper length  
-    + for the entire data  
-    + or separately for each species  
-    + and additionally by sex  
-* flipper and bill length  
-* bill length and depth  
+- penguin weight by flipper length  
+    - for the entire data  
+    - or separately for each species  
+    - and additionally by sex  
+- flipper and bill length  
+- bill length and depth  
 
 ## Weight and flipper length
 
@@ -134,7 +134,7 @@ The following graphs are slightly simplified versions from the [vignette for the
 
 
 ### Entire data
-```{r}
+```{r graph entire}
 #| label: fig-entire
 #| fig-cap: Penguin flipper length and body mass
 mass_flipper <- ggplot(data = penguins,
@@ -155,7 +155,7 @@ mass_flipper
 Refer to @fig-bill for an explanation of the measurements.
 
 ### Separated by species
-```{r}
+```{r graph species}
 #| label: fig-species
 #| fig-cap: Penguin flipper length and body mass, separately by species
 mass_flipper_species <- ggplot(data = penguins,
@@ -181,7 +181,7 @@ mass_flipper_species
 @fig-entire does not separate the data by species, while @fig-species does.
 
 ### Separated by species and sex
-```{r}
+```{r graph species sex}
 #| label: fig-sex
 #| fig-cap: Penguin flipper length and body mass, separately by species and sex
 #| cap-location: margin
