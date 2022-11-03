@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="Welcome_to_Quarto_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Welcome_to_Quarto_files/libs/quarto-html/tabby.min.js"></script>
-<script src="Welcome_to_Quarto_files/libs/quarto-html/popper.min.js"></script>
-<script src="Welcome_to_Quarto_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="Welcome_to_Quarto_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Welcome_to_Quarto_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="Welcome_to_Quarto_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.163">
+  <meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.483">
 
   <meta name="author" content="Julia Müller">
-  <meta name="dcterms.date" content="2022-10-28">
   <title>Welcome to Quarto!</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -20,15 +13,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -59,40 +47,39 @@
       }
     pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
     div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
+      {   }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
     code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
     code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="Welcome_to_Quarto_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="Welcome_to_Quarto_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -383,34 +370,44 @@
       margin-right: 0; 
     }
   </style>
+<script src="Welcome_to_Quarto_files\libs\clipboard\clipboard.min.js"></script>
+<script src="Welcome_to_Quarto_files\libs\quarto-html\tabby.min.js"></script>
+<script src="Welcome_to_Quarto_files\libs\quarto-html\popper.min.js"></script>
+<script src="Welcome_to_Quarto_files\libs\quarto-html\tippy.umd.min.js"></script>
+<link href="Welcome_to_Quarto_files\libs\quarto-html\tippy.css" rel="stylesheet">
+<link href="Welcome_to_Quarto_files\libs\quarto-html\quarto-html.min.css" rel="stylesheet">
+<link href="Welcome_to_Quarto_files\libs\quarto-html\quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 </head>
-<body class="quarto-light">
+<body>
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="center">
   <h1 class="title">Welcome to Quarto!</h1>
   <p class="author">Julia Müller</p>
-  <p class="date">10/28/22</p>
+  <p class="date">11/3/22</p>
 </section>
 
-<section id="who-am-i" class="slide level2">
+<section id="who-am-i" class="slide level2 smaller">
 <h2>Who am I?</h2>
 <ul>
-<li>working on PhD in English linguistics (re: the interaction between a person’s first and second language and how the former affects the latter during language processing)<br>
+<li>working on PhD in English linguistics (re: the interaction between a person’s first and second language during language processing)<br>
 </li>
 <li>co-organiser of R-Ladies Freiburg and Julia Gender Inclusive<br>
 </li>
-<li>favourite tasks in R: creating elaborate graphics (spending hours on picking a colour scheme and font), fitting and evaluating mixed effects regression models<br>
+<li>favourite tasks in R: creating elaborate graphics, fitting and evaluating mixed effects regression models<br>
 </li>
 <li>currently learning: Bayesian methods</li>
 <li>really into grandmotherly activities: cooking, embroidery, sewing clothes<br>
 </li>
 <li>total cat lady (stick around for pictures!)</li>
 </ul>
+<div class="cell">
+
+</div>
 </section>
 <section>
-<section id="what-is-quarto" class="title-slide slide level1 center">
+<section id="what-is-quarto" class="title-slide slide level1 smaller center">
 <h1>What is Quarto?</h1>
 <ul>
 <li>publishing system that effortlessly combine R code, output (such as plots or tables or model estimates) and text</li>
@@ -435,6 +432,7 @@
 <p>If you want to follow along with my demonstrations/try Quarto for yourself later:<br>
 - download Quarto at: https://quarto.org/docs/get-started/<br>
 - …and install it</p>
+<p><br></p>
 <p><strong>Getting started with Quarto in RStudio</strong><br>
 - once Quarto is installed, it’ll be an option when you create a new document<br>
 - enter title (and author), choose output, theme, options (but this can also be changed/added later)</p>
@@ -455,21 +453,6 @@
 </ul></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="what-you-can-and-cant-expect">What you can (and can’t) expect</h3>
-<ul>
-<li>thorough overview of the main features<br>
-</li>
-<li>description of lots of features for html documents (many of which transfer to Word and pdf)<br>
-</li>
-<li>…and for html slides<br>
-</li>
-<li>a quicker look at Word and pdf documents<br>
-</li>
-<li>language and environment: R and RStudio</li>
-</ul>
-</section>
 <section id="working-directory-and-rendering" class="slide level2">
 <h2>Working directory and rendering</h2>
 <ul>
@@ -484,9 +467,11 @@
 </section>
 <section class="slide level2">
 
-<h3 id="yaml">YAML</h3>
+<h4 id="the-yaml">The YAML</h4>
 <ul>
-<li>The YAML header is the first section - it’s at the top of the document, framed by three hyphens<br>
+<li>The YAML header is the first section<br>
+</li>
+<li>it’s at the top of the document, framed by three hyphens<br>
 </li>
 <li>By default, this will contain the title you entered, your name, the date, and the output format - but we can change this and add a lot more here!<br>
 </li>
@@ -496,10 +481,16 @@
 <section class="slide level2">
 
 <h4 id="try-it">Try it</h4>
-<p>Have a look at the demonstration file and play around with: - title and description<br>
-- date options: enter a specific date, or one of: today, now, last-modified<br>
-- the author options: enter your name, a link to your website/Twitter, your affiliation and a link to it<br>
-- Change the <code>true</code> in <code>title-block-banner: true</code> to a colour/hex code/path to a picture</p>
+<p>Have a look at the demonstration file and play around with:</p>
+<ul>
+<li>title and description<br>
+</li>
+<li>date options: enter a specific date, or one of: today, now, last-modified<br>
+</li>
+<li>the author options: enter your name, a link to your website/Twitter, your affiliation and a link to it<br>
+</li>
+<li>Change the <code>true</code> in <code>title-block-banner: true</code> to a colour/hex code/path to a picture</li>
+</ul>
 </section>
 <section class="slide level2">
 
@@ -524,7 +515,7 @@
 <span id="cb1-4"><a href="#cb1-4"></a>    highlight<span class="sc">:</span> espresso</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="text-options" class="slide level2">
+<section id="text-options" class="slide level2 smaller">
 <h2>Text options</h2>
 <h3 id="line-breaks-and-empty-lines">Line breaks and empty lines</h3>
 <ul>
@@ -532,8 +523,9 @@
 </li>
 <li>Or hit Enter twice<br>
 </li>
-<li>For an empty line, use \&lt;br\&gt; - simply adding more line breaks won’t do it!</li>
+<li>For an empty line, use &lt;br&gt; - simply adding more line breaks won’t do it!</li>
 </ul>
+<p><br></p>
 <h3 id="headers">Headers</h3>
 <ul>
 <li>Use # to define headers, and ## or ### (and so on) to create subheadings<br>
@@ -549,7 +541,8 @@
 <span id="cb2-2"><a href="#cb2-2"></a>and double asterisks to <span class="sc">**</span>make text bold<span class="sc">**</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Use one set of asterisks around text to <em>create italics</em><br>
-and double asterisks to <strong>make text bold</strong>. <br><br></p>
+and double asterisks to <strong>make text bold</strong>.<br>
+<br><br></p>
 <h3 id="blockquotes">Blockquotes</h3>
 <p>Use the bigger than sign for a blockquote:</p>
 <div class="cell">
@@ -569,23 +562,24 @@ and double asterisks to <strong>make text bold</strong>. <br><br></p>
 </li>
 <li>In both cases, use two tabs (or four spaces) for the next level</li>
 </ul>
+</section>
+<section class="slide level2">
+
+<p>For example:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="sc">-</span> list item  </span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="sc">-</span> another list item  </span>
 <span id="cb4-3"><a href="#cb4-3"></a>    <span class="sc">-</span> more items  </span>
-<span id="cb4-4"><a href="#cb4-4"></a>    <span class="sc">-</span> even more items  </span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="dv">1</span> Now this is numbered  </span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="dv">2</span> As is this  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="dv">1</span> Now this is numbered  </span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="dv">2</span> As is this  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>list item<br>
 </li>
 <li>another list item
 <ul>
-<li>more items<br>
-</li>
-<li>even more items</li>
+<li>more items</li>
 </ul></li>
 </ul>
 <p>1 Now this is numbered<br>
@@ -599,6 +593,7 @@ and double asterisks to <strong>make text bold</strong>. <br><br></p>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>[Quarto website](https<span class="sc">:</span><span class="er">//</span>quarto.org<span class="sc">/</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><a href="https://quarto.org/">Quarto website</a></p>
+<p><br></p>
 <h3 id="misc">Misc</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>superscript<span class="sc">^</span><span class="dv">2</span><span class="sc">^</span></span>
@@ -621,18 +616,24 @@ and double asterisks to <strong>make text bold</strong>. <br><br></p>
 </section>
 <section class="slide level2">
 
-<h3 id="table-of-contents">Table of contents</h3>
-<p>In the YAML:<br>
-- add a colon and a line break after <code>format</code> and another after <code>html</code><br>
-- add <code>toc: true</code><br>
-- the depth of the table of contents (<code>toc_depth</code> - this is optional, the default is 3)<br>
-- add <code>toc_float: true</code> to place the table of contents to the left of the document<br>
-- <code>collapsed: false</code> to make sure the TOC is open by default<br>
-- sections can be numbered using <code>number_sections: true</code><br>
-- this will number the sections in both the body and the TOC!</p>
+<h3 class="smaller" id="table-of-contents">Table of contents</h3>
+<p>In the YAML:</p>
+<ul>
+<li>add <code>toc: true</code><br>
+</li>
+<li>the depth of the table of contents (<code>toc_depth</code> - this is optional, the default is 3)<br>
+</li>
+<li>add <code>toc_float: true</code> to place the table of contents to the left of the document
+<ul>
+<li><code>collapsed: false</code> to make sure the TOC is open by default<br>
+</li>
+</ul></li>
+<li>sections can be numbered using <code>number_sections: true</code></li>
+</ul>
 </section>
 <section class="slide level2">
 
+<p>For example:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>format<span class="sc">:</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>  html<span class="sc">:</span></span>
@@ -641,17 +642,24 @@ and double asterisks to <strong>make text bold</strong>. <br><br></p>
 <span id="cb7-5"><a href="#cb7-5"></a>    toc_float<span class="sc">:</span> true</span>
 <span id="cb7-6"><a href="#cb7-6"></a>    collapsed<span class="sc">:</span> false</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><br></p>
 <h4 id="try-it-3">Try it</h4>
 <p>Add a table of contents with numbered sections.</p>
 </section>
 <section id="code" class="slide level2">
 <h2>Code</h2>
 <h3 id="code-chunks-output-options">Code chunks &amp; output options</h3>
-<p>All code needs to be in a code chunk<br>
-- insert a new one by clicking on the green drop-down menu at the top in RStudio<br>
-- keyboard shortcut: Command + Option + I or Ctrl + Alt + I<br>
-- code chunks can be labelled for better navigation<br>
-- chunk names can be several words, but need to be unique</p>
+<p>All code needs to be in a code chunk</p>
+<ul>
+<li>insert a new one by clicking on the green drop-down menu at the top in RStudio
+<ul>
+<li>keyboard shortcut: Command + Option + I or Ctrl + Alt + I<br>
+</li>
+</ul></li>
+<li>code chunks can be labelled for better navigation<br>
+</li>
+<li>chunk names can be several words, but need to be unique</li>
+</ul>
 </section>
 <section class="slide level2">
 
@@ -659,16 +667,16 @@ and double asterisks to <strong>make text bold</strong>. <br><br></p>
 - <code>#| echo: false</code> for output, but not code, to be visible<br>
 - <code>#| include: false</code> hides both output and code<br>
 - <code>#| warning: false</code> to suppress warning messages (also works for errors)<br>
-- <code>#| eval: false</code>: code is not run</p>
+- <code>#| eval: false</code> to ensure code is not run</p>
 </section>
 <section class="slide level2">
 
-<h3 id="code-folding">Code folding</h3>
-<p>Code chunks can also be “folded”, i.e., hidden at first, but the user can click on a “Code” button to reveal the code block<br>
-Use <code>#| code-fold: true</code> at the beginning of a code chunk if you want to fold it.</p>
+<h3 class="smaller" id="code-folding">Code folding</h3>
+<p>Code chunks can also be “folded”, i.e., hidden at first, with <code>#| code-fold: true</code><br>
+The user can click on a “Code” button to reveal the code block</p>
+<p><br></p>
 <h3 id="global-options">Global options</h3>
-<p>In the YAML, you can also set these as global options.<br>
-This is treated as the default, but can be overridden in code chunks.</p>
+<p>In the YAML, you can also set these as global options.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>format<span class="sc">:</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a>  html<span class="sc">:</span></span>
@@ -687,33 +695,45 @@ This is treated as the default, but can be overridden in code chunks.</p>
 </section>
 <section class="slide level2">
 
-<h3 id="inline-code">Inline code</h3>
-<p>Inline code is also possible, i.e., in the text, write <code>r</code>. Whatever code is included in the backticks will be run and the output will be shown in the text.<br>
-This is useful for printing measures such as the mean or elements of a model summary without having to copy-paste numbers (especially if these numbers might still change).</p>
-<h4 id="try-it-5">Try it</h4>
-<p>In the sentence that starts with “We’ve removed missing values here” you can see inline code to automatically add the number of rows in the data frame we’re working with.<br>
-Below, where the document mentions the average bill length and depth as well as when the data was collected, add inline code.</p>
+<h3 class="smaller" id="inline-code">Inline code</h3>
+<ul>
+<li>Inline code is also possible, i.e., in the text, write:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>We find an average distance of <span class="st">`</span><span class="at">r mean(df$distance)</span><span class="st">`</span> m.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Whatever code is included in the backticks will be run and the output will be shown in the text.<br>
+</li>
+<li>This is useful for printing measures such as the mean or elements of a model summary without having to copy-paste numbers.</li>
+</ul>
 </section>
-<section id="pictures-and-graphs" class="slide level2">
+<section class="slide level2">
+
+<h4 id="try-it-5">Try it</h4>
+<ul>
+<li>In the sentence that starts with “We’ve removed missing values here” you can see inline code to automatically add the number of rows in the data frame we’re working with.<br>
+</li>
+<li>Below, where the document mentions the average bill length and depth as well as when the data was collected, add inline code.</li>
+</ul>
+</section>
+<section id="pictures-and-graphs" class="slide level2 smaller">
 <h2>Pictures and graphs</h2>
 <h3 id="adding-external-files">Adding external files</h3>
 <p>To add pictures, use:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="sc">!</span>[Quarto logo](quarto_logo.png){fig<span class="sc">-</span>logo}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="sc">!</span>[Quarto logo](quarto_logo.png){<span class="co">#fig-logo}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img data-src="quarto_logo.png" alt="Quarto logo">{fig-logo}</p>
-<p>The label of the picture (the text in curly brackets) can be used for in-text references, for example:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>Refer to <span class="sc">@</span>fig<span class="sc">-</span>logo <span class="cf">for</span> the Quarto logo.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Refer to <strong>?@fig-logo</strong> for the Quarto logo.</p>
-<p>This code assumes that this file is in the same folder as the Quarto document. If it’s in a subfolder, use:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="sc">!</span>[Quarto logo](sub<span class="sc">/</span>quarto_logo.png){fig<span class="sc">-</span>logo}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+
+<img data-src="quarto_logo.png" class="r-stretch quarto-figure-center"><p class="caption">Figure 1: Quarto logo</p><p>The label of the picture (the text in curly brackets) can be used for in-text references, for example: ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>Refer to <span class="sc">@</span>fig<span class="sc">-</span>logo <span class="cf">for</span> the Quarto logo.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
+<p>Refer to <a href="#/fig-logo">Figure&nbsp;1</a> for the Quarto logo.</p>
 </section>
 <section class="slide level2">
 
+<p>This code assumes that this file is in the same folder as the Quarto document. If it’s in a subfolder, use <code>(sub/quarto_logo.png)</code></p>
+<p><br></p>
 <h4 id="try-it-6">Try it</h4>
 <ul>
 <li>Underneath the headline “Some descriptive statistics”, add the penguin drawing by Allison Horst (penguin_species.png) and the illustration that explains bill dimensions (culmen_depth.png). Both files are saved in the subfolder “pics”.<br>
@@ -723,31 +743,42 @@ Below, where the document mentions the average bill length and depth as well as 
 </section>
 <section class="slide level2">
 
-<h3 id="arranging-pictures">Arranging pictures</h3>
-<p>Several pictures can be arranged using <code>layout-ncol</code> or <code>layout-nrow</code> - for example, the code below places the two pictures next to each other:</p>
-<div class="cell">
+<h3 class="smaller" id="arranging-pictures">Arranging pictures</h3>
+<p>Several pictures can be arranged using <code>layout-ncol</code> or <code>layout-nrow</code> - for example, the code below places the two pictures next to each other: ::: {.cell}</p>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="sc">:::</span> {layout<span class="sc">-</span>ncol<span class="ot">=</span><span class="dv">2</span>}</span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="sc">!</span>[It<span class="st">'s a trap!](pics/belly_up_cat.png)</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="st">![Comfy kitty](cozy_cat.png)</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="st">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">![Comfy kitty](cozy_cat.png)</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
 </section>
 <section class="slide level2">
 
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="pics/belly_up_cat.png" alt="It’s a trap!"> <img data-src="pics/cozy_cat.png" alt="Comfy kitty"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="pics/belly_up_cat.png"></p>
+<p></p><figcaption aria-hidden="true">It’s a trap!</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="pics/cozy_cat.png"></p>
+<p></p><figcaption aria-hidden="true">Comfy kitty</figcaption><p></p>
+</figure>
 </div>
 </div>
 </div>
-<p>Custom layouts are also possible - more info <a href="https://quarto.org/docs/authoring/figures.html">here</a></p>
+</div>
 </section>
 <section class="slide level2">
 
 <h3 id="arranging-text">Arranging text</h3>
-<p>Similarly, text can also be arranged into columns. Their widths can be expressed in percentages:</p>
-<div class="cell">
+<p>Similarly, text can also be arranged into columns. Their widths can be expressed in percentages: ::: {.cell}</p>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="sc">:::</span><span class="er">:</span> {.columns}</span>
 <span id="cb13-2"><a href="#cb13-2"></a></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="sc">:::</span> {.column width<span class="ot">=</span><span class="st">"20%"</span>}</span>
@@ -759,7 +790,7 @@ Below, where the document mentions the average bill length and depth as well as 
 <span id="cb13-9"><a href="#cb13-9"></a><span class="er">:::</span></span>
 <span id="cb13-10"><a href="#cb13-10"></a></span>
 <span id="cb13-11"><a href="#cb13-11"></a><span class="er">::::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>:::</p>
 <div class="columns">
 <div class="column" style="width:20%;">
 <p>This is a small column.</p>
@@ -771,10 +802,21 @@ Below, where the document mentions the average bill length and depth as well as 
 <section class="slide level2">
 
 <h3 id="labelling-graphs">Labelling graphs</h3>
-<p>In the code block in which a graph is created or called, you can add options such as labels with <code>#| label: fig-yourLabel</code> and captions with <code>#| fig-cap: Your caption</code><br>
-The caption will be displayed underneath the graph. Graphs will automatically be numbered, and you can use the label you set for in-text references.</p>
+<ul>
+<li>In the code block in which a graph is created or called, you can add options such as labels with <code>#| label: fig-yourLabel</code> and captions with <code>#| fig-cap: Your caption</code><br>
+</li>
+<li>The caption will be displayed underneath the graph<br>
+</li>
+<li>Graphs will automatically be numbered, and you can use the label you set for in-text references</li>
+</ul>
+</section>
+<section class="slide level2">
 
-<img data-src="Welcome_to_Quarto_files/figure-revealjs/fig-flametree-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;1: Flametree made with the package of the same name by Danielle Navarro (<span class="citation" data-cites="djnavarro">@djnavarro</span>)</p><p>The illustration in <a href="#/fig-flametree">Figure&nbsp;1</a> is made using the flametree package, available <a href="https://github.com/djnavarro/flametree">here</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>animal_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Welcome_to_Quarto_files/figure-revealjs/fig-animals-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure 2: Animal rescues</p><p><a href="#/fig-animals">Figure&nbsp;2</a> shows animal rescue data.</p>
 <p>You can similarly label and crossreference tables - more information <a href="https://quarto.org/docs/authoring/tables.html">here</a></p>
 </section>
 <section class="slide level2">
@@ -788,10 +830,10 @@ The caption will be displayed underneath the graph. Graphs will automatically be
 <li>Bonus: Arrange the two penguin pictures you added earlier so they are displayed next to each other. You can also format the text underneath so it’s displayed in two columns.</li>
 </ul>
 </section>
-<section id="references" class="slide level2">
+<section id="references" class="slide level2 smaller">
 <h2>References</h2>
 <p>In many works such as academic articles, you’ll need to have references (usually, the author and year a text that you’re referring to/quoting from) in the body of the text, plus a bibliography section at the end of the text. You can insert these into Quarto.</p>
-<p>It’s easiest if you use reference management software such as Zotero or Citavi. Those programs can export the citations you’ll need into a .bib file. Put that in the same folder as your Markdown document.</p>
+<p>It’s easiest if you use reference management software such as Zotero. Those programs can export the citations you’ll need into a .bib file. Put that in the same folder as your Markdown document.</p>
 <p>In the YAML, add:<br>
 <code>bibliography: my_references.bib</code><br>
 <code>link-citations: yes</code><br>
@@ -811,9 +853,16 @@ The first line links to your references file, so make sure to type the correct n
 </section>
 <section class="slide level2">
 
-<p>Quarto will automatically add the references at the bottom of the document under a headline “References”.<br>
-The citation style can be altered by adding a .csl (citation style language) in the YAML: <code>csl: my_style.csl</code><br>
-Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zotero</a></p>
+<ul>
+<li>Quarto will automatically add the references at the bottom of the document under a headline “References”.<br>
+</li>
+<li>The citation style can be altered by adding a .csl (citation style language) in the YAML: <code>csl: my_style.csl</code><br>
+</li>
+<li>Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zotero</a></li>
+</ul>
+</section>
+<section class="slide level2">
+
 <h4 id="try-it-8">Try it</h4>
 <ul>
 <li>In the YAML, add the penguins.bib file as the bibliography for the document and link citations.<br>
@@ -838,16 +887,21 @@ Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zote
 </li>
 <li>important</li>
 </ul>
-<p>Callout blocks are framed by :::{callout-TypeOfCallout} and :::</p>
+<p>Callout blocks are framed by:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="sc">:::</span>{callout<span class="sc">-</span>TypeOfCallout}</span>
+<span id="cb15-2"><a href="#cb15-2"></a>Title and text go here</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="sc">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section class="slide level2">
 
 <p>For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="sc">:::</span>{.callout<span class="sc">-</span>caution collapse<span class="ot">=</span><span class="st">"true"</span>}</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="do">## This is the callout's title - click to expand</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a>This callout is <span class="fu">folded</span> (similar to how code chunks can be folded). The option collapse <span class="ot">=</span> <span class="st">"true"</span> determines that it<span class="st">'s collapsed by default, "false" would show it open (but the user could click to hide the contents).</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="st">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="sc">:::</span>{.callout<span class="sc">-</span>caution}</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="do">### This is the callout's title</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>This is the callout<span class="st">'s text</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="st">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-caution callout-captioned callout-style-default">
 <div class="callout-body">
@@ -855,10 +909,10 @@ Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zote
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>This is the callout’s title - click to expand</strong></p>
+<p><strong>This is the callout’s title</strong></p>
 </div>
 <div class="callout-content">
-<p>This callout is folded (similar to how code chunks can be folded). The option collapse = “true” determines that it’s collapsed by default, “false” would show it open (but the user could click to hide the contents).</p>
+<p>This is the callout’s text</p>
 </div>
 </div>
 </div>
@@ -872,7 +926,7 @@ Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zote
 <p>Figure captions can also be placed in the margin with <code>#| cap-location: margin</code> in the code chunk.</p>
 <p>You can also add asides in the margins:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>[This is an aside, text that will be displayed <span class="cf">in</span> the margin.]{.aside}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>[This is an aside, text that will be displayed <span class="cf">in</span> the margin.]{.aside}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><span class="aside column-margin">This is an aside, text that will be displayed in the margin.</span></p>
 </section>
@@ -880,35 +934,27 @@ Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zote
 <h2>Footnotes</h2>
 <p>Footnotes can be added like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>This sentence needs a footnote[<span class="sc">^</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>This sentence needs a footnote[<span class="sc">^</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This sentence needs a footnote<sup>1</sup></p>
 <p>The text of the footnote is placed at the bottom of the document:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>[<span class="sc">^</span><span class="dv">1</span>]<span class="sc">:</span> This is the footnote.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>[<span class="sc">^</span><span class="dv">1</span>]<span class="sc">:</span> This is the footnote.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>This is the footnote.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1" role="doc-endnote"><p>This is the footnote.</p></li></ol></aside></section>
 <section id="tabsets" class="slide level2">
 <h2>Tabsets</h2>
 <p>Tabsets let the user switch between different tabs (for example, to show different plots or code).</p>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Flametree - voronoi style</a></li><li><a href="#tabset-1-2">Flametree - native flora style</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Viridis - Style A</a></li><li><a href="#tabset-1-2">Viridis - Style B</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>dat <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">flametree_plot</span>(</span>
-<span id="cb18-3"><a href="#cb18-3"></a>    <span class="at">background =</span> <span class="st">"#BFA5A7"</span>,</span>
-<span id="cb18-4"><a href="#cb18-4"></a>    <span class="at">palette =</span> shades, </span>
-<span id="cb18-5"><a href="#cb18-5"></a>    <span class="at">style =</span> <span class="st">"voronoi"</span></span>
-<span id="cb18-6"><a href="#cb18-6"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>animal_plot <span class="sc">+</span> </span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">scale_colour_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">"A"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-2">
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>dat <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">flametree_plot</span>(</span>
-<span id="cb19-3"><a href="#cb19-3"></a>    <span class="at">background =</span> <span class="st">"#BFA5A7"</span>,</span>
-<span id="cb19-4"><a href="#cb19-4"></a>    <span class="at">palette =</span> shades, </span>
-<span id="cb19-5"><a href="#cb19-5"></a>    <span class="at">style =</span> <span class="st">"nativeflora"</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>animal_plot <span class="sc">+</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">scale_colour_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">"B"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -930,12 +976,15 @@ Download .csl files from, e.g.&nbsp;<a href="https://www.zotero.org/styles">Zote
 <h2>Presentations in html format</h2>
 <p>When creating a new document, select “Quarto Presentation”.<br>
 We’ll focus on the html format with Reveal JS, but MS Powerpoint and pdf formats are available, too.</p>
-<h3 id="the-yaml">The YAML</h3>
+<h3 id="the-yaml-1">The YAML</h3>
 <ul>
 <li>Important note: Code isn’t shown by default!<br>
 </li>
 <li>Use <code>#| echo: true</code> in individual code blocks or in the YAML</li>
 </ul>
+</section>
+<section class="slide level2">
+
 <p>Other YAML options:<br>
 - title<br>
 - description<br>
@@ -943,11 +992,14 @@ We’ll focus on the html format with Reveal JS, but MS Powerpoint and pdf forma
 - author<br>
 - footer</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>format<span class="sc">:</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>  revealjs<span class="sc">:</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a>    echo<span class="sc">:</span> true</span>
-<span id="cb20-4"><a href="#cb20-4"></a>    footer<span class="sc">:</span> This is the text that goes into the footer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>format<span class="sc">:</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>  revealjs<span class="sc">:</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    echo<span class="sc">:</span> true</span>
+<span id="cb22-4"><a href="#cb22-4"></a>    footer<span class="sc">:</span> This is the text that goes into the footer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section class="slide level2">
+
 <h4 id="appearance-and-style-1">Appearance and style</h4>
 <ul>
 <li>theme (simple, dark, black, sky, beige, serif, solarized, blood, moon, night, league, or white)<br>
@@ -960,22 +1012,27 @@ We’ll focus on the html format with Reveal JS, but MS Powerpoint and pdf forma
 <section class="slide level2">
 
 <h3 id="slide-breaks">Slide breaks</h3>
-<p>…will happen automatically for new first- and second-level headlines, or use \-\-\- for a manual slide break</p>
-<h3 id="slide-transitions">Slide transitions</h3>
-<ul>
-<li>transition for moving between slides</li>
-<li>available transitions are “convex”, “fade”, “slide”, “concave”, “zoom”, or “none”</li>
-</ul>
+<p>…will happen automatically for new first- and second-level headlines, or use --- for a manual slide break</p>
 </section>
 <section class="slide level2">
 
 <h3 id="incremental-bullet-points">Incremental bullet points</h3>
 <ul>
 <li>as a global option: <code>incremental: true</code> in the YAML</li>
-<li>or: frame bullet points with ::: incremental (or ::: nonincremental) and :::</li>
-<li>for other text, use . . .</li>
-<li>or: ::: fragment :::</li>
+<li>or:</li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="sc">:::</span> {.incremental}  </span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="dv">1</span> first point  </span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="dv">2</span> second point  </span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="dv">3</span> third point  </span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="sc">:::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div>
+<p>1 first point<br>
+2 second point<br>
+3 third point</p>
+</div>
 </section>
 <section class="slide level2">
 
@@ -989,21 +1046,20 @@ We’ll focus on the html format with Reveal JS, but MS Powerpoint and pdf forma
 <section id="other-output-formats" class="slide level2">
 <h2>Other output formats</h2>
 <p>Like R Markdown documents, Quarto documents can be rendered to Word and PDF</p>
-<p>For output formats such as Word and PDFs, page breaks can be added using</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>{{<span class="sc">&lt;</span> pagebreak <span class="sc">&gt;</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>For output formats such as Word and PDFs, page breaks can be added using ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>{{<span class="sc">&lt;</span> pagebreak <span class="sc">&gt;</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
 </section>
 <section class="slide level2">
 
 <h3 id="pdf">pdf</h3>
 <p>In a fresh R session, run:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">install.packages</span>(<span class="st">"tinytex"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">install.packages</span>(<span class="st">"tinytex"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This lets you use LaTeX in R, which is necessary for knitting to pdf.</p>
-<p>Then, when you create a new Markdown document, select Output: pdf Or change <code>output: pdf_document</code> in the YAML</p>
+<p>Then, when you create a new document, select Output: pdf Or change <code>output: pdf_document</code> in the YAML</p>
 </section>
 <section class="slide level2">
 
@@ -1014,16 +1070,16 @@ When opening a new R Markdown, select the Word option - or change <code>output: 
 <section class="slide level2">
 
 <h4 id="using-a-custom-reference-document">Using a custom reference document</h4>
-<p>To automatically make a newly rendered Word document conform to a template (in terms of, e.g., page dimensions, font, font sizes, margins, settings for headlines…):<br>
-- create a simple Quarto document that contains all the features you need (e.g., all headline levels you’ll use)<br>
-- render it to Word<br>
-- open it and make changes as you wish<br>
-- in your main Quarto document’s YAML, refer to your reference document by writing:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>format<span class="sc">:</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a>  docx<span class="sc">:</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>    reference<span class="sc">-</span>doc<span class="sc">:</span> custom<span class="sc">-</span>reference<span class="sc">-</span>doc.docx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>To automatically make a newly rendered Word document conform to a template (in terms of, e.g., page dimensions, font, font sizes, margins, settings for headlines…):</p>
+<ul>
+<li>create a simple Quarto document that contains all the features you need (e.g., all headline levels you’ll use)<br>
+</li>
+<li>render it to Word<br>
+</li>
+<li>open it and make changes as you wish<br>
+</li>
+<li>in your main Quarto document’s YAML, refer to your reference document by writing <code>reference-doc: custom-reference-doc.docx</code></li>
+</ul>
 </section></section>
 <section id="thank-you" class="title-slide slide level1 center">
 <h1>Thank you!</h1>
@@ -1291,24 +1347,6 @@ When opening a new R Markdown, select the Word option - or change <code>output: 
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
       const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);
@@ -1357,8 +1395,7 @@ When opening a new R Markdown, select the Word option - or change <code>output: 
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);

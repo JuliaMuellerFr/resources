@@ -72,9 +72,9 @@ We've removed missing values here, which means that the data has `r nrow(penguin
 ## Some descriptive statistics {.smaller}
 
 ::: {layout-ncol=2}
-![Penguin species drawing by Allison Horst](penguin_species.png){#fig-penguins}
+![Penguin species drawing by Allison Horst](pics/penguin_species.png){#fig-penguins}
 
-![Explaining bill dimensions](culmen_depth.png){#fig-bill}
+![Explaining bill dimensions](pics/culmen_depth.png){#fig-bill}
 :::
 
 
@@ -114,12 +114,12 @@ penguins %>% select(bill_length_mm)
 
 Some ideas for graphs:
 
-* penguin weight by flipper length  
-    + for the entire data  
-    + or separately for each species  
-    + and additionally by sex  
-* flipper and bill length  
-* bill length and depth  
+- penguin weight by flipper length  
+    - for the entire data  
+    - or separately for each species  
+    - and additionally by sex  
+- flipper and bill length  
+- bill length and depth  
 
 ---
 
