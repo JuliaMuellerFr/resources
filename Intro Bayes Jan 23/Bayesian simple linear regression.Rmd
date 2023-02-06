@@ -1,0 +1,234 @@
+---
+title: "Bayesian regression models 1/3"
+author: "Mirka Honkanen"
+date: "12/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Prep
+These are the packages we will need (without warning messages)
+
+```{r message = FALSE}
+defaultW <- getOption("warn") 
+options(warn = -1) 
+library(extraDistr)
+library(brms)
+library(magrittr)
+library(MASS)
+library(dplyr)
+library(ggplot2)
+options(warn = defaultW)
+```
+
+## Background
+
+We now have a RQ about the relationship between two variables:\
+"Does attentional load affect pupil size?"\
+Our dependent variable is continuous: size of participant's pupil, measured in a unit that makes no sense outside the experiment\
+Our independent variable is a count*: number of dots to be followed in the experiment, 0 to 5, operationalizing cognitive load, assuming that more dots means higher demands on our attention\
+Example of simple linear regression: one explanatory variable, one scalar** response variable, assumed linear relationship between the two\
+Data from one participant’s pupil size of the control experiment by Wahn et al. (2016), averaged by trial (i.e. not observed over time but mean of a single task)
+
+*Let's talk about whether such a variable (integers) best be conceptualized as categorical, ordinal, or continuous\
+**A scalar variable is one that holds one value at a time
+
+### Assumptions
+
+There is some average pupil size, represented by α\
+Pupil size is normally distributed (we also know it cannot be negative, 0, or >eye, but we are ignoring this I guess for simplicity's sake)\
+There is a linear relationship between cognitive load and pupil size, represented by β\
+There is normally distributed noise in this process, represented by σ
+
+Remember that _any_ distribution will only be an approximation of reality!
+
+## The formal model
+
+Likelihood of an observation _n_
+
+> p_size_n ∼ Normal(α + c_load_n × β, σ)
+
+Normal distribution determined by two parameters α and β\
+_n_ indicates the observation number from 1 to _N_\
+α (intercept) does not depend on a predictor so in the model it will be represented with 1\
+c_load_n is our predictor (number of dots). It is centered (= from each value, the mean of all values is subtracted) so that the intercept will then represent the pupil size at the average load\
+It is multiplied by β (the slope)
+
+What we are doing is the Bayesian equivalent of a frequentist model that would look like this:
+
+> lm(p_size ~ 1 + c_load, data set)
+
+Same parameters but no previous knowledge!
+
+### Specifying priors
+
+We have to specify priors for each of the parameters
+
+**α - Pupil size**\
+We cannot use our real-world knowledge about pupil sizes (2 to 5 mm) because arbitrary units are used in the experiment :-(\
+But we do have data from the same participant with no attentional load ("pupil_pilot")
+```{r}
+pilot <- read.csv("D:/Stats/Bayesian/pupil_pilot.csv")
+summary(pilot$p_size)
+```
+Let's choose a regularizing prior (= one that downweighs extreme values, not very informative, mostly lets the likelihood dominate in determining the posteriors)\
+Normally distributed prior with a mean of 1,000 and standard deviation of 500
+
+> α∼Normal(1000, 500)
+
+This means we suspect pupil size to be in a 95% credible interval of 1,000 ± 2 x 500 units, roughly 0-2,000\
+A more precise calculation using qnorm function ("given an area, find the boundary values that determine this area")
+```{r}
+qnorm(c(.025, .975), mean = 1000, sd = 500) 
+```
+
+We are 95% sure that the true value of α lies between these two numbers\
+Basically we know very little beyond the order of magnitude
+
+**β - Slope**\
+The slope represents the change in pupil size produced by an increase in attentional load by 1 step\
+Based on our real-word knowledge about pupils, we expect these changes to be small
+
+> β∼Normal(0, 100)
+
+We center the distribution at 0 to indicate that we don't know in what direction a possible influence may be\
+We expect a single change to increase or decrease pupil size at most by 2 standard deviation units in either direction from the mean (-196, 196)
+
+**σ - Standard deviation**\
+We opt for an uninformative prior:
+
+> σ∼Normal+(0, 1000)
+
+Normal distribution truncated at 0, mean 0, standard deviation 1,000\
+Compute the 95% credible interval with qtnorm function ("Quantile function truncated normal", from extraDistr package), computes the given quantiles\
+a = 0 indicates truncation at the left by 0
+```{r}
+c(qtnorm(.025, mean = 0, sd = 1000, a = 0),
+  qtnorm(.975, mean = 0, sd = 1000, a = 0)
+  )
+```
+Let's sample from this distribution using the rtnorm function, which returns random samples from a truncated normal distribution
+```{r}
+samples <- rtnorm(20000, mean = 0, sd = 1000, a = 0)
+c(mean = mean(samples), sd = sd(samples))
+```
+20,000 samples with the given mean and standard deviation\
+Then we see what the mean and the standard deviation of those samples is\
+And we see that even though the mean is 0, this is not the most likely value for σ
+
+Nico also visualizes the prior distribution using the plot() function from base _R_
+
+```{r}
+plot(function(x) dtnorm(x, 0, 1000, a = 0), xlim = c(0, 5000))
+```
+### Preparing the data
+
+Load the data, center the predictor "load", and view the resulting data set
+```{r}
+pupil <- read.csv("D:/Stats/Bayesian/pupil.csv")
+pupil <- pupil%>%
+  mutate(c_load = load - mean(load))
+pupil
+```
+
+### Our model with brms
+
+The difference to our previous models is that we have added a predictor c_load and a prior for the predictor\
+Family = gaussian because we assume a normal distribution\
+class = b means that this is a predictor, coef names the predictor\
+Brms automatically truncates the distribution of σ to only allow positive values for the standard deviation (because it knows it cannot be negative)
+```{r}
+fit_pupil <- brm(p_size ~ 1 + c_load,
+                 data = pupil,
+                 family = gaussian(),
+                 prior = c(
+                   prior(normal(1000, 5000), class = Intercept),
+                   prior(normal(0, 1000), class = sigma),
+                   prior(normal(0, 100), class = b, coef = c_load)
+                 )
+                 )
+```
+
+## Interpreting results
+
+Our model converged and we obtained a posterior distribution - hurray!\
+Let's observe the output (posterior distributions of the parameters and corresponding caterpillar trace plots)
+```{r}
+plot(fit_pupil)
+```
+
+We get beautiful fat hairy caterpillars and no warning messages\
+```{r}
+fit_pupil
+```
+How to answer our RQ based on this?\
+The answer is given in β (slope), printed out as c_load in the summary\
+Its most likely values will be around the mean, 33.6, and we can be 95% certain that the value of β, given the model and the data, lies between 9.32 and 56.84\
+These are positive values => It seems that as attentional load increases, the pupil size increases as well
+
+If we want to know how likely it is that pupil size increases rather than decreases, we can check how much of the probability mass of the posterior distribution >0\
+This means checking the proportion of samples >0\
+NB: We can check the names of variables with the function variables()
+```{r}
+variables(fit_pupil)
+mean(as_draws_df(fit_pupil)$b_c_load > 0)
+```
+Function as_draws_df convert objects to the draws_df format\
+I have to admit I don't quite understand what is happening here! :-(\
+Is this sampling from the posterior distribution?\
+The high value does not mean the value cannot be 0 but that it's much more likely to be positive than negative\
+Remember that we do not calculate a probability mass for a point (or if we do, it is always 0): _P_(β = 0) = 0\
+We will learn later about ways to go around this problem
+
+## Descriptive adequacy
+
+How well does our model represent our data?\
+Let's use **posterior predictive checks** to evaluate the descriptive adequacy of our model\
+I could not do the transformation on the slides because I was unable to install the CRAN package (not compatible with my version of _R_?)\
+But the book chapter has an alternative code that works\
+The dots are the actual observed values, the black lines represents them, the blue lines are the posterior predictive distributions
+```{r}
+for (l in 0:4) {
+  sub_pupil <- filter(pupil, load == l)
+  p <- pp_check(fit_pupil,
+    type = "dens_overlay",
+    ndraws = 100,
+    newdata = sub_pupil
+  ) +
+    geom_point(data = sub_pupil, aes(x = p_size, y = 0.0001)) +
+    ggtitle(paste("load: ", l)) +
+    coord_cartesian(xlim = c(400, 1000))
+  print(p)
+}
+```
+
+Both our data and the predictions are widely spread out - difficult to say for sure\
+The situation does not look bad but we have too little data!
+
+Another check-up that we can do is to look at the distributions of the different summary statistics\
+The black lines represent the observed values, the bars represent posterior predicted means
+```{r}
+for (l in 0:4) {
+  sub_pupil <- filter(pupil, load == l)
+  p <- pp_check(fit_pupil,
+    type = "stat",
+    ndraws = 1000,
+    newdata = sub_pupil,
+    stat = "mean"
+  ) +
+    geom_point(data = sub_pupil, aes(x = p_size, y = 0.0001)) +
+    ggtitle(paste("load: ", l)) +
+    coord_cartesian(xlim = c(400, 1000))
+  print(p)
+}
+```
+
+The model is not very accurate for loads of 0 or 1\
+Perhaps a linear model is not the best choice but we should use a binary one instead (load vs no load?)\
+But it's difficult to say with such little data!\
+If we look hard enough, we will always find misfit because a model is always an approximation of reality
+
+Let's work on the exercises on Nico's last slide! :-)

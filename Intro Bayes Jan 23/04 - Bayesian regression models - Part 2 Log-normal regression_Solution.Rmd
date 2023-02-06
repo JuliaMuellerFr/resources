@@ -1,0 +1,476 @@
+---
+title: '04 - Bayesian regression models - Part 2 Log-normal regression- Solution'
+author: Beke
+output: html_document
+date: January 24th, 2022 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Getting started
+
+Set seed so that we all get similar output, deactivate mathematical notations in case you don't want to have them (e.g. "-1.6e+03") (copied from Hanna's markdown) and load packages.
+
+```{r Settings and load packages}
+set.seed(33)
+options(scipen=999)
+library(bcogsci)
+library(ggplot2)
+library(cowplot)
+library(brms)
+options(mc.cores = 3)
+library(tidyverse)
+library(extraDistr)
+library(robustlmm)
+```
+
+Read in data
+
+```{r Read in data}
+data("df_spacebar")
+df_noreading_data<-df_spacebar
+#if you can't load the data from the cogsci package, you can download the csv "button_press" from our folder for today's session and load the data with
+#df_noreading_data<-read.csv("button_press.csv", sep=",", header=TRUE)
+```
+
+
+## Recap: Gaussian normal distribution vs. Log-normal distribution
+
+### Gaussian normal distribution (e.g. IQ)
+
+symmetric\ 
+bell curve
+
+```{r Normal distribution}
+x <- seq(1, 100, length=1000)
+y <- dnorm(x, mean=50, sd=15)
+plot(x, y, type="l", lwd=1)
+
+```
+
+The shape of the curve depends on the values of μ (mean) and σ (standard deviation).
+
+
+![Figure 1: PDF of Normal distribution](Normal_distribution.png)
+
+
+### Log-Normal distribution (e.g. response times)
+
+asymmetric\
+right-skewed distribution --> 'long tail'\
+only positive values are possible\
+the distribution is very common in chemistry, physics, maths, biology (and also linguistics)\
+
+```{r Log-normal distribution}
+mu <- 6
+sigma <- 0.3
+N <- 500000
+
+# Generate 500,000 random samples from a log-normal distribution
+sl <- rlnorm(N, mu, sigma)
+ggplot(tibble(samples = sl), aes(samples)) +
+  geom_histogram(aes(y = ..density..), binwidth = 50) +
+  ggtitle("Log-normal distribution\n") +
+  coord_cartesian(xlim = c(0, 1500))
+```
+
+The shape of a log-normal distribution depends on the parameters location (μ) and scale (σ). A log-normal distribution may sometimes look a bit like a Gaussian normal distribution (e.g. red line below) but it can only have positive values and is not symmetric but right-skewed (has a long tail) (<-> Gaussian distribution).
+
+![Figure 2: PDF of log-normal distribution](Lognormal_distribution.png)
+
+If a variable is log-normally distributed, it means that the logarithm of the variable is normally distributed. 
+
+
+#### What's a logarithm again?
+
+Based on my school knowledge, it is the reverse operation of exponentiating, e.g. 10² <-> log(100) = 2. On my old(-)school calculator, I can choose between log (with a base of 10) and ln (with the natural number "e" (~2.72) as the base), the natural logarithm. This distinction will become relevant below because base R's default log function corresponds to what I knew as "ln" on my calculator. 
+
+![Figure 3: Log and ln on my old(-)school calculator](calculator.jpg)
+
+
+## Distribution of reaction times in the data under analysis
+
+Let's check the distribution of reaction times in our data by first plotting the untransformed reaction times in ms and then log-transforming reaction times. The distribution of the log-transformed reaction times should be normal (or approximating normality) if the variable is assumed to be log-normally distributed.\
+
+There are different ways of logarithmizing depending on the base. R's default log function uses the natural number "e" (~2.72) as the base (the so-called natural logarithm ln), but you can for example also take 10 (function log10()) as the base.\
+
+Barplots
+
+```{r Barplots distribution of RT}
+df_noreading_data<-df_noreading_data %>% 
+  mutate(rt_log=log(rt), rt_log10=log10(rt))
+
+plot_rt<-ggplot(aes(rt, ), data=df_noreading_data)+
+  geom_bar()
+
+plot_rt_log<-ggplot(aes(rt_log, ), data=df_noreading_data)+
+  geom_bar()
+
+plot_rt_log10<-ggplot(aes(rt_log10, ), data=df_noreading_data)+
+  geom_bar()
+
+plot_grid(plot_rt, plot_rt_log, plot_rt_log10)
+
+```
+
+Density plots
+
+```{r Density plots distribution of RT}
+plot_rt_2<-ggplot(df_noreading_data, aes(rt)) +
+  geom_density() 
+
+plot_rt_log_2<-ggplot(df_noreading_data, aes(log(rt))) +
+  geom_density() 
+
+plot_rt_log10_2<-ggplot(df_noreading_data, aes(log10(rt))) +
+  geom_density() 
+
+plot_grid(plot_rt_2, plot_rt_log_2, plot_rt_log10_2)
+```
+
+Log-transformation has spread clumps of data and has brought together spread-out data.\
+
+After transformation, we can see that the distribution looks a bit more normal but not normal... but assuming that reaction times (in ms) (top plot at the right) are log-normally distributed still seems better than assuming that they are normally (= Gaussian) distributed, because the distribution has a long tail and because only positive values are allowed. You can find many other distributions that could be relevant to data that include reaction times here: https://lindeloev.shinyapps.io/shiny-rt/#section-slog. On the website, you can upload your data and manipulate the parameters to see which distribution matches your data best.\
+
+Julia and Kyla (and other Experimental Linguists) often log-transform reaction times in their (frequentist) linear mixed-effects regression models so that model assumptions are not violated. In our Bayesian approach, we will instead construct a log-normal regression model.\
+
+
+## Research question today
+
+**Research question: Do participants speed up (practice effect) or slow down (fatigue effect) in an experiment in which they have to press the space bar as fast as possible without paying attention to the stimuli?**
+
+rt_n ~ LogNormal(α + c_trial_n * β, σ)\
+
+Predicted rt_n is considered to come from a log-normal distribution.\
+
+α = intercept\
+σ = noise\
+We add a new term c_trial_n * β to our original intercept model.\
+c_ = stands for centered, which makes the interpretation of alpha easier, it is the time it takes to press the space bar (log-transformed) in the middle of the experiment (rather than at trial 0, which would be counter-intuitive).\
+
+We'll keep the priors for alpha ~ Normal(6, 1.5) and sigma ~ Normal+(0, 1) (assuming that any noise will be normally distributed).\
+
+We then have to decide on a prior for beta (the effect of trial).\
+beta ~ Normal(0, 1), if slow-down --> beta positive (with increasing numbers of trials, larger reaction times), if speed-up --> beta negative (with increasing numbers of trials, smaller reaction times)\
+
+
+## Prior predictive distributions
+
+First, we'll take our function "normal_predictive_distribution_fast" from Hanna's script "03-Computational_Bayesian_data_analysis_Part3".\
+
+```{r Function prior predictive distribution normal}
+normal_predictive_distribution_fast <- function(mu_samples, 
+                                                sigma_samples, 
+                                                N_obs) {
+map2_dfr(mu_samples, sigma_samples, 
+         function(mu, sigma) {
+           tibble(
+             trialn = seq_len(N_obs),
+             rt_pred = rnorm(N_obs, mu, sigma)
+        )}, .id = "iter") %>%
+ mutate(iter = as.numeric(iter))}
+```
+
+We'll then change a few things, for example we include beta and c_trial_n (centered) and we also change the function of rt_pred to rlnorm (log-normal distribution). 
+
+```{r Function prior predictive distribution log-normal}
+lognormal_model_pred <- function(alpha_samples,
+                                 beta_samples,
+                                 sigma_samples,
+                                 N_obs) {
+# pmap extends map2 (and map) for a list of lists:
+pmap_dfr(list(alpha_samples, beta_samples, sigma_samples),
+         function(alpha, beta, sigma) {
+           tibble(
+             trialn = seq_len(N_obs),
+             # we center trial:
+             c_trial = trialn - mean(trialn),
+             # we change the likelihood:
+             # Notice rlnorm and the use of alpha and beta
+             rt_pred = rlnorm(N_obs, alpha + c_trial * beta, sigma))
+        }, .id = "iter") %>%
+# .id is always a string and needs to be converted to a number
+mutate(iter = as.numeric(iter))}
+```
+
+We then specify the values for the function above to arrive at a prior predictive distribution to check if the prior for beta makes sense. We center β around 0 so that both speed-up (<0) and slow-down (>0) are possible.
+
+```{r Prior selection 1}
+N_obs <- 361
+N <- 800
+alpha_samples <- rnorm(N, 6, 1.5)
+sigma_samples <- rtnorm(N, 0, 1, a = 0)
+beta_samples <- rnorm(N, 0, 1)
+prior_pred <- lognormal_model_pred(
+  alpha_samples = alpha_samples,
+  beta_samples = beta_samples,
+  sigma_samples = sigma_samples,
+  N_obs = N_obs
+)
+```
+
+Next, we'll check the median effect, i.e. the median difference between two adjacent trials.
+
+```{r Median effect first prior}
+(median_effect_1 <-
+prior_pred %>%
+group_by(iter) %>%
+mutate(diff = rt_pred - lag(rt_pred)) %>%
+summarize
+(
+median_rt = median(diff, na.rm = TRUE)
+))
+
+```
+
+Let's plot the median reaction time. It is centered around zero but the distribution of possible medians is widely spread and very small and large values are also possible. The slow-down or speed-up is probably on a smaller order of magnitude. 
+
+```{r Plot median effect first prior}
+first_prior<-median_effect_1 %>%
+ggplot(aes(median_rt)) +
+geom_histogram()
+```
+
+This is why we chose another prior for beta ~ Normal(0, 0.01) with a smaller standard deviation. 
+
+```{r Prior selection 2}
+N_obs <- 361
+N <- 800
+alpha_samples <- rnorm(N, 6, 1.5)
+sigma_samples <- rtnorm(N, 0, 1, a = 0)
+beta_samples <- rnorm(N, 0, 0.01)
+prior_pred <- lognormal_model_pred(
+  alpha_samples = alpha_samples,
+  beta_samples = beta_samples,
+  sigma_samples = sigma_samples,
+  N_obs = N_obs
+)
+```
+
+
+```{r Median effect second prior}
+(median_effect_2 <-
+prior_pred %>%
+group_by(iter) %>%
+mutate(diff = rt_pred - lag(rt_pred)) %>%
+summarize
+(
+median_rt = median(diff, na.rm = TRUE)
+))
+```
+
+Plotting the median reaction time with the new prior beta ~ Normal(0, 0.01)
+
+```{r Plot median effect second prior}
+second_prior<-median_effect_2 %>%
+ggplot(aes(median_rt)) +
+geom_histogram()
+
+plot_grid(first_prior, second_prior)
+```
+
+
+## Constructing the log-normal regression model
+
+We select the new prior for our model and can now fit the model with centered trial and family = lognormal.\
+We've added c_trial (in a similar way as c_load in the pupil size experiment, see Mirka's markdown "Bayesian simple linear regression" and the model reprinted below).\
+
+*In case the following error message pops up (but I guess you were clever enough not to update any packages :D):"Error in cleanup_makevar(old) : argument "RMU" is missing, with no default", you can try entering "file.rename("~/.R/Makevars.win", "~/.R/Makevars.win.bak" in the console, which fixed the issue for me.*
+
+```{r Log-normal regression model}
+df_noreading_data <- df_noreading_data %>%
+  mutate(c_trial = trial - mean(trial))
+
+fit_press_trial <- brm(rt ~ 1 + c_trial,
+                       data = df_noreading_data,
+                       family = lognormal(),
+                       prior = c(
+                         prior(normal(6, 1.5), class = Intercept),
+                         prior(normal(0, 1), class = sigma),
+                         prior(normal(0, .01), class = b, coef = c_trial)
+                       )
+)
+
+
+#Our pupil size model from last time for comparison
+
+#fit_pupil <- brm(p_size ~ 1 + c_load,
+                 #data = df_pupil,
+                 #family = gaussian(),
+                 #prior = c(
+                   #prior(normal(1000, 5000), class = Intercept),
+                   #prior(normal(0, 1000), class = sigma),
+                   #prior(normal(0, 100), class = b, coef = c_load)
+                 #)
+#)
+
+```
+
+
+### Checking the Posterior distribution
+
+We can then print the posterior summary and select the columns we'd like to inspect (here α (b_Intercept), β (b_c_trial) and σ).\
+b_Intercept = time it takes to press the space bar in the middle of the experiment in log scale\
+b_c_trial = slope, parameter corresponding to change in reaction times from one trial to the next in log scale
+
+```{r Summury of posterior distribution}
+posterior_summary(fit_press_trial)[, c("Estimate", "Q2.5", "Q97.5")]
+```
+
+
+### Plotting the model
+
+We can now plot our model.
+
+```{r Plot log-normal regression model}
+plot(fit_press_trial)
+```
+
+
+## Reporting our findings
+
+We could then report our findings in the following way:\
+^β (hat)= 0.00052 (mean estimate of beta) = mean of the posterior\
+95% credible interval [0.0004,0.00065] (from columns "Q2.5" and "Q97.5" in row for b_c_trial)\
+
+But reporting our results in log scale is not very intuitive. I was thinking about simply exponentiating β, but that is apparently not a good idea because the log scale is not linear and beta (difference between two button presses) depends on where we are in the experiment: "The effect of trial number is multiplicative and grows or decays exponentially with the trial number" (section 4.2.1 in textbook). So the relationship between c_trial_n and β is exponential, not linear.\
+
+![Figure 4: Exponential decay vs. growth](Fig.4.10.jpg)
+
+This means that we will have to calculate the difference for different points in time of the experiment. We will start by calculating the difference between two button presses between the trial at the middle of the experiment (our intercept) and one before that (intercept - 1). We can find a slowdown of 0.087 ms.
+
+```{r Calculating difference at middle of experiment}
+alpha_samples <- as_draws_df(fit_press_trial)$b_Intercept
+beta_samples <- as_draws_df(fit_press_trial)$b_c_trial
+effect_middle_ms <- exp(alpha_samples) - exp(alpha_samples - 1 * beta_samples)
+## ms effect in the middle of the experiment (mean trial vs. mean trial - 1 )
+c(mean = mean(effect_middle_ms), quantile(effect_middle_ms, c(.025, .975)))
+```
+
+We then continue by calculating the difference between the second and the first trial (by using min and min + 1).
+
+```{r Calculating difference at beginning of experiment}
+first_trial <- min(df_noreading_data$c_trial)
+second_trial <- min(df_noreading_data$c_trial) + 1
+effect_beginning_ms <- exp(alpha_samples + second_trial * beta_samples) - exp(alpha_samples + first_trial * beta_samples)
+## ms effect from first to second trial:
+c(mean = mean(effect_beginning_ms), quantile(effect_beginning_ms, c(.025, .975)))
+```
+
+**Answer to research question: Evidence for slowdown in both cases (fatigue effect) (but effect is small, ~ 9 ms after 100 (180 trials?) trials).**
+
+In Bayesian Stats, we would need a Bayes factor analysis next to be able to talk about evidence.
+
+![Figure 5: Bayes' Research cycle](Bayes_cycle.jpg) 
+
+(Source: van de Schoot et al. (2021:3), Article: Bayesian Statistics and Modeling. *Nature Reviews Methods Primers* 1(1): 1-26. doi: 10.1038/s43586-020-00003-0.)
+
+
+## Exercises (from Nico's last slide)
+
+1) Estimate the slow-down in milliseconds between the last two times the subject pressed the space bar in the experiment.
+
+```{r Calculating difference at end of experiment}
+
+last_trial <- max(df_noreading_data$c_trial)
+second_to_last_trial <- max(df_noreading_data$c_trial) - 1
+effect_end_ms <- exp(alpha_samples + last_trial * beta_samples) - exp(alpha_samples + second_to_last_trial * beta_samples)
+c(mean = mean(effect_end_ms), quantile(effect_end_ms, c(.025, .975)))
+```
+
+
+2) How would you change your model (keeping the log-normal likelihood) so that it includes centered log-transformed trial numbers or square-root-transformed trial numbers (instead of centered trial numbers)? Does the effect in milliseconds change?
+
+```{r Transforming trial number centered log-transformed}
+
+#with centered-log-transformed trial numbers
+
+df_noreading_data <- df_noreading_data %>%
+  mutate(log_trial = log(trial)) %>% 
+  mutate(c_log_trial = log_trial-mean(log_trial))
+         
+fit_press_trial_2 <- brm(rt ~ 1 + c_log_trial,
+                       data = df_noreading_data,
+                       family = lognormal(),
+                       prior = c(
+                         prior(normal(6, 1.5), class = Intercept),
+                         prior(normal(0, 1), class = sigma),
+                         prior(normal(0, .01), class = b, coef = c_log_trial)
+                       )
+)
+
+
+posterior_summary(fit_press_trial_2)[, c("Estimate", "Q2.5", "Q97.5")]
+
+alpha_samples <- as_draws_df(fit_press_trial_2)$b_Intercept
+beta_samples <- as_draws_df(fit_press_trial_2)$b_c_log_trial
+effect_middle_ms <- exp(alpha_samples) - exp(alpha_samples - 1 * beta_samples)
+## ms effect in the middle of the experiment (mean trial vs. mean trial - 1 )
+c(mean = mean(effect_middle_ms), quantile(effect_middle_ms, c(.025, .975)))
+
+
+first_trial <- min(df_noreading_data$c_log_trial)
+second_trial <- min(df_noreading_data$c_log_trial) + 1
+effect_beginning_ms <- exp(alpha_samples + second_trial * beta_samples) - exp(alpha_samples + first_trial * beta_samples)
+## ms effect from first to second trial:
+c(mean = mean(effect_beginning_ms), quantile(effect_beginning_ms, c(.025, .975)))
+
+```
+
+
+```{r Transforming trial number square-root transformed}
+#with square-root-transformed trial numbers
+
+df_noreading_data <- df_noreading_data %>%
+  mutate(sqrt_trial = sqrt(trial))
+
+fit_press_trial_3 <- brm(rt ~ 1 + sqrt_trial,
+                       data = df_noreading_data,
+                       family = lognormal(),
+                       prior = c(
+                         prior(normal(6, 1.5), class = Intercept),
+                         prior(normal(0, 1), class = sigma),
+                         prior(normal(0, .01), class = b, coef = sqrt_trial)
+                       )
+)
+
+posterior_summary(fit_press_trial_3)[, c("Estimate", "Q2.5", "Q97.5")]
+
+
+alpha_samples <- as_draws_df(fit_press_trial_3)$b_Intercept
+beta_samples <- as_draws_df(fit_press_trial_3)$b_sqrt_trial
+effect_middle_ms <- exp(alpha_samples) - exp(alpha_samples - 1 * beta_samples)
+c(mean = mean(effect_middle_ms), quantile(effect_middle_ms, c(.025, .975)))
+
+
+first_trial <- min(df_noreading_data$sqrt_trial)
+second_trial <- min(df_noreading_data$sqrt_trial) + 1
+effect_beginning_ms <- exp(alpha_samples + second_trial * beta_samples) - exp(alpha_samples + first_trial * beta_samples)
+c(mean = mean(effect_beginning_ms), quantile(effect_beginning_ms, c(.025, .975)))
+
+```
+
+Kyla's plots showing densities for different distributions (untransformed, centered, log centred, square root):
+
+```{r}
+p1 <- ggplot(data = df_noreading_data) +
+  geom_density(aes(trial))
+
+p2 <- ggplot(data = df_noreading_data) +
+  geom_density(aes(c_trial))
+
+p3 <- ggplot(data = df_noreading_data) +
+  geom_density(aes(c_log_trial))
+
+p4 <- ggplot(data = df_noreading_data) +
+  geom_density(aes(sqrt_trial))
+
+plot_grid(p1, p2, p3, p4)
+```
+
+
+
+

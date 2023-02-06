@@ -1,0 +1,388 @@
+---
+title: "01 Foundations"
+author: "Beke"
+output: html_document
+date: July 29th, 2021 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**aim of lecture "01 Foundation": understand what probability distribution is and what likelihood function is**
+
+# Conditional probability
+
+Conditional probability
+P(A|B)= P(A,B)/P(B) 
+(streets are wet given that it has rained, "," = joint probability)
+
+Conditional probability:
+https://www.youtube.com/watch?v=ibINrxJLvlM&list=PLQSlBIK2SQS7nPAoAPDrxP7MBFcjw1J0A&index=1 (06:13, Kyla's link)
+
+
+# Bayes' rule can be derived from conditional probability rule
+
+multiplied by P(B)--> P(A,B) = P(A|B)P(B)
+P(B,A)=P(A,B)
+-->P(B,A) = P(B|A)P(A)=P(A|B)P(B)=P(A,B)
+-->P(B|A)=P(A|B)P(B)/P(A) or P(A|B)=P(B|A)P(A)/P(B)
+
+Bayes' Theorem: The simplest case
+https://www.youtube.com/watch?v=XQoLVl31ZfQ&list=PLQSlBIK2SQS7nPAoAPDrxP7MBFcjw1J0A&index=2 (05:30, Kyla's link)
+
+Bayes' Theorem: Example: A disjoint union
+https://www.youtube.com/watch?v=k6Dw0on6NtM&list=PLQSlBIK2SQS7nPAoAPDrxP7MBFcjw1J0A&index=3 (08:32, Kyla's link)
+
+--> It's all about probabilities
+--> Probability distributions (of outcomes) of random variables and estimating their parameters
+
+# Random variable theory (recap)
+
+random variable = event is mapped to real numbers (e.g. tossing a coin = head or tails --> 1 vs. 0)
+
+each random variable has probability distribution which can be calculated by the following functions:
+
+**PMF**: **discrete variables** have associated with them the **probability mass function (pmf)** (How likely is it that (exactly) 3 tosses were heads in 3 trials?) (e.g. **in R: d-family**, e.g. dbinom)
+
+**PDF**: **continuous variables** have associated with them the **probability density function (pdf)** (How likely is it that the value is 0.5?) (**in R: d-family**, e.g. dnorm, dunif)
+
+**CDF**: **for both discrete (PMF) and continuous variable (PDF)**: gives answer to the question (How likely is it that 2 or fewer cases were heads in 3 trials or How likely is that a value of 0.5 or lower is obtained?), discrete case = sum up all probabilities, continuous case, can't sum up discrete values (continuity), integration comes in here (area under the curve)(**in R: p-family**, e.g. pbinom, punif)
+
+![Figure 1: Table R functions](Table_R_functions.JPG)
+
+
+# Distributions
+
+## Installing tinydensR
+
+```{r}
+
+if ( !('devtools' %in%
+installed.packages()) )
+install.packages("devtools")
+devtools::install_github("bearloga/tinydensR")
+```
+
+For visualising different probability distributions and parameters associated with them
+
+Discrete
+* binomial distribution with n = number of independent experiments and p = probability of success 
+* Poisson distribution with λ = expected number of occurrences (or 01 Foundations script (slide 14) : "average number of events in the time interval [0, 1]")
+
+Press "Done" to stop first window (discrete) in Viewer
+
+Continuous
+* normal distribution, define mu = mean (x of highest value of curve), and sigma = variance ("peakedness")
+* beta distribution
+* student-t distribution (distribution assumed for t-test)
+* gamma (for Exercises later)
+* log-normal (for Exercises later)
+* and then other distributions you like, e.g. exponential, and parameters associated with them
+
+```{r}
+library(tinydensR)
+
+??tindydensR
+
+univariate_discrete_addin()
+
+univariate_continuous_addin()
+
+```
+
+
+## Discrete
+
+### Binomial distribution
+
+x ~ Bin(n, p) (random variable has associated with it a binomial distribution)
+
+n trials (= size), probability p for each trial
+
+![Figure 2: Three tosses](three_tosses_coin.JPG)
+
+probability p(x) (of observing case you are asking for) is determined by probability mass function for that random variable, e.g. how likely to obtain 3 heads in 3 tosses -> 3, 3, 0.5 (PMF)
+
+probability of p(x equal or fewer than x) is determined by cumulative density function, e.g. 2 or fewer heads in 3 tosses -> 2, 3, 0.5 (CDF)
+
+```{r}
+#dbinom(x, size, prob, log = FALSE) #PMF
+
+#pbinom(q, size, prob, lower.tail = TRUE, log.p = FALSE) #CDF
+
+
+#qbinom(p, size, prob, lower.tail = TRUE, log.p = FALSE) #inverse CDF (not relevant now)
+#rbinom(n, size, prob) #pseudo-generation of samples (not relevant now)
+```
+
+### Poisson distribution (not very relevant)
+discrete
+'rare events'
+PMF
+CDF
+
+## Continuous
+
+### Normal distribution
+PDF because continuous and CDF
+
+```{r}
+#dnorm(x, mean, sd) #PDF 
+
+#pnorm(q, mean, sd, lower.tail = TRUE,log.p = FALSE) #CDF
+
+
+#qnorm(p, mu, sd, lower.tail = TRUE,log.p = FALSE) #inverse CDF 
+#rnorm(n, mean = 0, sd = 1) #generating normally distributed data
+
+```
+
+#### Standard or unit normal random variable (often used in Bayesian Stats)
+normal distribution that has mean = 0 and sd = 1
+
+```{r}
+#dnorm(x, mean = 0, sd = 1, log = FALSE) #PDF
+
+#pnorm(q, mean = 0, sd = 1, lower.tail = TRUE,log.p = FALSE) #CDF
+
+
+#qnorm(p, mean = 0, sd = 1, lower.tail = TRUE,log.p = FALSE) #inverse CDF
+#rnorm(n, mean = 0, sd = 1) #generating normally distributed data
+```
+
+
+### Beta distribution
+generalisation of continuous uniform distribution
+PDF
+CDF
+
+#### Uniform distribution
+continuous
+PDF
+CDF
+
+![Figure 3: Uniform distribution](uniform.jpg)
+
+```{r}
+#dunif(x, min = 0, max = 1, log = FALSE) #PDF
+
+#punif(q, min = 0, max = 1, lower.tail = TRUE,log.p = FALSE) #CDF
+
+
+#qunif(p, min = 0, max = 1, lower.tail = TRUE,log.p = FALSE) #inverse CDF
+#runif(n, min = 0, max = 1) #generating data with underlying uniform distribution
+
+```
+
+### t-distribution
+(discussed with regard to null hypothesis significance testing, t-test)
+PDF
+CDF
+
+# Jointly distributed random variables: Visualising bivariate distributions (3D visualisations)
+situation where we have two random variables
+X1 and X2
+
+can be uncorrelated (smooth cone)
+can be correlated
+* positively -> straight line from front to back in direction of 2D plot
+* negatively -> straight line from back to front like in 2D plot
+
+## Generate bivariate data in R
+
+```{r}
+library(MASS)
+#variance covariance matrix
+#2x2 matrix on diagonals= variance of two random variables (here=1), off-diagonals= covariance of the two random variables (how the two variables co-vary (rho*sigma1*sigma2, rho = correlation between two random variables)), mu = two means of each random variable, mvrnorm = generating multivariate random normally distributed data, 100 data points, saved in matrix, visualisation, then change, positively correlated data, switch covariance to -0.9 (negatively correlated) and plot again, uncorrelated off-diagonals to 0 (no pattern visible)
+
+Sigma<-matrix(c(1,0, 0, 1), byrow=FALSE, ncol=2)
+Sigma
+u<-mvrnorm(100, mu=c(0,0), Sigma=Sigma)
+u
+
+plot(u[,1], u[,2])
+
+#uncorrelated data is the same as 
+u1<-rnorm(100)
+u2<-rnorm(100)
+plot(u1, u2)
+```
+3 variables (correlation between x1 and x2, x2 and x3 and x1 and x3, 3x3 variance covariance matrix)
+
+# Maximum Likelihood estimation
+likelihood function
+maximum likelihood estimation
+
+discrete case
+joint probability (multiply probabilities), PMF multiply out probabilities -> we get another function that depends on observed outcomes and probability parameter theta in binomial case (variable inside it), f depends on theta to draw that function = likelihood function, different values of theta --> function will look different 
+
+continuous case
+f = PDF, same thing multiplying each density, theta in normal distribution would be mu and sigma (= two parameters)
+
+variable values of theta parameters
+
+given same data, method of maximum likelihood finds the value of the parameter that gives you the highest point in that function with likelihood function
+
+![Figure 4: Maximum Likelihood Estimation](MLE.jpg)
+
+StatQuest: Maximum Likelihood, clearly explained!!!: https://www.youtube.com/watch?v=XepXtl9YKwc&list=PLQSlBIK2SQS7nPAoAPDrxP7MBFcjw1J0A&index=6 (06:11 even 12 seconds shorter when you skip the weird song at the beginning :D, Kyla's link)
+
+```{r}
+#generating 10 random data points
+
+test<-rnorm(10)
+test
+
+#maximum likelihood estimate of mu
+mean(test) 
+
+#maximum likelihood estimate of variance (sigma²)
+var(test) 
+
+```
+
+# Exercises
+
+1. We plan to toss a fair coin three times. 
+What is the theoretical probability of obtaining
+
+0 heads
+1 heads
+2 heads
+3 heads
+
+![Figure 5: Three tosses](three_tosses_coin.JPG)
+
+```{r}
+dbinom(0, 3, 0.5, log = FALSE)
+dbinom(1, 3, 0.5, log = FALSE)
+dbinom(2, 3, 0.5, log = FALSE)
+dbinom(3, 3, 0.5, log = FALSE)
+
+#all probabilities add up to 1
+```
+
+
+What is the theoretical probability of obtaining 
+
+0 or 1 heads
+0,1 or 2 heads
+0-3 heads
+
+```{r}
+pbinom(1, 3, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(2, 3, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(3, 3, 0.5, lower.tail=TRUE, log.p=FALSE)
+
+#last probability is 1 =100% possibility of obtaining either 0,1,2 or 3 (all possibilities)
+```
+
+2. Toss a coin 10 times and count the number of heads and put a tick mark in the relevant column below.
+If you got four heads, for example, put a tick mark under 4.
+Then, compute, using pbinom, the theoretical probability of getting 0, 1, 2,. . . , 10 heads, assuming that the coin is fair. Hint: given sample size n, your assumed probability of a heads prob, and the number of heads you got x, the pbinom function delivers P(X ≤ x), the probability of getting x heads or less.
+In other words, pbinom is the cumulative distribution function.
+Note that you have to compute P(X = x)!
+
+![Figure 6: Ten tosses](ten_tosses_coin.JPG)
+
+```{r}
+pbinom(1, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(2, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(3, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(4, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(5, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(6, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(7, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(8, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(9, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+pbinom(10, 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+
+#or more elegantly
+pbinom(c(1:10), 10, 0.5, lower.tail=TRUE, log.p=FALSE)
+
+```
+3. Given X ∼ f(·), where f(·) is (a) Unif(0, 10), (b) N(µ = 100, σ2 = 20), (c) Binom(p = .6, n = 20).
+Find the probability of P(X < 3), P(X > 11), P(X = 6) for each distribution.
+Fill in the table below
+
+```{r}
+punif(2, min = 0, max = 10, lower.tail = TRUE,log.p = FALSE)
+pnorm(2, 100, 20, lower.tail=TRUE, log.p=FALSE)
+pbinom(2, 20, 0.6, lower.tail=TRUE, log.p=FALSE)
+
+#https://stackoverflow.com/questions/55441452/how-to-calculate-probability-that-normal-distribution-is-greater-or-equal-to-som
+
+punif<-punif(11, min = 0, max = 10, lower.tail = TRUE,log.p = FALSE)
+1-punif
+pnorm<-pnorm(11, 100, 20, lower.tail=TRUE, log.p=FALSE)
+1-pnorm
+pbinom<-pbinom(11, 20, 0.6, lower.tail=TRUE, log.p=FALSE)
+1-pbinom
+
+#alternatively
+punif<-punif(11, min = 0, max = 10, lower.tail = FALSE,log.p = FALSE)
+punif
+pnorm<-pnorm(11, 100, 20, lower.tail=FALSE, log.p=FALSE)
+pnorm
+pbinom<-pbinom(11, 20, 0.6, lower.tail=FALSE, log.p=FALSE)
+pbinom
+
+dunif(6, min = 0, max = 10, log = FALSE)
+dnorm(6, 100, 20, log = FALSE) 
+dbinom(6, 20, 0.6, log = FALSE)
+```
+
+4. A random variable X comes from a LogNormal distribution with mean 6 log milliseconds and standard deviation 2 log ms. Plot this distribution. What is the probability Prob(X < 6) and Prob(X > 6)? What is Prob(2 < X < 8).
+
+```{r}
+univariate_continuous_addin()
+
+rlnorm(100, meanlog=6, sdlog=2)
+dlnorm(1, 6, 2)
+plot(dlnorm)
+
+curve(dlnorm(x, meanlog=6, sdlog=2), from=0, to=10)
+
+#https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Lognormal.html
+
+plnorm<-plnorm(6, meanlog = 6, sdlog = 2, lower.tail = TRUE, log.p = FALSE)
+
+1-plnorm
+
+plnorm_2<-plnorm(2, meanlog = 6, sdlog = 2, lower.tail = TRUE, log.p = FALSE)
+plnorm_2
+
+plnorm_8<-plnorm(8, meanlog = 6, sdlog = 2, lower.tail = TRUE, log.p = FALSE)
+plnorm_8
+
+plnorm_8-plnorm_2
+
+#or alternatively
+
+plnorm(5, 6, 2) #probability of < 6
+plnorm(6, 6, 2, lower.tail = FALSE) #probability of > 6
+
+plnorm(8, 6, 2) - plnorm(2, 6, 2) #Prob(2 < X < 8)
+```
+
+5. A random variable X comes from a Gamma distribution with mean 100 and standard deviation 10. Find the shape and rate parameters of the Gamma distribution.
+
+```{r}
+univariate_continuous_addin()
+
+#https://math.stackexchange.com/questions/1810257/gamma-functions-mean-and-standard-deviation-through-shape-and-rate
+
+shape<-(100/10)^2
+shape
+
+
+rate<-100/10^2
+rate
+
+#mu=shape/rate
+
+mu<-100/1
+mu
+```

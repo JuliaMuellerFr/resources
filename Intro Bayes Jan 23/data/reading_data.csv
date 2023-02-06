@@ -1,0 +1,837 @@
+participant,item,condition,rt
+F01,1,no training,305
+F01,2,no training,320
+F01,3,no training,304
+F01,4,no training,327
+F01,5,no training,341
+F01,6,no training,306
+F01,7,no training,327
+F01,8,no training,289
+F01,9,no training,265
+F01,10,no training,277
+F01,11,no training,306
+F01,12,no training,313
+F01,13,no training,285
+F01,14,no training,279
+F01,15,no training,276
+F01,16,no training,359
+F01,17,no training,326
+F01,18,no training,399
+F01,19,no training,326
+F01,20,no training,305
+F01,21,no training,268
+F01,22,no training,372
+F01,23,no training,336
+F01,24,no training,314
+F01,25,no training,323
+F01,26,no training,297
+F01,27,no training,304
+F01,28,no training,300
+F01,29,no training,319
+F01,30,no training,273
+F01,31,no training,274
+F01,32,no training,311
+F01,33,no training,285
+F01,34,no training,332
+F01,35,no training,283
+F01,36,no training,246
+F01,37,no training,293
+F01,38,no training,290
+F01,39,no training,305
+F01,40,no training,325
+F01,41,no training,329
+F01,42,no training,326
+F02,1,no training,286
+F02,2,no training,297
+F02,3,no training,349
+F02,4,no training,267
+F02,5,no training,265
+F02,6,no training,295
+F02,7,no training,315
+F02,8,no training,275
+F02,9,no training,264
+F02,10,no training,265
+F02,11,no training,333
+F02,12,no training,307
+F02,13,no training,292
+F02,14,no training,263
+F02,15,no training,263
+F02,16,no training,303
+F02,17,no training,350
+F02,18,no training,353
+F02,19,no training,257
+F02,20,no training,267
+F02,21,no training,247
+F02,22,no training,265
+F02,23,no training,267
+F02,24,no training,290
+F02,25,no training,322
+F02,26,no training,296
+F02,27,no training,332
+F02,28,no training,283
+F02,29,no training,333
+F02,30,no training,291
+F02,31,no training,254
+F02,32,no training,291
+F02,33,no training,285
+F02,34,no training,257
+F02,35,no training,316
+F02,36,no training,332
+F02,37,no training,308
+F02,38,no training,343
+F02,39,no training,289
+F02,40,no training,294
+F02,41,no training,263
+F02,42,no training,263
+F03,1,no training,267
+F03,2,no training,267
+F03,3,no training,290
+F03,4,no training,237
+F03,5,no training,274
+F03,6,no training,275
+F03,7,no training,311
+F03,8,no training,278
+F03,9,no training,272
+F03,10,no training,259
+F03,11,no training,258
+F03,12,no training,273
+F03,13,no training,284
+F03,14,no training,242
+F03,15,no training,245
+F03,16,no training,290
+F03,17,no training,306
+F03,18,no training,307
+F03,19,no training,309
+F03,20,no training,283
+F03,21,no training,284
+F03,22,no training,291
+F03,23,no training,294
+F03,24,no training,308
+F03,25,no training,280
+F03,26,no training,268
+F03,27,no training,265
+F03,28,no training,292
+F03,29,no training,293
+F03,30,no training,290
+F03,31,no training,245
+F03,32,no training,290
+F03,33,no training,275
+F03,34,no training,277
+F03,35,no training,284
+F03,36,no training,275
+F03,37,no training,292
+F03,38,no training,294
+F03,39,no training,302
+F03,40,no training,310
+F03,41,no training,318
+F03,42,no training,316
+F04,1,no training,279
+F04,2,no training,261
+F04,3,no training,287
+F04,4,no training,266
+F04,5,no training,288
+F04,6,no training,280
+F04,7,no training,336
+F04,8,no training,283
+F04,9,no training,258
+F04,10,no training,249
+F04,11,no training,282
+F04,12,no training,264
+F04,13,no training,317
+F04,14,no training,275
+F04,15,no training,280
+F04,16,no training,309
+F04,17,no training,327
+F04,18,no training,316
+F04,19,no training,310
+F04,20,no training,300
+F04,21,no training,277
+F04,22,no training,279
+F04,23,no training,312
+F04,24,no training,296
+F04,25,no training,302
+F04,26,no training,285
+F04,27,no training,295
+F04,28,no training,278
+F04,29,no training,288
+F04,30,no training,248
+F04,31,no training,253
+F04,32,no training,290
+F04,33,no training,275
+F04,34,no training,280
+F04,35,no training,283
+F04,36,no training,278
+F04,37,no training,320
+F04,38,no training,304
+F04,39,no training,298
+F04,40,no training,285
+F04,41,no training,303
+F04,42,no training,312
+F05,1,no training,284
+F05,2,no training,292
+F05,3,no training,295
+F05,4,no training,253
+F05,5,no training,294
+F05,6,no training,298
+F05,7,no training,330
+F05,8,no training,268
+F05,9,no training,254
+F05,10,no training,274
+F05,11,no training,320
+F05,12,no training,293
+F05,13,no training,296
+F05,14,no training,279
+F05,15,no training,268
+F05,16,no training,307
+F05,17,no training,344
+F05,18,no training,315
+F05,19,no training,314
+F05,20,no training,320
+F05,21,no training,260
+F05,22,no training,316
+F05,23,no training,324
+F05,24,no training,330
+F05,25,no training,298
+F05,26,no training,271
+F05,27,no training,317
+F05,28,no training,300
+F05,29,no training,303
+F05,30,no training,302
+F05,31,no training,250
+F05,32,no training,253
+F05,33,no training,278
+F05,34,no training,317
+F05,35,no training,307
+F05,36,no training,292
+F05,37,no training,281
+F05,38,no training,287
+F05,39,no training,275
+F05,40,no training,287
+F05,41,no training,295
+F05,42,no training,331
+F06,1,no training,269
+F06,2,no training,255
+F06,3,no training,281
+F06,4,no training,235
+F06,5,no training,259
+F06,6,no training,264
+F06,7,no training,302
+F06,8,no training,251
+F06,9,no training,250
+F06,10,no training,237
+F06,11,no training,255
+F06,12,no training,254
+F06,13,no training,280
+F06,14,no training,238
+F06,15,no training,246
+F06,16,no training,296
+F06,17,no training,303
+F06,18,no training,309
+F06,19,no training,306
+F06,20,no training,302
+F06,21,no training,270
+F06,22,no training,289
+F06,23,no training,318
+F06,24,no training,288
+F06,25,no training,274
+F06,26,no training,254
+F06,27,no training,266
+F06,28,no training,263
+F06,29,no training,276
+F06,30,no training,274
+F06,31,no training,245
+F06,32,no training,278
+F06,33,no training,262
+F06,34,no training,280
+F06,35,no training,278
+F06,36,no training,269
+F06,37,no training,291
+F06,38,no training,301
+F06,39,no training,293
+F06,40,no training,304
+F06,41,no training,282
+F06,42,no training,342
+F07,1,no training,274
+F07,2,no training,270
+F07,3,no training,309
+F07,4,no training,246
+F07,5,no training,258
+F07,6,no training,276
+F07,7,no training,282
+F07,8,no training,257
+F07,9,no training,259
+F07,10,no training,270
+F07,11,no training,323
+F07,12,no training,257
+F07,13,no training,256
+F07,14,no training,242
+F07,15,no training,272
+F07,16,no training,286
+F07,17,no training,299
+F07,18,no training,300
+F07,19,no training,315
+F07,20,no training,309
+F07,21,no training,295
+F07,22,no training,325
+F07,23,no training,339
+F07,24,no training,334
+F07,25,no training,257
+F07,26,no training,265
+F07,27,no training,292
+F07,28,no training,279
+F07,29,no training,302
+F07,30,no training,259
+F07,31,no training,262
+F07,32,no training,269
+F07,33,no training,259
+F07,34,no training,283
+F07,35,no training,279
+F07,36,no training,257
+F07,37,no training,277
+F07,38,no training,274
+F07,39,no training,294
+F07,40,no training,317
+F07,41,no training,284
+F07,42,no training,326
+F08,1,no training,247
+F08,2,no training,253
+F08,3,no training,251
+F08,4,no training,250
+F08,5,no training,260
+F08,6,no training,237
+F08,7,no training,282
+F08,8,no training,244
+F08,9,no training,236
+F08,10,no training,245
+F08,11,no training,265
+F08,12,no training,242
+F08,13,no training,264
+F08,14,no training,243
+F08,15,no training,239
+F08,16,no training,299
+F08,17,no training,296
+F08,18,no training,271
+F08,19,no training,271
+F08,20,no training,287
+F08,21,no training,237
+F08,22,no training,262
+F08,23,no training,283
+F08,24,no training,296
+F08,25,no training,241
+F08,26,no training,277
+F08,27,no training,289
+F08,28,no training,249
+F08,29,no training,286
+F08,30,no training,253
+F08,31,no training,267
+F08,32,no training,253
+F08,33,no training,250
+F08,34,no training,277
+F08,35,no training,272
+F08,36,no training,269
+F08,37,no training,271
+F08,38,no training,266
+F08,39,no training,291
+F08,40,no training,272
+F08,41,no training,281
+F08,42,no training,284
+F09,1,no training,268
+F09,2,no training,273
+F09,3,no training,302
+F09,4,no training,246
+F09,5,no training,256
+F09,6,no training,261
+F09,7,no training,331
+F09,8,no training,282
+F09,9,no training,235
+F09,10,no training,248
+F09,11,no training,272
+F09,12,no training,238
+F09,13,no training,284
+F09,14,no training,270
+F09,15,no training,238
+F09,16,no training,318
+F09,17,no training,298
+F09,18,no training,413
+F09,19,no training,332
+F09,20,no training,324
+F09,21,no training,269
+F09,22,no training,285
+F09,23,no training,352
+F09,24,no training,312
+F09,25,no training,263
+F09,26,no training,243
+F09,27,no training,295
+F09,28,no training,253
+F09,29,no training,271
+F09,30,no training,247
+F09,31,no training,258
+F09,32,no training,282
+F09,33,no training,242
+F09,34,no training,268
+F09,35,no training,257
+F09,36,no training,245
+F09,37,no training,272
+F09,39,no training,284
+F09,40,no training,288
+F09,41,no training,294
+F09,42,no training,310
+F10,1,no training,265
+F10,2,no training,275
+F10,3,no training,281
+F10,4,no training,261
+F10,5,no training,287
+F10,6,no training,270
+F10,7,no training,296
+F10,8,no training,267
+F10,9,no training,267
+F10,10,no training,283
+F10,11,no training,320
+F10,12,no training,273
+F10,13,no training,289
+F10,14,no training,260
+F10,15,no training,263
+F10,16,no training,294
+F10,17,no training,313
+F10,18,no training,287
+F10,19,no training,312
+F10,20,no training,304
+F10,21,no training,284
+F10,22,no training,290
+F10,23,no training,313
+F10,24,no training,295
+F10,25,no training,281
+F10,26,no training,279
+F10,27,no training,301
+F10,28,no training,297
+F10,29,no training,269
+F10,30,no training,296
+F10,31,no training,265
+F10,32,no training,274
+F10,33,no training,247
+F10,34,no training,292
+F10,35,no training,300
+F10,36,no training,297
+F10,37,no training,297
+F10,38,no training,300
+F10,39,no training,261
+F10,40,no training,298
+F10,41,no training,304
+F10,42,no training,322
+M11,1,training,277
+M11,2,training,319
+M11,3,training,251
+M11,4,training,269
+M11,5,training,282
+M11,6,training,260
+M11,7,training,303
+M11,8,training,232
+M11,9,training,253
+M11,10,training,239
+M11,11,training,271
+M11,12,training,259
+M11,13,training,257
+M11,14,training,252
+M11,15,training,231
+M11,16,training,297
+M11,17,training,351
+M11,18,training,315
+M11,19,training,291
+M11,20,training,296
+M11,21,training,262
+M11,22,training,312
+M11,23,training,285
+M11,24,training,272
+M11,25,training,267
+M11,26,training,251
+M11,27,training,268
+M11,28,training,282
+M11,29,training,257
+M11,30,training,297
+M11,31,training,234
+M11,32,training,278
+M11,33,training,257
+M11,34,training,257
+M11,35,training,289
+M11,36,training,321
+M11,37,training,255
+M11,38,training,285
+M11,39,training,299
+M11,40,training,300
+M11,41,training,303
+M11,42,training,341
+M12,1,training,254
+M12,2,training,286
+M12,3,training,276
+M12,4,training,268
+M12,5,training,287
+M12,6,training,287
+M12,7,training,306
+M12,8,training,262
+M12,9,training,259
+M12,10,training,252
+M12,11,training,303
+M12,12,training,258
+M12,13,training,280
+M12,14,training,249
+M12,15,training,268
+M12,16,training,296
+M12,18,training,316
+M12,19,training,306
+M12,20,training,345
+M12,21,training,268
+M12,22,training,299
+M12,23,training,291
+M12,24,training,283
+M12,25,training,265
+M12,26,training,234
+M12,27,training,244
+M12,28,training,271
+M12,29,training,291
+M12,30,training,257
+M12,31,training,239
+M12,32,training,267
+M12,33,training,265
+M12,34,training,268
+M12,35,training,286
+M12,36,training,275
+M12,37,training,297
+M12,38,training,247
+M12,39,training,281
+M12,40,training,302
+M12,41,training,292
+M12,42,training,302
+M13,1,training,253
+M13,2,training,250
+M13,3,training,255
+M13,4,training,228
+M13,5,training,245
+M13,6,training,263
+M13,7,training,284
+M13,8,training,236
+M13,9,training,231
+M13,10,training,237
+M13,11,training,272
+M13,12,training,243
+M13,13,training,254
+M13,14,training,230
+M13,15,training,235
+M13,16,training,262
+M13,17,training,271
+M13,18,training,260
+M13,19,training,306
+M13,20,training,278
+M13,21,training,258
+M13,22,training,249
+M13,23,training,305
+M13,24,training,270
+M13,25,training,250
+M13,26,training,246
+M13,27,training,254
+M13,28,training,259
+M13,29,training,249
+M13,30,training,252
+M13,31,training,232
+M13,32,training,244
+M13,33,training,243
+M13,34,training,269
+M13,35,training,261
+M13,36,training,256
+M13,37,training,270
+M13,38,training,261
+M13,39,training,246
+M13,40,training,260
+M13,41,training,275
+M13,42,training,306
+M14,1,training,249
+M14,2,training,255
+M14,3,training,251
+M14,4,training,251
+M14,5,training,255
+M14,6,training,255
+M14,7,training,264
+M14,8,training,246
+M14,9,training,255
+M14,10,training,262
+M14,11,training,245
+M14,12,training,281
+M14,13,training,261
+M14,14,training,240
+M14,15,training,244
+M14,16,training,290
+M14,17,training,269
+M14,18,training,322
+M14,19,training,264
+M14,20,training,272
+M14,21,training,268
+M14,22,training,276
+M14,23,training,274
+M14,24,training,290
+M14,25,training,246
+M14,26,training,255
+M14,27,training,245
+M14,28,training,259
+M14,29,training,286
+M14,30,training,297
+M14,31,training,229
+M14,32,training,254
+M14,33,training,252
+M14,34,training,246
+M14,35,training,265
+M14,36,training,239
+M14,37,training,253
+M14,38,training,261
+M14,39,training,252
+M14,40,training,254
+M14,41,training,286
+M14,42,training,273
+M15,1,training,274
+M15,2,training,273
+M15,3,training,276
+M15,4,training,264
+M15,6,training,273
+M15,7,training,310
+M15,8,training,265
+M15,9,training,248
+M15,11,training,285
+M15,12,training,274
+M15,13,training,256
+M15,14,training,238
+M15,15,training,247
+M15,16,training,279
+M15,17,training,278
+M15,18,training,311
+M15,19,training,305
+M15,20,training,324
+M15,21,training,305
+M15,22,training,279
+M15,23,training,318
+M15,24,training,309
+M15,25,training,274
+M15,26,training,242
+M15,27,training,268
+M15,28,training,270
+M15,29,training,265
+M15,30,training,282
+M15,31,training,243
+M15,32,training,275
+M15,33,training,258
+M15,34,training,274
+M15,35,training,333
+M15,36,training,270
+M15,37,training,286
+M15,38,training,306
+M15,39,training,277
+M15,40,training,291
+M15,41,training,295
+M15,42,training,276
+M16,1,training,279
+M16,2,training,292
+M16,3,training,287
+M16,4,training,271
+M16,5,training,318
+M16,6,training,303
+M16,7,training,356
+M16,8,training,277
+M16,9,training,276
+M16,10,training,278
+M16,11,training,291
+M16,12,training,308
+M16,13,training,330
+M16,14,training,267
+M16,15,training,290
+M16,16,training,366
+M16,17,training,348
+M16,18,training,352
+M16,19,training,323
+M16,20,training,340
+M16,21,training,353
+M16,22,training,310
+M16,23,training,308
+M16,24,training,324
+M16,25,training,287
+M16,26,training,254
+M16,27,training,308
+M16,28,training,294
+M16,29,training,261
+M16,30,training,301
+M16,31,training,257
+M16,32,training,283
+M16,33,training,273
+M16,34,training,310
+M16,35,training,299
+M16,36,training,286
+M16,37,training,273
+M16,38,training,297
+M16,39,training,294
+M16,40,training,343
+M16,41,training,315
+M16,42,training,346
+M17,1,training,279
+M17,2,training,265
+M17,3,training,317
+M17,4,training,270
+M17,5,training,285
+M17,6,training,308
+M17,7,training,348
+M17,8,training,248
+M17,9,training,251
+M17,10,training,263
+M17,11,training,305
+M17,12,training,265
+M17,13,training,336
+M17,14,training,266
+M17,15,training,268
+M17,16,training,336
+M17,17,training,314
+M17,18,training,342
+M17,19,training,325
+M17,20,training,282
+M17,21,training,309
+M17,22,training,294
+M17,23,training,336
+M17,24,training,352
+M17,25,training,270
+M17,26,training,282
+M17,27,training,298
+M17,28,training,290
+M17,29,training,270
+M17,30,training,280
+M17,31,training,287
+M17,32,training,267
+M17,33,training,270
+M17,34,training,313
+M17,35,training,297
+M17,36,training,278
+M17,37,training,286
+M17,38,training,279
+M17,39,training,305
+M17,40,training,313
+M17,41,training,305
+M17,42,training,340
+M18,1,training,288
+M18,2,training,285
+M18,3,training,286
+M18,4,training,277
+M18,5,training,298
+M18,6,training,287
+M18,7,training,299
+M18,8,training,251
+M18,9,training,285
+M18,10,training,273
+M18,11,training,297
+M18,12,training,280
+M18,13,training,277
+M18,14,training,257
+M18,15,training,260
+M18,16,training,339
+M18,17,training,319
+M18,18,training,299
+M18,19,training,275
+M18,20,training,298
+M18,21,training,294
+M18,22,training,276
+M18,23,training,306
+M18,24,training,276
+M18,25,training,298
+M18,26,training,268
+M18,27,training,266
+M18,28,training,280
+M18,29,training,280
+M18,30,training,293
+M18,31,training,275
+M18,32,training,270
+M18,33,training,267
+M18,34,training,262
+M18,35,training,282
+M18,36,training,284
+M18,37,training,289
+M18,38,training,280
+M18,39,training,275
+M18,40,training,274
+M18,41,training,291
+M18,42,training,330
+M19,1,training,277
+M19,2,training,254
+M19,3,training,256
+M19,4,training,252
+M19,5,training,262
+M19,6,training,279
+M19,7,training,307
+M19,8,training,259
+M19,9,training,254
+M19,10,training,241
+M19,11,training,261
+M19,12,training,276
+M19,13,training,282
+M19,14,training,240
+M19,15,training,273
+M19,16,training,283
+M19,17,training,290
+M19,18,training,296
+M19,19,training,292
+M19,20,training,315
+M19,21,training,265
+M19,22,training,278
+M19,23,training,331
+M19,24,training,294
+M19,25,training,267
+M19,26,training,247
+M19,27,training,261
+M19,28,training,279
+M19,29,training,252
+M19,30,training,259
+M19,31,training,249
+M19,32,training,269
+M19,33,training,269
+M19,34,training,274
+M19,35,training,252
+M19,36,training,247
+M19,37,training,265
+M19,38,training,286
+M19,39,training,272
+M19,40,training,276
+M19,41,training,277
+M19,42,training,280
+M20,1,training,283
+M20,2,training,265
+M20,3,training,298
+M20,4,training,265
+M20,5,training,308
+M20,6,training,286
+M20,7,training,312
+M20,8,training,268
+M20,9,training,262
+M20,10,training,263
+M20,11,training,279
+M20,12,training,276
+M20,13,training,304
+M20,14,training,252
+M20,15,training,251
+M20,16,training,293
+M20,17,training,284
+M20,18,training,348
+M20,19,training,293
+M20,20,training,281
+M20,21,training,276
+M20,22,training,295
+M20,23,training,289
+M20,24,training,307
+M20,25,training,236
+M20,26,training,256
+M20,27,training,289
+M20,28,training,264
+M20,29,training,291
+M20,30,training,281
+M20,31,training,260
+M20,32,training,277
+M20,33,training,258
+M20,34,training,283
+M20,35,training,275
+M20,36,training,265
+M20,37,training,301
+M20,38,training,266
+M20,39,training,267
+M20,40,training,269
+M20,41,training,293
+M20,42,training,285

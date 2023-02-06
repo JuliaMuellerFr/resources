@@ -1,0 +1,179 @@
+---
+title: "04_3_BayesLogReg"
+author: "Kyla McConnell"
+date: "2/9/2022"
+output: html_document
+---
+
+# Bayesian Logistic Regression
+```{r setup, include=FALSE}
+library(tidyverse) 
+library(brms)
+
+# data subsetted from Oberauer 2019
+df_recall_data <- read_csv("PairsRSS1_all.csv") %>%
+    mutate(correct = if_else(response_category ==1, 1, 0)) %>%
+    filter(response_size_list + response_size_new_words == 0) %>%
+    filter(subject == 10) %>%
+    mutate(c_set_size = set_size - mean(set_size)) %>%
+    select(subject, set_size, c_set_size, correct, trial)
+```
+
+Data: working memory -- one participant recalls a prompted word from a set of size 2, 4, 6, or 8 (centered)
+
+# Bernoulli distribution
+
+- the Bernoulli likelihood generates a  0 or 1 response with a particular probability, theta (θ)
+- the output is the probability of success 
+- there is no residual error term
+
+```{r}
+as.numeric(rbernoulli(n=10))
+```
+
+- theta must be bound between 0 and 1 because it is a probability --> so the Gaussian/normal likelihood wouldn't make sense (it allows any numeric value, -infinity to infinity)
+- Logit link converts probability of getting a 1 to a numeric range from -infinity to infinity using log odds
+
+- log odds vs. probability: https://towardsdatascience.com/https-towardsdatascience-com-what-and-why-of-log-odds-64ba988bf704
+
+- log odds convert probabilities (which are between 0 and 1) to the full range of numbers -infinity to infinity
+- the logit link is the inverse of the logistic link (so they are different things! and one undoes the other, like multiplication and division)
+
+- Fazit: the probability of success is calculated on the log-odds scale via the logit link because this allows you to link a probability to the full range of real numbers, then converted back to probability space using the logistic link (the opposite of the logit link)
+
+## alpha
+- alpha (𝛼) is the intercept -- the log odds of success at the average value of your predictors (given that they are centered, otherwise it would be when your predictors are at 0)
+  - in this example: log odds of successfully recalling the word at the average set size of 5 words
+- an example prior with maximal uncertainty might be that there's a 50/50 chance of success
+- alpha is not described in terms of probability though, it's log odds
+- but! be careful with the SD because log odds and probability are not linearly related. if you have a large SD, it will put a lot of weight at the tails, i.e. at 0 or 1 probability
+- you can use the qlogis and glogis functions to translate log odds to probability    for more intuitive understanding
+  
+## beta
+- beta is the change in log odds when you change the independent variable, so here, by increasing the set size 
+- bruno changes his prior_pred_fast function to work in the logistic case
+  
+```{r}
+logistic_model_pred <- function(alpha_samples, beta_samples, set_size, N_obs) { 
+  map2_dfr(alpha_samples, beta_samples,
+            function(alpha, beta) { 
+              tibble(set_size = set_size,
+                      c_set_size = set_size - mean(set_size), 
+                      theta = plogis(alpha + c_set_size * beta),
+                      correct_pred = rbernoulli(N_obs, p = theta)) }, .id = "iter") %>%
+            mutate(iter = as.numeric(iter))
+}
+```
+
+- Try out four different standard deviations: 1, .5, .1, .01, .001 on a sample of 800 observations of 4 different set sizes (increased N so that it's easier to see what the prediction would be in a larger sample)
+```{r}
+N_obs <- 800
+set_size <- rep(c(2, 4, 6, 8), 200)
+
+alpha_samples <- rnorm(1000, 0, 1.5) # assume this is the alpha we've decided on
+sds_beta <- c(1, 0.5, 0.1,0.01, 0.001) # these are the SDs for beta that we're trying out
+
+prior_pred <- map_dfr(sds_beta, function(sd) {
+  beta_samples <- rnorm(1000, 0, sd) # center the normal dist for beta at 0 and just try different SDs
+  logistic_model_pred(alpha_samples = alpha_samples,
+                      beta_samples = beta_samples, 
+                      set_size = set_size,
+                      N_obs = N_obs) %>%
+  mutate(prior_beta_sd = sd) 
+})
+```
+
+
+Take a look at each of the priors we tried and plot:
+```{r}
+(mean_accuracy <- prior_pred %>%
+group_by(prior_beta_sd, iter, set_size) %>% 
+  summarize(accuracy = mean(correct_pred)) %>% 
+  mutate(prior = paste0("Normal(0, ",prior_beta_sd,")")))
+```
+
+```{r}
+mean_accuracy %>% 
+  ggplot(aes(accuracy)) + 
+  geom_histogram() + 
+  facet_grid(set_size ~ prior)
+```
+
+- Normal(0, 1) doesn't look good because there is a lot of weight in the 0 and 1 in the probability space 
+- You can see the same basic structure in Normal(0, .5)
+- The other 3 look very similar, so we can look at the difference when comparing different set sizes (i.e. 2 to 4, 4 to 6 and 6 to 8)
+
+```{r}
+(diff_accuracy <- mean_accuracy %>%
+arrange(set_size) %>%
+group_by(iter, prior_beta_sd) %>%
+mutate(diffaccuracy = accuracy - lag(accuracy) ) %>% mutate(diffsize = paste(set_size,"-", lag(set_size))) %>% filter(set_size >2))
+
+diff_accuracy %>% 
+  ggplot(aes(diffaccuracy)) + 
+  geom_histogram() + 
+  facet_grid(diffsize ~ prior)
+```
+
+- Bruno selects Normal(0, 0.1) because it has the most uncertainty without being unreasonable
+
+
+??? "In principle, we could produce the prior predictive distributions using brms with sample_prior = "only" and then predict()"
+
+# Fit logistic regression
+- Be sure to define link = logit (there are others, think this is the default)
+
+```{r}
+fit_recall <- brm(correct ~ 1 + c_set_size, data = df_recall_data,
+family = bernoulli(link = logit),
+prior = c(
+prior(normal(0, 1.5), class = Intercept),
+prior(normal(0, .1), class = b, coef = c_set_size) )
+)
+```
+
+The output is in log-odds 
+```{r}
+posterior_summary(fit_recall, pars = c("b_Intercept", "b_c_set_size"))
+```
+
+- The beta for set size shows us that accuracy is reduced as set size increases
+
+```{r}
+plot(fit_recall)
+```
+
+- Chains are mixing so it looks good
+
+## Report the model output
+
+If we want to talk about the effect estimated by the model in log-odds space, we summarize the posterior of 𝛽 in the following way:𝛽̂=−0.18,95%CrI=[−0.34,−0.03].
+
+Can also translate this back to probability space, first with the intercept/alpha
+```{r}
+alpha_samples <- posterior_samples(fit_recall)$b_Intercept 
+av_accuracy <- plogis(alpha_samples)
+
+c(mean = mean(av_accuracy), quantile(av_accuracy, c(.025, .975)))
+```
+
+But also with beta for set size, i.e. the effect of the change in set size
+```{r}
+beta_samples <- posterior_samples(fit_recall)$b_c_set_size
+effect_av_set_size <- plogis(alpha_samples) - plogis(alpha_samples - beta_samples) 
+
+c(mean = mean(effect_av_set_size), quantile(effect_av_set_size, c(.025, .975)))
+```
+
+Interpretation: if we increase the set size from the average set size minus one to the average set size (5), we get a reduction in the accuracy of recall of −0.02, 95% CrI = [−0.04, 0].
+- -.02 here means a decrease of 2%
+
+But since a set size of 5 didn't actually exist, we could check more meaningful numbers
+```{r}
+set4 <- 4 - mean(df_recall_data$set_size)
+set2 <- 2 - mean(df_recall_data$set_size)
+effect_4m2 <- plogis(alpha_samples + set4 * beta_samples) - plogis(alpha_samples + set2 * beta_samples)
+
+c(mean = mean(effect_4m2), quantile(effect_4m2, c(.025, .975)))
+```
+
