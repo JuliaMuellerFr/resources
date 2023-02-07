@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Julia Müller">
-<meta name="dcterms.date" content="2022-10-21">
+<meta name="dcterms.date" content="2022-11-03">
 <meta name="description" content="Showing some neat features of Quarto while analysing penguin data!">
 
 <title>Quarto demonstration</title>
@@ -120,7 +120,7 @@ div.csl-indent {
 <link href="Quarto demonstration_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>
     .quarto-title-block .quarto-title-banner {
-      background: #D1DE00;
+      background: #053F56;
     }
     </style>
 
@@ -163,7 +163,7 @@ div.csl-indent {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 21, 2022</p>
+        <p class="date">November 3, 2022</p>
       </div>
     </div>
       
@@ -177,7 +177,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#preparation" id="toc-preparation" class="nav-link active" data-scroll-target="#preparation"><span class="toc-section-number">1</span>  Preparation</a>
-  <ul class="collapse">
+  <ul>
   <li><a href="#choosing-the-data" id="toc-choosing-the-data" class="nav-link" data-scroll-target="#choosing-the-data"><span class="toc-section-number">1.1</span>  Choosing the data</a></li>
   <li><a href="#loading-packages-reading-data" id="toc-loading-packages-reading-data" class="nav-link" data-scroll-target="#loading-packages-reading-data"><span class="toc-section-number">1.2</span>  Loading packages &amp; reading data</a></li>
   <li><a href="#some-descriptive-statistics" id="toc-some-descriptive-statistics" class="nav-link" data-scroll-target="#some-descriptive-statistics"><span class="toc-section-number">1.3</span>  Some descriptive statistics</a>
@@ -186,7 +186,7 @@ div.csl-indent {
   </ul></li>
   </ul></li>
   <li><a href="#graphs" id="toc-graphs" class="nav-link" data-scroll-target="#graphs"><span class="toc-section-number">2</span>  Graphs</a>
-  <ul class="collapse">
+  <ul>
   <li><a href="#weight-and-flipper-length" id="toc-weight-and-flipper-length" class="nav-link" data-scroll-target="#weight-and-flipper-length"><span class="toc-section-number">2.1</span>  Weight and flipper length</a>
   <ul class="collapse">
   <li><a href="#entire-data" id="toc-entire-data" class="nav-link" data-scroll-target="#entire-data"><span class="toc-section-number">2.1.1</span>  Entire data</a></li>
@@ -246,9 +246,9 @@ Expand to learn more about where the data was collected
 <section id="loading-packages-reading-data" class="level2 page-columns page-full" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="loading-packages-reading-data"><span class="header-section-number">1.2</span> Loading packages &amp; reading data</h2>
 <p>First, we need to:<br>
-1. load <strong>packages</strong><br>
-2. read in <strong>data</strong><br>
-3. check if that data is <em>in the right format</em></p>
+1 load <strong>packages</strong><br>
+2 read in <strong>data</strong><br>
+3 check if that data is <em>in the right format</em></p>
 <div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="aside">By “right format”, we mean that the data is tidy, and ready to be summarised and graphed.</span></div></div>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">

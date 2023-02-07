@@ -3,7 +3,7 @@ title: "Quarto demonstration"
 description: Showing some neat features of Quarto while analysing penguin data!
 date: today # other options: now, last-modified
 author:
-  - name: Julia Müller 
+  - name: Julia Müller
     url: https://twitter.com/JuliaMuellerFr
     affiliation: University of Freiburg
     affiliation-url: https://www.anglistik.uni-freiburg.de/seminar/mitarbeitende/mueller
@@ -12,6 +12,7 @@ format:
   html:
     theme: flatly
     toc: true
+    toc-depth: 4
     number-sections: true
 bibliography: penguins.bib
 link-citations: yes
