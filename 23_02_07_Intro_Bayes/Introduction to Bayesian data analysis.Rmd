@@ -91,16 +91,39 @@ https://seeing-theory.brown.edu/probability-distributions/index.html
 
 Bayes' rule for two discrete events A and B:
 ![Bayes' rule two discrete events](img/BayesAB.png)  
+P(A) = probability of event A
+P(B) = probability of event B
+P(A|B) = probability of event A given event B
+P(B|A) = probability of event B given event A
+
+Example:
+You'd like to set up  a picnic today, but in the morning, it's cloudy.
+- 50% of rainy days start off cloudy
+- 40% of days start cloudy
+- this month, only 3 of 30 days (10%) tend to be rainy
+
+What is the chance of rain today?
+or: P(Rain|Cloud) = chance of rain given that it is cloudy
+
+P(Rain|Cloud) = (P(Cloud|Rain) * P(Rain)) / P(Cloud)
+
+P(Rain) is probability of rain = 10%
+P(Cloud|Rain) is probability of a cloudy start to the day, given that it later rains = 50%
+P(Cloud) is probability of cloud = 40%
+P(Rain|Cloud) =  (0.1 * 0.5)/0.4 = 0.125
+-> 12.5% chance of rain
+
 
 Bayes' rule for probability distributions:
 ![Bayes' rule for probability distributions](img/BayesPD.png)
+
 
 theta = parameter we're trying to estimate
 
 Put in words:
 *Posterior p() = (Likelihood x Prior)/Marginal Likelihood*
 
-- Posterior: probability distribution of the parameters conditional on the data
+- Posterior: probability distribution of the parameters conditional on the data and prior
 - Likelihood = functions that assign probabilities or relative frequencies to all events in a sample space, written as f(x)
 - Prior: initial probability distribution (*before* seeing the data)
 - Marginal likelihood (= the constant, the denominator in the formula): standardises the posterior distribution to ensure that the area under the curve of the distribution sums up to 1 -> is a valid probability distribution
@@ -111,6 +134,15 @@ Posterior proportional to Likelihood x Prior (i.e. the product of Likelihood and
 
 ### Examples for different priors
 
+The posterior is a compromise between the prior and the data
+![](img/prior0.png)
+- e.g., you set up a difficult exam and your expectation (= prior) is that students get only 1 or 2 questions right, maybe because that was the case for last term's students
+- but this term, most people answer 5 to 7 questions correctly (= likelihood/data)
+- so you shift your expectations accordingly (= posterior): next term, students might get 3 to 4 questions right
+
+![](img/prior1.png)
+
+![](img/prior2.png)
 
 
 ## Types of priors
@@ -445,16 +477,10 @@ conditional_effects(reading_mdl_reg)
 ### Bayes factors
 - method of quantifying evidence for or against hypothesis or model
 - criticised by some Bayesians for binary cut-off points
+![](img/BFs.png)
 - can be strongly influenced by priors (even if posterior estimates/model parameters are not!)
 - often requires more iterations than default
-
-Bayes factor: ratio of the likelihoods of the two models under comparison
-more complex model vs. null model
-
-BF = 10-30 support for more complex model
-BF = 3-10 weaker support for complex model
-BF close to 1 no model seems to be better than the other
-BF below 0.1 support for simpler model
+- used for hypothesis testing or model comparison
 
 
 ### Hypothesis testing
@@ -571,21 +597,6 @@ We can compare the posterior predictive checks to see which model is a better ch
 pp_check(reading_mdl_reg, ndraws = 100)
 pp_check(reading_mdl_ln, ndraws = 100)
 ```
-
-
-### Model comparison
-
-#### ...using Bayes factors
-
-
-
-#### ...using leave-one-out cross-validation
-- LOO cross-validation: fit model on all data points except one, then evaluate its prediction for that data point, then rinse and repeat
-- establishes predictive error on unseen data points
-```{r}
-loo(m1, m2)
-```
-
 
 
 ## Example 2: Direction of gestures
