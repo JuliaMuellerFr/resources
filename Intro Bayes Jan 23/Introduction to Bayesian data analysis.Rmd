@@ -6,30 +6,24 @@ output: html_document
 ---
 
 **Preparation**
-Install the {brms} package
+Make sure the necessary packages are installed. {brms} needs a C++ compiler to run Bayesian models. 
+- On Windows, RTools contains this and can be installed here: https://cran.r-project.org/bin/windows/Rtools/
+Make sure to add it to the PATH variable (should be an option during installation).
+- On Mac, install XCode via the app store.
 
+You can test whether your {brms} installation was successful by trying to run the following code block - if it fits a model and gives you a model summary, everything worked.
 ```{r}
-library(tidyverse)
-reading_df <- datE_stops
-
-reading_df <- reading_df %>% 
-  mutate(VOT = VOT + 200,
-         item = as.factor(as.numeric(as.factor(item)))
-         ) %>% 
-  rename(participant = subject,
-         condition = genderfact,
-         rt = VOT) %>% 
-  select(participant, item, condition, rt) %>% 
-  mutate(across(-rt, as.factor))
-
-reading_df <- reading_df %>%
-  mutate(condition = fct_recode(condition,
-                                "no training" = "f",
-                                "training" = "m"))
-
-write_csv(reading_df, "data/reading_data.csv")
+library(brms)
+BRM1 <- brm(weight ~ Diet, data = ChickWeight)
+summary(BRM1)
 ```
 
+
+**Structure**
+- Theory: Introducing Bayesian approach
+- Demonstration 1: Reading data
+- Demonstration 2: Direction of gestures
+- Comparison: Frequentist and Bayesian approaches
 
 
 # Theory
@@ -38,7 +32,6 @@ write_csv(reading_df, "data/reading_data.csv")
 (1) Prior knowledge about the parameters (i.e., likely values for intercept, slopes, etc. of the model)
 (2) Likelihood function - your data
 (3) Posterior distribution: Updated knowledge - compromise between the prior and the data
-
 
 ## Quick history lesson
 - Bayesian analysis as a concept is old: basics first described in 1763
@@ -82,7 +75,7 @@ Discrete:
   - bounded by 0 -> negative values not possible
   - only one parameter called lambda
 
-Let's explore distributions -- click on "Discrete and Continuous":
+Nice visualisations of distributions -- click on "Discrete and Continuous":
 https://seeing-theory.brown.edu/probability-distributions/index.html
 
 
@@ -97,10 +90,10 @@ https://seeing-theory.brown.edu/probability-distributions/index.html
 ## Bayes' rule
 
 Bayes' rule for two discrete events A and B:
-![Bayes' rule two discrete events](BayesAB.png)  
+![Bayes' rule two discrete events](img/BayesAB.png)  
 
 Bayes' rule for probability distributions:
-![Bayes' rule for probability distributions](BayesPD.png)
+![Bayes' rule for probability distributions](img/BayesPD.png)
 
 theta = parameter we're trying to estimate
 
@@ -119,10 +112,6 @@ Posterior proportional to Likelihood x Prior (i.e. the product of Likelihood and
 ### Examples for different priors
 
 
-Takeaways:
-(1) The posterior is a compromise between the prior and the likelihood
-(2) Priors are more influential with smaller data sets (relative to how complex the model structure is)
-
 
 ## Types of priors
 
@@ -133,20 +122,18 @@ Takeaways:
   - make sampling slower -> might lead to convergence problems
 
 ### Regularizing priors
+- also called weakly informative/mildly informative priors
 - priors that downweight extreme values
 - not very informative, mostly letting the likelihood dominate in determining the posteriors
-- also called weakly informative/mildly informative priors
-- incorporate mild scepticism
+- incorporate mild skepticism
 - are theory-neutral: they usually do not bias the parameters to values supported by any prior belief or theory
 - help stabilize computation
 - especially important for small sample sizes to prevent overfitting (= model doesn't generalise well to new data)
+- used for 
 
-### Principled priors
+### Principled and informative priors
 - encode all (or most of) the theory-neutral information that we do have
-
-### Informative priors
-- lots of prior knowledge and not much data
-- we don’t want our priors to have too much influence on our posterior
+- e.g., if we know that an effect has usually been found to be positive (or negative), we can express that in the prior
 
 
 ## Sensitivity analysis
@@ -160,12 +147,17 @@ Takeaways:
     - report how the posterior is affected by some specific priors
 
 
+**Takeaways**
+(1) The posterior is a compromise between the prior and the likelihood
+(2) Priors are more influential with smaller data sets (relative to how complex the model structure is)
+
+
 ## Deriving the posterior through sampling
 
 - For simple problems, we can calculate the posterior
 - But this is not realistic for most real data analyses
-- Different sampling algorithms are available
-- A commonly used one is Hamiltonian Monte Carlo
+- Different sampling algorithms are available 
+- A commonly used one is Markow-Chain-Monte-Carlo (MCMC)
 
 Sampling and convergence in a nutshell
 - Aim: to approach the posterior distribution
@@ -209,6 +201,7 @@ library(tidyverse) # make sure to load these in the correct order!
 library(brms) #allows us to use the Stan programming language without having to learn it
 library(tidybayes)
 
+
 # Settings
 
 # to speed up modeling time, tell R to use several of your PC's cores
@@ -229,12 +222,12 @@ reading_df <- read_csv("data/reading_data.csv") %>%
 
 sample_n(reading_df, 20)
 ```
+- contains reading times on words
+- participants are L2 learners
+- condition: some have received training on L2
+- research question: Are participants who received training faster than those who did not receive training?
 
-Research question: Are participants who received training faster than those who did not receive training?
 ```{r}
-reading_df %>% 
-  count(participant)
-
 reading_df %>% 
   count(condition, participant) # condition is between-subject
 
@@ -354,6 +347,7 @@ Domain knowledge: What's a sensible difference in reading times between words?
 sceptical_priors <- c(prior(normal(0, 50), class = b))
 ```
 What values are within 95% of the probability distribution of normal(0, 50)?
+-> -100 and +100
 
 Rerunning the model with those priors:
 ```{r}
@@ -397,6 +391,8 @@ Interpretation:
 - should be fairly close together
 - dark blue line should fall within the light blue lines
 -> data and samples should be fairly similar
+
+![Here is what it should not look like](img/bad_pp_check.PNG)
 
 
 ### Model output
@@ -447,6 +443,11 @@ conditional_effects(reading_mdl_reg)
 
 
 ### Bayes factors
+- method of quantifying evidence for or against hypothesis or model
+- criticised by some Bayesians for binary cut-off points
+- can be strongly influenced by priors (even if posterior estimates/model parameters are not!)
+- often requires more iterations than default
+
 Bayes factor: ratio of the likelihoods of the two models under comparison
 more complex model vs. null model
 
@@ -464,6 +465,60 @@ For example: Is the slope for condition negative?
 ```{r}
 hypothesis(reading_mdl_reg, "conditiontraining < 0")
 ```
+
+Is the intercept (reading times in the no training condition) above 300?
+```{r}
+hypothesis(reading_mld_reg, "Intercept > 300")
+```
+
+
+### Sensitivity analysis
+- for a sensitivity analysis, we fit the same model with different priors to see how much the priors affect the posterior
+- here: one narrower prior and one informative prior
+
+- the regularising priors we picked are fairly wide
+-> fit a model with much narrower prior on the slope, such as Normal(0, 10)
+-> prior assumes that 95% of values lie between -20 and 20
+
+- let's assume that previous research has found that the effect of training is around 10 ms: In other studies, participants read words 10 ms more quickly (on average) if they had had training
+-> fit a model with an informative prior for the slope of Normal(-10, 10)
+-> prior assumes that 95% of values lie between -30 and 10
+
+Fitting models:
+```{r}
+reading_mdl_narrow <- brm(rt ~ condition + 
+                         (1 + condition|item) +    
+                         (1|participant),
+  family = gaussian(),
+  data = reading_df,
+  prior = prior(normal(0, 10), class = "b"),
+  iter = 4000,
+  warmup = 2000,
+  chains = 3
+)
+
+reading_mdl_info <- brm(rt ~ condition + 
+                         (1 + condition|item) +    
+                         (1|participant),
+  family = gaussian(),
+  data = reading_df,
+  prior = prior(normal(-10, 10), class = "b"),
+  iter = 4000,
+  warmup = 2000,
+  chains = 3
+)
+
+save(reading_mdl_narrow, file = "models/reading_mdl_narrow.RData")
+save(reading_mdl_info, file = "models/reading_mdl_info.RData")
+load("models/reading_mdl_narrow.RData")
+load("models/reading_mdl_info.RData")
+```
+
+Extracting posterior distributions and visualising them to compare:
+```{r}
+
+```
+Note that we could also look at the model summaries and compare them.
 
 
 ### Picking a different distribution
@@ -499,7 +554,8 @@ load("models/reading_mdl_ln.RData")
 plot(reading_mdl_ln)
 reading_mdl_ln
 ```
-- the estimates need to be exponentiated to transform them back to reading times
+
+The estimates need to be exponentiated to transform them back to reading times
 ```{r}
 exp(5.65) # intercept: no training condition
 exp(5.65 - 0.02) # intercept + slope: training condition
@@ -522,7 +578,13 @@ pp_check(reading_mdl_ln, ndraws = 100)
 #### ...using Bayes factors
 
 
+
 #### ...using leave-one-out cross-validation
+- LOO cross-validation: fit model on all data points except one, then evaluate its prediction for that data point, then rinse and repeat
+- establishes predictive error on unseen data points
+```{r}
+loo(m1, m2)
+```
 
 
 
@@ -631,6 +693,7 @@ contrasts(E3$direction)
 contrasts(E3$language)
 
 E3_mdl_reg
+mcmc_plot(E3_mdl_reg)
 ```
 Slopes:
 - positive slope for direction
@@ -692,18 +755,17 @@ pp_check(E3_mdl_reg, ndraws = 100)
 ## Advantages of Bayesian models
 - ability to incorporate prior information
   - if strong previous evidence
-  - but even if no (convincing) previous evidence, non-informative priors can help fit a model more quickly/ability to fit more complex structure than corresponding frequentist model could
+  - improved model convergence, even with complex random effect structures, if regularising priors are used
 - more flexible model specification (different distributions, can specify if distributions are truncated)
-- generate estimates and credible intervals
+- generate estimates and credible intervals -> better able to discuss uncertainty of parameters and predictions
   - credible intervals are easier to interpret/more intuitive than confidence intervals (and p-values)
-  - allow us to draw fine-grained conclusions rather than being forced into a binary decision (p < 0.05 or not?)
-- calculate predictions based on the posterior distribution
-- computationally robust
+  - allow us to draw fine-grained conclusions rather than being forced into a binary decision (p < 0.05 or not? Confidence interval crosses 0 or not?)
 - credible intervals not dependent on large-N approximations
-- able to quantify support for or against null hypothesis  
+- able to quantify support for or against null hypothesis or custom hypotheses  
 
 ## Issues with Bayesian models
-- arguably more intuitive to interpret, but harder to fit?
-- prior selection can strongly influence models and Bayes factors, especially with small Ns
-
+- require learning new concepts and tools
+- arguably more intuitive to interpret, but harder to fit
+- take more time and effort
+- prior selection can strongly influence model estimates and Bayes factors, especially with small Ns
 
