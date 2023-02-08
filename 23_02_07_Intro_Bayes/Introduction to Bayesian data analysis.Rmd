@@ -5,6 +5,7 @@ date: "8 February 2023"
 output: html_document
 ---
 
+
 **Preparation**
 Make sure the necessary packages are installed. {brms} needs a C++ compiler to run Bayesian models. 
 - On Windows, RTools contains this and can be installed here: https://cran.r-project.org/bin/windows/Rtools/
@@ -21,7 +22,7 @@ summary(BRM1)
 
 **Structure**
 - Theory: Introducing Bayesian approach
-- Demonstration 1: Reading data
+- Demonstration 1: Reading times
 - Demonstration 2: Direction of gestures
 - Comparison: Frequentist and Bayesian approaches
 
@@ -33,10 +34,12 @@ summary(BRM1)
 (2) Likelihood function - your data
 (3) Posterior distribution: Updated knowledge - compromise between the prior and the data
 
+
 ## Quick history lesson
 - Bayesian analysis as a concept is old: basics first described in 1763
 - Bayes' theorem published in 1825
 - computationally expensive -> became more popular recently, with increase in computing power and appearance of suitable programming languages
+
 
 ## Maths lesson: Probability distributions
 - distributions tell us which values are possible for a certain parameter/variable
@@ -99,7 +102,7 @@ P(B|A) = probability of event B given event A
 Example:
 You'd like to set up  a picnic today, but in the morning, it's cloudy.
 - 50% of rainy days start off cloudy
-- 40% of days start cloudy
+- 40% of days start off cloudy
 - this month, only 3 of 30 days (10%) tend to be rainy
 
 What is the chance of rain today?
@@ -134,7 +137,7 @@ Posterior proportional to Likelihood x Prior (i.e. the product of Likelihood and
 
 ### Examples for different priors
 
-The posterior is a compromise between the prior and the data
+The posterior is a compromise between the prior and the data/likelihood
 ![](img/prior0.png)
 - e.g., you set up a difficult exam and your expectation (= prior) is that students get only 1 or 2 questions right, maybe because that was the case for last term's students
 - but this term, most people answer 5 to 7 questions correctly (= likelihood/data)
@@ -146,6 +149,10 @@ The posterior is a compromise between the prior and the data
 
 
 ## Types of priors
+
+- priors need to be set for every parameter in the model
+-> intercept, slope(s), sigma (error term)
+-> random effects
 
 ### Flat, uninformative priors
 - choosing as uninformative priors as possible to 'let the data speak for itself' (uniform distribution)
@@ -161,7 +168,6 @@ The posterior is a compromise between the prior and the data
 - are theory-neutral: they usually do not bias the parameters to values supported by any prior belief or theory
 - help stabilize computation
 - especially important for small sample sizes to prevent overfitting (= model doesn't generalise well to new data)
-- used for 
 
 ### Principled and informative priors
 - encode all (or most of) the theory-neutral information that we do have
@@ -424,7 +430,10 @@ Interpretation:
 - dark blue line should fall within the light blue lines
 -> data and samples should be fairly similar
 
-![Here is what it should not look like](img/bad_pp_check.PNG)
+Here is what it should not look like:
+```{r}
+knitr::include_graphics("img/bad_pp_check.PNG")
+```
 
 
 ### Model output
@@ -476,11 +485,11 @@ conditional_effects(reading_mdl_reg)
 
 ### Bayes factors
 - method of quantifying evidence for or against hypothesis or model
+- used for hypothesis testing or model comparison
 - criticised by some Bayesians for binary cut-off points
 ![](img/BFs.png)
 - can be strongly influenced by priors (even if posterior estimates/model parameters are not!)
 - often requires more iterations than default
-- used for hypothesis testing or model comparison
 
 
 ### Hypothesis testing
@@ -492,9 +501,9 @@ For example: Is the slope for condition negative?
 hypothesis(reading_mdl_reg, "conditiontraining < 0")
 ```
 
-Is the intercept (reading times in the no training condition) above 300?
+Is the intercept (reading times in the no training condition) above 250?
 ```{r}
-hypothesis(reading_mld_reg, "Intercept > 300")
+hypothesis(reading_mdl_reg, "Intercept > 250")
 ```
 
 
@@ -534,17 +543,18 @@ reading_mdl_info <- brm(rt ~ condition +
   chains = 3
 )
 
-save(reading_mdl_narrow, file = "models/reading_mdl_narrow.RData")
-save(reading_mdl_info, file = "models/reading_mdl_info.RData")
+#save(reading_mdl_narrow, file = "models/reading_mdl_narrow.RData")
+#save(reading_mdl_info, file = "models/reading_mdl_info.RData")
 load("models/reading_mdl_narrow.RData")
 load("models/reading_mdl_info.RData")
 ```
 
-Extracting posterior distributions and visualising them to compare:
+Comparing model summaries:
 ```{r}
-
+reading_mdl_reg # -7.14 CI[-19.52, 5.78]
+reading_mdl_info # -7.86 [-17.98, 1.77]
+reading_mdl_narrow # -4.98 CI[-15.21, 5.34]
 ```
-Note that we could also look at the model summaries and compare them.
 
 
 ### Picking a different distribution
@@ -552,11 +562,17 @@ Note that we could also look at the model summaries and compare them.
 - they can't be negative
 - often have a long tail (more high values)
 - are often log-transformed before modeling, but we can also pick a different family argument
+```{r}
+ggplot(reading_df) +
+  aes(x = rt) +
+  geom_density() +
+  theme_light()
+```
 
+The log-normal distribution might work:
 ```{r}
 knitr::include_graphics("img/Log-normal-pdfs.png")
 ```
-
 
 Model with log-normal instead of normal distribution and adjusted prior:
 ```{r}
