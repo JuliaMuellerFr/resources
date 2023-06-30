@@ -1,0 +1,1201 @@
+---
+title: "Text analysis with R"
+author: "Julia Müller"
+date: "Data Café Kiel, June 29 2023"
+output: html_document
+---
+
+
+# Introductions
+
+## About me
+- based at University of Freiburg
+- PhD in psycholinguistics on transfer effects German -> English (in progress...)
+- classes on the linguistic structure of names, corpus linguistics, statistical analyses with R
+- co-organiser of R-Ladies Freiburg and Julia Gender Inclusive
+
+To get in touch with me:
+julia.mueller@anglistik.uni-freiburg.de
+Twitter: JuliaMuellerFr
+
+
+## About you
+
+-> go to menti.com and enter code 3102 4327
+
+
+# Schedule
+(1) reading in and preparing text data (tidy text)
+(2) analysing word and n-gram frequencies
+-- break -- 
+(3) comparing word frequencies across texts
+(4) word and document frequencies
+(5) sentiment analysis
+
+
+# 0 Prerequisites
+
+## R-Markdown
+- we'll work in R-Markdown file
+- includes code, but also (formatted) text, pictures, etc. 
+- read by default as text and not attempted to be run as code, unless in a code block 
+- helpful for reproducible, well-documented analyses
+
+- In an R-Markdown document (like this one), R Code must be in a "code chunk":
+```{r}
+
+```
+-> to add, click the green C (upper right)
+- R interprets anything in this block as code
+- be careful not to accidentally delete some of the backticks
+
+Run code:
+- click on the line and press Ctrl + Enter (Windows) or Cmd + Enter (Mac) 
+- or: click on the green arrow
+
+Result is shown right under the block:
+```{r}
+5+2
+# This is a comment and will be ignored by R
+```
+
+
+## Packages - please install the ones you don't have already, then load them:
+```{r}
+library(tidytext) #for text mining specifically
+library(gutenbergr) #to access full-text books that are in the public domain
+library(scales) # for visualising percentages
+library(readtext) # for reading in txt files
+library(igraph) # for creating networks of bigrams
+library(ggraph) # for visualising networks of bigrams
+library(textdata) #for afinn sentiment score dictionary
+library(sentimentr) #for sentence-based sentiment scores
+library(viridis) #optional - for colour palettes
+library(magrittr) #for different pipes
+library(tidyverse) #for various data manipulation tasks
+```
+
+
+## The pipe %>% 
+
+The tidyverse is both a collection of packages and a "dialect" of R that has some different underlying logic when compared to "base-R" (aka, non-tidyverse coding in R)
+
+One of the most noticeable features of the tidyverse is the pipe %>% (keyboard shortcut: Ctrl/Cmd + Shift + M).
+
+The pipe takes the item before it and feeds it to the following command as the first argument. Since all tidyverse (and many non-tidyverse) functions take the dataframe as the first argument, this can be used to string together multiple functions. It also makes it easier to read sequential code in a more natural order.
+
+We'll use data processing pipelines that start with the data frame, which is then piped through several commands to get it ready for analysis.
+
+Have a look at this code (but don't try to run it):
+```{r eval=FALSE}
+some_text %>% # format: one line contains several words/an entire chapter
+  unnest_tokens(word, text) %>% # one line contains one word ("tidy text")
+  mutate(word = str_extract(word, "[a-z']+")) %>% # remove non-alphanumeric characters
+  anti_join(stop_words) %>%  # remove stop words
+  drop_na() %>% # delete missing values (empty lines)
+  count(word) # count how often each word occurs in the text
+# -> ready for analysis/graphs!
+```
+
+
+
+# 1 Reading in and preparing texts
+
+## Reading in text data
+
+### Reading .txt files
+Here's how you can read in one .txt file that is saved in the "data" subfolder relative to the location of your script:
+```{r}
+hf <- readtext("data/Adventures of Huckleberry Finn.txt") %>% 
+  as_tibble()
+
+hf
+```
+
+If you want to read all files from a sub-folder, type the name of the folder followed by / and * to ask R to read in all files in that folder:
+```{r}
+shakes <- readtext("ShakespeareTexts/*") %>% 
+  as_tibble()
+
+head(shakes)
+```
+
+Let's clean the doc_id column up by removing the file ending ".txt":
+```{r}
+shakes <- shakes %>% 
+  mutate(doc_id = str_remove(doc_id, ".txt"))
+
+head(shakes)
+```
+
+
+### Book data from Project Gutenberg
+* Project Gutenberg: free downloads of books in the public domain (i.e. lots of classic literature)
+* Still accessible via the R package gutenbergr by ID
+* Top 100 books for inspiration (changes daily based on demand): https://www.gutenberg.org/browse/scores/top
+* Catalog: https://www.gutenberg.org/catalog/ 
+
+To find the id of a book (some have multiple copies):
+```{r}
+gutenberg_metadata %>%
+  filter(title %in% c("Alice's Adventures in Wonderland", "Grimms' Fairy Tales", "Andersen's Fairy Tales"))
+```
+
+Can also search by author name:
+```{r}
+gutenberg_works(author == "Carroll, Lewis")
+
+gutenberg_works(str_detect(author, "Carroll")) #if you only have a partial name
+```
+
+For more Gutenberg search options: https://ropensci.org/tutorials/gutenbergr_tutorial/
+
+Once you found your books, download with gutenberg_download:
+```{r}
+fairytales_raw <- gutenberg_download(c(11, 2591, 1597))
+fairytales_raw
+```
+11: Alice's Adventures in Wonderland
+2591: Grimm's Fairytales
+1597: Hans Christian Anderson's Fairytales
+
+
+## Preparing data
+- convert Gutenberg ID to a factor
+- replace the ID numbers with more descriptive labels 
+```{r}
+fairytales_raw <- fairytales_raw %>% 
+  mutate(gutenberg_id = as_factor(gutenberg_id),
+         gutenberg_id = fct_recode(gutenberg_id,
+                                   "Alice's Adventures in Wonderland" = "11",
+                                   "Grimm's Fairytales" = "2591",
+                                   "Hans Christian Anderson's Fairytales" = "1597"))
+```
+
+
+## Preparing texts - tidy text
+The tidy text format:
+- has one token per row
+- token = often a word, or n-gram
+- facilitates analyses (easily lets us count how often which token occurs)
+
+### the unnest_tokens function
+* Easy to convert from full text to token per row with unnest_tokens()
+Syntax: unnest_tokens(df, newcol, oldcol)
+* unnest_tokens() automatically removes punctuation and converts to lowercase (unless you set to_lower = FALSE)
+* by default, tokens are set to words, but you can also use token = "characters", "ngrams", "sentences", "lines", "regex", "paragraphs"
+
+```{r}
+(fairytales_tidy <- fairytales_raw %>% 
+  unnest_tokens(word, text))
+```
+
+
+```{r}
+# this keeps the information on which sentence the words came from
+fairytales_raw %>% 
+  unnest_tokens(sentence, text, token = "sentences") %>% 
+  mutate(sent_nr = row_number()) %>% 
+  unnest_tokens(word, sentence)
+```
+
+### TRY IT
+Use the `unnest_tokens()` function on the Shakespeare texts to split them into words. Save the resulting data frame as shakes_unnest.
+
+### Removing non-alphanumeric characters
+* Project Gutenberg data sometimes contains underscores to indicate italics
+* str_extract is used to get rid of non-alphanumeric characters (because we don't want to count _word_ separately from word)
+```{r}
+fairytales_tidy <- fairytales_tidy %>% 
+  mutate(word = str_extract(word, "[a-z']+"))
+
+shakes_unnest <- shakes_unnest %>% 
+  mutate(word = str_extract(word, "[a-z']+"))
+``` 
+
+
+### Removing stop words
+* Stop words: very common, "meaningless" function words like "the", "of" and "to" -- not usually important in an analysis (i.e. to find out that the most common word in two books you are comparing is "the")
+* tidytext has a built-in df called stop_words for English 
+* remove these from your dataset with anti_join
+
+We can take a look:
+```{r}
+stop_words
+```
+
+```{r}
+(fairytales_tidy <- fairytales_tidy %>% 
+  anti_join(stop_words))
+```
+
+
+```{r}
+(shakes_unnest <- shakes_unnest %>% 
+  anti_join(stop_words))
+```
+
+Define other stop words:
+```{r}
+meaningless_words <- tibble(word = c("von", "der", "thy", "thee", "thou"))
+
+fairytales_tidy <- fairytales_tidy %>% 
+  anti_join(meaningless_words)
+```
+This could also be used to remove character names, for example.
+
+The stopwords package also contains lists of stopwords for other languages, so to get a list of German stopwords, you could use:
+```{r}
+library(stopwords)
+stop_german <- data.frame(word = stopwords::stopwords("de"), stringsAsFactors = FALSE)
+```
+More info: https://cran.r-project.org/web/packages/stopwords/readme/README.html
+
+
+
+# 2 Analysing word and n-gram frequencies
+
+## Word frequencies
+
+### Find most frequent words
+* Easily find frequent words using count() 
+* Data must be in tidy format (one token per line)
+* sort = TRUE to show the most frequent words first
+
+tidy_books %>%
+  count(word, sort = TRUE) 
+
+These are the most frequent words across all books:
+```{r}
+fairytales_tidy %>% 
+  count(word, sort = TRUE) # R automatically creates a new column, calls it n, and writes the frequencies in it
+```
+
+But it makes more sense to look at frequent words for each of the three books separately by adding a grouping variable:
+```{r}
+fairytales_freq <- fairytales_tidy %>% 
+  group_by(gutenberg_id) %>% #including this ensures that the counts are by book and the id column is retained
+  count(word, sort=TRUE) %>% 
+  ungroup() # to undo the grouping
+
+fairytales_freq
+```
+
+`filter()` can be used to look at subsets of the data, i.e. one book, all words with freq above 100, etc. Note here that I don't save this output!
+```{r}
+fairytales_freq %>% 
+  filter(gutenberg_id == "Grimm's Fairytales")
+
+fairytales_freq %>% 
+  filter(n > 200)
+```
+
+
+### TRY IT
+Using the unnested Shakespeare data, count how often each word occurs. Make sure to have R count separately for each play and save the resulting table as shakes_freq.
+
+
+#### Plotting word frequencies - bar graphs
+
+Bar graph of top words in Grimm's fairytales
+
+Basic graph:
+```{r}
+fairytales_freq %>% 
+  filter(n>90 & gutenberg_id == "Grimm's Fairytales") %>%  # filtering to a frequency of at least 90 to ensure the plot isn't too cluttered
+  ggplot(aes(x=word, y=n)) +
+  geom_col()
+```
+
+Readable labels:
+```{r}
+fairytales_freq %>% 
+  filter(n>90 & gutenberg_id == "Grimm's Fairytales") %>% 
+  ggplot(aes(x=word, y=n)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45)) # x-axis labels (words) at a 45° angle
+```
+
+Descending order:
+```{r}
+fairytales_freq %>% 
+  filter(n>90 & gutenberg_id == "Grimm's Fairytales") %>% 
+  ggplot(aes(x=reorder(word, -n), y=n)) + # reorder words by frequency in descending order because -n (use n for ascending order)
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+Axis names and a nicer-looking theme:
+```{r}
+fairytales_freq %>% 
+  filter(n>90 & gutenberg_id == "Grimm's Fairytales") %>% 
+  ggplot(aes(x=reorder(word, -n), y=n)) +
+  geom_col() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(x = "word",
+       y = "frequency",
+       title = "Most frequent words in Grimm's Fairytales")
+```
+
+Or: flip coordinate system to make more space for words
+```{r}
+fairytales_freq %>% 
+  filter(n>90 & gutenberg_id == "Grimm's Fairytales") %>% 
+  ggplot(aes(x=reorder(word, n), y=n)) +
+  geom_col() +
+  labs(x = "word",
+       y = "frequency",
+       title = "Most frequent words in Grimm's Fairytales") +
+  coord_flip() +
+  theme_minimal()
+```
+
+We can also use colour to indicate which book a word is from:
+```{r}
+fairytales_freq %>% 
+  filter(n > 90) %>% 
+  ggplot(aes(x=reorder(word, n), y=n, fill = gutenberg_id)) + # fill in the bars according to which book the word is from
+  geom_col() +
+  labs(x = "word",
+       y = "frequency",
+       title = "Most frequent words") +
+  coord_flip() +
+  theme_minimal()
+```
+
+But we can see that the differing lengths of the book heavily skew the picture. We could normalise the frequency (see section below).
+
+Alternatively, we can find and plot the top n words from each book by adding a facet:
+```{r}
+fairytales_freq %>% 
+  group_by(gutenberg_id) %>% 
+  slice_max(order_by = n, n = 10) %>%  # find the ten words with the highest frequencies separately for each book
+  ggplot() +
+  # when reordering with a facet, use reorder_within() and scale_x_reordered()
+  aes(x = reorder_within(word, -n, gutenberg_id), y = n, fill = gutenberg_id) +
+  geom_col() +
+  facet_wrap(~gutenberg_id, scales = "free_x") +
+  theme_minimal() +
+  scale_x_reordered() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45)) +
+  labs(x = "word",
+       y = "frequency",
+       title = "Most frequent words")
+```
+
+
+##### TRY IT
+Working with the Shakespeare data:
+(a) pick one play, filter the data down to it, and visualise the most frequent words
+(b) visualise the ten most frequent words for each play, using a facet (advanced!)
+
+Tip for both options: Copy-paste the code, then change the data frame, variable names, etc.
+
+
+### Normalised frequency
+* when comparing the frequencies of words from different texts, they are commonly normalised
+* convention in corpus linguistics: report the frequency per 1 million words
+* for shorter texts: per 10,000 or per 100,000 words
+* calculation: raw frequency * 1,000,000 / total numbers in text
+
+- First, we need to re-do the unnesting and word-cleaning process because we want to keep stopwords to count how many words each play has in total
+- We add this information with `add_count()`
+```{r}
+shakes_freq <- shakes %>% 
+  unnest_tokens(word, text) %>% # one word per line
+  mutate(word = str_extract(word, "[a-z']+")) %>% # remove non-alphanumeric characters
+  drop_na() %>% # delete empty lines
+  group_by(doc_id) %>% 
+  count(word) %>% 
+  ungroup() %>% 
+  add_count(doc_id, wt = n) %>% # total number of words in text now in nn column
+  mutate(pmw = n * 1000000/nn) %>% # calculating normalised frequency per million words
+  anti_join(stop_words) # removing stopwords afterwards
+
+shakes_freq %>% 
+  arrange(-pmw)
+```
+
+
+#### Plotting normalised frequency
+Now we can plot, for example, the 20 most frequent words (by pmw).
+```{r}
+shakes_freq %>% 
+  filter(doc_id == "Othello") %>% 
+  top_n(20, pmw) %>% 
+  ggplot(aes(x=reorder(word, -pmw), y=pmw)) +
+  geom_col(show.legend=FALSE) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(x = "word",
+       y = "frequency (per 1 million words)",
+       title = "Most frequent words in Othello")
+```
+
+### Calculating percentages
+We can calculate percentages in a very similar way - only the calculation in `mutate()` is different:
+```{r}
+shakes_perc <- shakes %>% 
+  unnest_tokens(word, text) %>% 
+  mutate(word = str_extract(word, "[a-z']+")) %>% 
+  drop_na() %>% 
+  group_by(doc_id) %>% 
+  count(word) %>% 
+  ungroup() %>% 
+  add_count(doc_id, wt = n) %>%  # total number of words in text now in nn column
+  mutate(perc = n/nn * 100) %>% # calculate percentages
+  anti_join(stop_words) # removing stopwords
+
+shakes_perc %>% 
+  arrange(-perc)
+```
+
+
+#### TRY IT
+Create a graph of the 20 most frequent words (by percentage) in the sonnets (doc_id == "Shakespeare_Sonnets").
+
+
+
+## N-grams
+
+So far, we've looked at single words and how (in)frequent they are, but in this part, we'll focus on combinations of two or more words.
+
+Some pre-processing first, though:
+In the next section, we'll only work with Alice in Wonderland. We also need information on which chapter a line occurs in for subsequent analyses, so we'll use `cumsum()` - you can think of this as a counter that starts at 0 and counts up by 1 every time the next part of the line evaluates to TRUE. In other words, every time the regular expression in `str_detect()` finds "chapter" followed by a number or Roman numeral, the counter counts up by one.
+Then, we remove the column that contains the Gutenberg ID, get rid of lines in "Chapter 0", i.e. the title, author and information on the publisher, convert chapter to a factor, and remove any underscores in the text.
+
+```{r}
+alice <- fairytales_raw %>% 
+  filter(gutenberg_id == "Alice's Adventures in Wonderland") %>% 
+  mutate(chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]", ignore_case = TRUE)))) %>% # if the line starts with "chapter" and is followed by a number or Roman numeral, increase the chapter counter by 1
+  select(-gutenberg_id) %>% # remove Gutenberg ID column
+  filter(chapter != 0) %>% # remove text before first chapter starts
+  mutate(chapter = as_factor(chapter),
+         text = str_remove_all(text, "_"))
+
+alice %>% 
+  select(text, chapter)
+```
+
+
+### Unnest tokens: n-grams
+
+The `unnest_tokens()` lets you define what should count as a token. So far, we've used `token = "words"`, but now we want to move on to multi-word combinations (n-grams) instead of single words.
+
+An n-gram is a combination of consecutive words of length n. Each bigram (n = 2), for example, consist of two words. Let's have a look:
+```{r}
+(alice_bigrams <- alice %>%
+   unnest_tokens(bigram, text, token = "ngrams", n = 2))
+```
+Each word appears twice now: As the first and as the second word in a bigram. So the bigrams overlap.
+
+Change the `n = ` argument to control how many words each n-gram should contain:
+```{r}
+alice %>%
+  unnest_tokens('4-gram', text, token = "ngrams", n = 4)
+```
+
+
+### Counting n-grams
+
+We can use commands for analysing and visualising single words to do the same for n-grams. First, let's see how often each bigram occurs in the text:
+```{r}
+alice_bigrams %>% 
+  count(bigram, sort = TRUE)
+```
+
+The most common bigrams are empty lines, so let's remove those first:
+```{r}
+alice_bigrams <- alice_bigrams %>% 
+    drop_na(bigram)
+
+alice_bigrams %>% 
+  count(bigram) %>% 
+  arrange(desc(n))
+```
+
+
+### Removing stopwords from n-grams
+A lot of these bigrams contain stopwords such as "the", "a", and "to". To remove them, we can use the stopword list again:
+```{r}
+stop_words
+```
+
+However, this list contains single words, so we need to split up the bigrams with `separate()`:
+```{r}
+(alice_bigrams <- alice_bigrams %>% 
+  separate(col = bigram,
+           into = c("word1", "word2"),
+           sep = " ",
+           remove = FALSE)) 
+```
+We'd like to keep the bigram column, so we need to set `remove` to FALSE. Alternatively, we can use `unite()` later to glue the single words back together into bigrams.
+
+Next, we can remove bigrams if either word is in the stopwords data:
+```{r}
+(alice_bigrams_stop <- alice_bigrams %>%
+  filter(!word1 %in% stop_words$word & !word2 %in% stop_words$word))
+```
+
+...and count them again:
+```{r}
+alice_bigrams_stop %>% 
+  count(bigram, sort = TRUE)
+```
+
+
+### Plot bigram frequencies
+
+We can now plot these bigram frequencies, similar to how we visualised word frequencies earlier.
+```{r}
+alice_bigrams_stop %>% 
+  count(bigram, sort = TRUE) %>% 
+  top_n(n = 10, wt = n) %>% 
+  ggplot(aes(y = reorder(bigram, n),
+             x = n,
+             fill = n)) +
+  geom_col(show.legend = FALSE) +
+  labs(y = NULL, x = "frequency", title = "10 most frequent bigrams in Alice's Adventures in Wonderland") +
+  theme_minimal()
+```
+
+
+### Filtering n-grams
+
+To find bigrams that contain specific words, we can use `filter()`:
+```{r}
+alice_bigrams_stop %>% 
+  filter(word1 == "alice" | word2 == "alice") %>% 
+  distinct(bigram)
+```
+
+...alternatively, we can use `str_detect()` to find instances of "alice" in the bigram column:
+```{r}
+alice_bigrams_stop %>% 
+  filter(str_detect(bigram, "alice")) %>% 
+  distinct(bigram)
+```
+This applies partial matching, so e.g. "alice's" is also found, in contrast to the first filter command.
+
+
+## Creating and visualising a bigram network
+
+Let's visualise which words commonly co-occur in a network graph. 
+First, we need to count the bigrams. Then, the `graph_from_data_frame()` command from the igraph package reformats the data.
+```{r}
+alice_graph <- alice_bigrams_stop %>% 
+  count(word1, word2) %>% # we need the words separated for this graph
+  filter(n > 3) %>% 
+  graph_from_data_frame()
+
+alice_graph
+```
+
+Now, it can be plotted with `ggraph()` from the eponymous package.
+The exact layout of this graph is randomly generated, so we'll set a seed to make sure we get the same graph:
+```{r}
+set.seed(2023)
+
+ggraph(alice_graph, layout = "fr") +
+  geom_edge_link() +
+  geom_node_point() +
+  geom_node_text(aes(label = name), 
+                 vjust = 1, hjust = 1)
+```
+We get a sense of which words occur together, but the graph could definitely look prettier and it's unclear which word occurs first: is it "rose tree" or "tree rose", for example?
+
+We'll create an object called "a" that saves an arrow shape:
+```{r}
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+```
+This way, we can indicate how the words in the bigrams are ordered.
+
+Nicer graph:
+```{r}
+ggraph(alice_graph, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), # the links are more transparent if the bigram is rare
+                 show.legend = FALSE,
+                 arrow = a, end_cap = circle(.03, 'inches')) + #adding the arrows, making sure they don't touch the node
+  geom_node_point(color = "darkblue", size = 3) + 
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void() +
+  labs(title = 'Bigrams (two-word combinations) in "Alice\'s Adventures in Wonderland"')
+```
+
+
+## TRY IT
+
+### Bigram network of Beyoncé lyrics
+
+Use Beyoncé's lyrics to create a network graph of bigrams that occur at least 15 times.
+```{r}
+beyonce <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-29/beyonce_lyrics.csv')
+
+head(beyonce)
+```
+
+Here are step-by-step tips:
+- remove the song "Halo Greek translation"
+- use `unnest_tokens()` to create a column with bigrams
+- remove any missing values (with `drop_na()`)
+- separate the bigrams into single words
+- remove stopwords
+- count how often each word 1 word 2 combination occurs in the data
+- make sure to only keep word combinations that occur more often than 15 times
+- use `graph_from_data_frame()`
+...then plot!
+
+Additionally, you can create a list of custom stopwords that often occur in songs ("uuh", "oh", etc.)
+
+
+# 3 Comparing the vocabulary of texts
+
+Next, we'll create two graphs to compare the vocabulary of our texts, focusing on Alice's Adventures and Anderson's Fairytales. The newly created comp_2 data frame contains only the words and their frequencies in the two texts in two separate columns.
+
+## Creating a suitable data frame
+```{r}
+comp_2 <- fairytales_freq %>% 
+  filter(gutenberg_id == "Alice's Adventures in Wonderland"|gutenberg_id == "Hans Christian Anderson's Fairytales") %>% 
+  group_by(gutenberg_id) %>% 
+  mutate(proportion = n / sum(n)) %>% #creates proportion column (word frequency divided by overall frequency per author)
+  select(-n) %>%
+  pivot_wider(names_from = gutenberg_id,
+              values_from = proportion)
+
+comp_2
+```
+
+
+## Creating a graph
+Now, we can plot the words. Their placement depends on the word frequencies. Additionally, colour coding shows how different the frequencies are - darker items are more similar in terms of their frequencies, lighter-coloured ones more frequent in one text compared to the other. We'll discuss the interpretation in more detail once we've created the threeway comparison.
+```{r}
+ggplot(comp_2, 
+       aes(x = `Alice's Adventures in Wonderland`, y = `Hans Christian Anderson's Fairytales`, 
+           color = abs(`Alice's Adventures in Wonderland` - `Hans Christian Anderson's Fairytales`))) +
+  geom_abline(color = "gray40", lty = 2) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  theme_light() +
+  theme(legend.position="none") +
+  labs(y = "Hans Christian Anderson's Fairytales", x = "Alice's Adventures in Wonderland")
+```
+
+
+#### TRY IT
+
+Return to the lyrics we read in for the previous exercise:
+```{r}
+taylor_swift <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-29/taylor_swift_lyrics.csv')
+beyonce <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-29/beyonce_lyrics.csv')
+```
+
+Our aim will be to compare words used in Taylor Swift's lyrics to those used in Beyoncé's lyrics - which words are used frequently by both artists, and which are used more by one or the other?
+
+Steps:
+- for each data frame, we need to unnest tokens
+- and keep only the artist and word columns, making sure they're in the same order and have the same names
+- then, we need to combine them into one data frame with `bind_rows()`
+- next, we should remove stopwords
+- then, we can calculate percentages for each artist separately
+- change the format of the data frame so that the percentages are in separate columns, one for each of the singers
+- we're ready to plot!
+
+
+# 4 Word and document frequencies
+
+## tf-idf
+How can we quantify what a text/document is about? We could analyse the term frequency (tf) - how often does a term occur in a text/document. However, common words are the same in most texts, e.g. grammatical words like articles. 
+A solution would be to instead analyse the inverse document frequency (idf) which lowers the importance of frequent words and raises the importance of rare words in documents. So it's a measure of how important a word is to a text compared to how important it is in the collection of texts.
+
+### The bind_tf_idf-function
+* input: format needs to be one row per token (term), per document
+* one column (here: word) contains the terms/tokens
+* one column (here: gutenberg_id) contains the documents
+```{r}
+head(fairytales_freq)
+```
+
+To add the tf-idf score:
+```{r}
+fairytales_idf <- fairytales_freq %>% 
+  bind_tf_idf(word, gutenberg_id, n) # arguments: token, document, count
+
+fairytales_idf %>%
+  select(gutenberg_id, word, tf_idf) %>% 
+  arrange(desc(tf_idf))
+```
+interpretation:
+* low tf_idf if words appear in many books - high tf_idf if they occur in few books  
+* helps us find characteristic words for documents  
+* so unsurprisingly, in our data, the first hits with the highest tf_idf are character names  
+
+#### Characteristic words per book
+Visualisation of the top 20 tf-idf words per book:
+```{r}
+fairytales_idf %>%
+  group_by(gutenberg_id) %>%
+  slice_max(order_by = tf_idf, n = 20) %>% 
+  ggplot(aes(x = reorder_within(word, tf_idf, gutenberg_id), y = tf_idf, fill = gutenberg_id)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = "tf-idf") +
+  facet_wrap(~gutenberg_id, scales = "free") +
+  coord_flip() +
+  scale_x_reordered() +
+  theme_minimal()
+```
+
+#### Characteristic words per chapter
+tf_idf can also be used to find characteristic words per chapter, or any other text unit. We'll only use "Alice in Wonderland" as an example since it consists of several chapters.  
+
+We already created a data frame with information on which chapter each line came from:
+```{r}
+alice
+```
+
+To prepare this for the analysis:
+```{r}
+alice_freq <- alice %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(stop_words)
+```
+
+Now let's calculate the tf-idf per chapter:
+* first step is to calculate the frequency for each word per chapter
+* then apply bind_tf_idf function
+* show words with the highest tf_idf
+```{r}
+alice_freq <- alice_freq %>% 
+  group_by(chapter) %>% 
+  count(word, sort = TRUE)
+
+alice_freq
+```
+
+
+```{r}
+alice_idf <- alice_freq %>% 
+  bind_tf_idf(word, chapter, n)
+
+alice_idf %>%
+  select(chapter, word, tf_idf) %>% 
+  arrange(desc(tf_idf))
+```
+
+Again, we can visualise the most characteristic words, this time per chapter:
+```{r}
+alice_idf %>%
+  group_by(chapter) %>% 
+  slice_max(order_by = tf_idf, n = 5) %>% # we get 6 or 7 words for some chapters because of ties in the tf_idf column
+  ggplot(aes(reorder_within(word, tf_idf, chapter), tf_idf, fill = chapter)) +
+  geom_col(show.legend = FALSE) +
+  theme_light() +
+  labs(x = NULL, y = "tf-idf") +
+  facet_wrap(~ chapter, scales = "free") +
+  coord_flip() +
+  scale_x_reordered()
+```
+
+
+## TRY IT
+### TF-IDF with n-grams
+Instead of looking at characteristic words per document, we can analyse characteristic bigrams or n-grams per document. Let's do this for the different chapters. 
+
+Start with the alice_bigrams_stop data we created earlier and follow these steps:
+- count how often each bigram appears in each chapter
+- then, use `bind_tf_idf`
+- finally, recreate the plot we made above (but filter to the top 3 bigrams per chapter)
+
+
+### Characteristic bigrams in Taylor Swift's albums
+
+Using Taylor Swift's lyrics, recreate the tf-idf bar graph we made earlier. We're interested in characteristic bigrams per album.
+```{r}
+taylor_swift <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-29/taylor_swift_lyrics.csv')
+
+head(taylor_swift)
+```
+
+The steps you need to get there are:
+- use `unnest_tokens()` to extract bigrams from the `Lyrics` column
+- `separate()` the bigrams into single words
+- remove stopwords (making sure to remove them if they're the first or the second word in the bigram)
+- count how often each bigram appears per album
+- use `bind_tf_idf()`
+
+Plot the five bigrams with the highest `tf_idf` per album. As a bonus, create a custom stopword list of words like "uh" and "ah" that occur in the lyrics and remove those, too. The bar graph helps you identify them.
+
+
+# 5 Sentiment analysis
+
+## Sentiment analysis based on single words
+
+### Animal Crossing Data
+
+Animal Crossing is a 2020 "sandbox" game, where your character lives on an island with a variety of different animal characters and collects resources to progress and upgrade the island. It has had mixed reviews: either it is the best game ever, or boring and pointless. It has also been criticized for the fact that you can only have one save game per console ("forcing" families/couples to buy extra consoles to avoid fights over island decor..)
+
+"user_reviews" includes the date of a review posting, the user_name of the writer, the grade they give the game (0-10), and the text they wrote.
+
+```{r}
+user_reviews_raw <- readr::read_tsv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/user_reviews.tsv') #download from tidytuesday github
+
+head(user_reviews_raw)
+```
+
+### Preprocessing
+- unnesting tokens (words)
+- removing stopwords, including the two custom words "nintendo" and "switch"
+Note - it's not always necessary to remove all stop words for sentiment analysis -- if a word has no emotional/sentiment-based meaning, it will just receive no score. But can be useful for misclassified words.
+```{r}
+more_stop_words <- tibble(word = c("nintendo", "switch"))
+
+user_reviews <- user_reviews_raw %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(stop_words) %>% 
+  anti_join(more_stop_words)
+
+head(user_reviews)
+```
+
+### Sentiment analysis by word
+- Assigns each word a score or a value based on entries in a pre-defined dictionary -- then adds up all the scores to get a score per textual unit
+- Dictionaries created by crowd-sourcing (Amazon Mechanical Turk, Twitter data) and/or by work on parts of the author(s) in collecting and analyzing the words
+- Major disadvantage: what if the text includes the phrase "not good"? Word-based scores will just see "good" and give a positive score!
+
+- We'll look at two different dicts, all included in the tidytext package: 
+  - All dictionaries are called with get_sentiments()
+  - Then, join with inner_join (keeps all words that are in BOTH dataframes)
+  - And count or sum
+
+#### bing
+- Binary: positive/negative
+```{r}
+head(get_sentiments("bing"))
+```
+
+Inner join to get a sentiment for each word:
+```{r}
+user_reviews %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  head()
+```
+-> note that this removes any words that are not in this sentiment dictionary!
+
+```{r}
+user_reviews %>% 
+  inner_join(get_sentiments("bing"))%>% 
+  count(sentiment)
+```
+
+Most common positive/negative words? Count by word and sentiment
+```{r}
+user_reviews %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  group_by(sentiment) %>% 
+  count(word, sort = TRUE) %>% 
+  slice_max(order_by = n, n = 5)
+```
+
+Each reviewer's sentiment score:
+(Note: we retain "grade" in the count command to keep this column for later)
+```{r}
+user_reviews %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(user_name, grade, sentiment) %>% 
+  head()
+```
+
+Create columns for negative and positive counts, then calculate the total_score column (& save)
+```{r}
+(user_sentiments_bing <- user_reviews %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(user_name, grade, sentiment) %>% 
+  pivot_wider(names_from = "sentiment",
+              values_from = n, 
+              values_fill = 0) %>% 
+  mutate(total_score = positive - negative))
+```
+
+Look at the range of the scores
+```{r}
+user_sentiments_bing %>% 
+  summarize(max(total_score), min(total_score)) 
+```
+
+Let's see if there seems to be a relationship between the sentiment of each review and the grade the reviewer gave:
+```{r}
+ggplot(user_sentiments_bing) +
+  aes(x = as_factor(grade), y = total_score) +
+  geom_violin() +
+  geom_boxplot(width = 0.3) +
+  theme_minimal()
+```
+-> reviews with higher grades seem to be very slightly more positive than those with lower grades, but there is no clear trend
+
+
+#### AFINN
+- Scale: -5 (very negative) to 5 (very positive)
+```{r}
+head(get_sentiments("afinn"), n = 20)
+```
+
+Join to reviews and take a look
+```{r}
+user_reviews %>% 
+  inner_join(get_sentiments("afinn")) %>% 
+  head()
+```
+
+Sum up one total per review (& save)
+```{r}
+(user_sentiments_afinn <- user_reviews %>% 
+  group_by(user_name, grade) %>% #retain grade for use later
+  inner_join(get_sentiments("afinn")) %>% 
+  summarize(total_score = sum(value)) %>% 
+  ungroup())
+```
+
+Look at the range of the scores
+```{r}
+user_sentiments_afinn %>% 
+  summarize(max(total_score), min(total_score)) 
+```
+
+Graph it:
+```{r}
+ggplot(user_sentiments_afinn) +
+  aes(x=as_factor(grade), y=total_score) +
+  geom_violin() +
+  geom_boxplot(width = 0.3) +
+  theme_light()
+```
+
+What's going on with the very negative sentiment scores for some positive reviews? Let's join the text back to the sentiment scores and take a look:
+```{r}
+user_sentiments_afinn <- left_join(user_sentiments_afinn, user_reviews_raw)
+
+user_sentiments_afinn %>% 
+  filter(grade > 8 & total_score < 0) %>% 
+  select(grade, total_score, text) %>% 
+  arrange(total_score)
+```
+Turns out these reviewers give 10 points to offset the (as they see it) unjustly low reviews while making fun of people who give 0 points or rate the game before it has come out.
+
+Reversely, why positive scores with low grades?
+```{r}
+user_sentiments_afinn %>% 
+  filter(grade < 3 & total_score > 20) %>% 
+  select(grade, total_score, text) %>% 
+  arrange(desc(total_score))
+```
+These reviewers tend to say that they initially liked the game until they realised that only one person could play it.
+
+
+#### nrc
+- Multiple emotions: positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise
+- Scale: binary: either assigned the emotion or not
+```{r}
+head(get_sentiments("nrc"))
+```
+
+
+## Sentiment analysis for sentences
+
+So far, we've used a dictionary lookup to add sentiments for each individual word. This approach can run into problems. For example, "happy" would always receive a positive score, even though depending on the context (e.g. "not happy at all") that might not be appropriate.
+Next, we'll calculate sentiment scores by sentence, using the [sentimentr package](https://cran.r-project.org/web/packages/sentimentr/readme/README.html). This package also considers things like negation ("not happy") and amplifiers ("really happy" is more positive than just "happy") as well as deamplifiers (e.g. "barely") and adversative conjunctions (e.g. "but") when calculating sentiment scores.
+
+You can run these lines of code to see the items that are considered negators, amplifiers, deamplifiers, and adversative conjunctions.
+```{r}
+lexicon::hash_valence_shifters[y==1] # negators 
+lexicon::hash_valence_shifters[y==2] # amplifiers 
+lexicon::hash_valence_shifters[y==3] # deamplifiers 
+lexicon::hash_valence_shifters[y==4] # adversative conjunctions 
+```
+
+Let's look at a simple example to compare the two approaches:
+```{r}
+examples <- data.frame(
+  id = c("1", "2"),
+  text = c("I was very happy.", "She was not happy.")
+)
+
+sentiment(get_sentences(examples$text))
+
+examples %>% 
+  unnest_tokens(word, text) %>% 
+  inner_join(get_sentiments("bing"))
+```
+
+
+## Polarity
+### ...by entire texts
+First, we'll calculate an average sentiment score for each of the texts (i.e. entire plays) in our Shakespeare data.
+Be warned - since this is a lot of data, this will take a little while...
+```{r}
+shakes_sentiments <- shakes %>%
+    mutate(sents = get_sentences(text)) %$% # note the different pipe symbol! We need to use this because the following function does not take the dataframe as the first argument
+    sentiment_by(sents, doc_id) # this would also work for chapters or other units of text
+```
+
+#### Plotting
+```{r}
+ggplot(shakes_sentiments) + 
+  aes(x = reorder(doc_id, -ave_sentiment), y = ave_sentiment) + 
+  geom_point() + 
+  labs(x = "Shakespeare play", y = "average sentiment score") +
+  theme_minimal()
+```
+
+Adding information on the kinds of plays and recreating the plot:
+```{r}
+shakes_sentiments <- shakes_sentiments %>% 
+  mutate(type_of_play = case_when(
+    doc_id %in% c("Midsummer", "Tempest", "Merchant of Venice", "As You Like It", "Shrew") ~ "comedy",
+    doc_id %in% c("King Lear", "Romeo and Juliet", "Macbeth", "Hamlet", "Julius Caesar", "Othello") ~ "tragedy",
+    .default = "history play"
+  ))
+
+ggplot(shakes_sentiments) + 
+  aes(y = reorder(doc_id, -ave_sentiment), x = ave_sentiment) + 
+  geom_point(aes(colour = type_of_play), size = 3) +
+  theme_minimal() +
+  labs(y = "Shakespeare play", 
+       x = "average sentiment score",
+       title = "Average sentiment scores by Shakespeare plays",
+       subtitle = "Sentiment scores can distinguish tragedies from comedies",
+       colour = "Type of play") +
+  scale_colour_viridis(discrete = TRUE, direction = -1)
+```
+So we can see that the sentiment scores accurately distinguish the comedies and tragedies, with the comedies receiving higher sentiment scores.
+
+
+### ...by sentence
+We'll break the texts up into individual sentences and calculate the sentiment score for each individual sentence.
+```{r}
+shakes_sentences <- shakes %>% 
+  mutate(text = str_remove_all(text, "\\n")) %>% # for these texts, R represents line breaks as \n, which we need to delete because they mess with the get_sentences function
+  get_sentences() %>% 
+  sentiment()
+
+shakes_sentences
+```
+
+#### Plotting
+Now, we'll plot the sentiment scores per sentence separately for each play.
+```{r}
+ggplot(shakes_sentences) + 
+  aes(sentence_id, sentiment) + 
+  geom_smooth() + 
+  facet_wrap(~doc_id, scales = "free_x")
+```
+
+Let's colour-code the plots by type of play:
+```{r}
+shakes_sentences <- shakes_sentences %>% 
+  mutate(type_of_play = case_when(
+    doc_id %in% c("Midsummer", "Tempest", "Merchant of Venice", "As You Like It", "Shrew") ~ "comedy",
+    doc_id %in% c("King Lear", "Romeo and Juliet", "Macbeth", "Hamlet", "Julius Caesar", "Othello") ~ "tragedy",
+    .default = "history play"
+  ))
+
+ggplot(shakes_sentences) + 
+  aes(sentence_id, sentiment, fill = type_of_play, color = type_of_play) + 
+  scale_fill_viridis(discrete=TRUE) +
+  scale_color_viridis(discrete = TRUE) +
+  geom_smooth() + 
+  facet_wrap(~doc_id, scales = "free_x") + 
+  labs(x = "sentence", y = "average sentiment score",
+       title = "Sentiment scores in Shakespeare plays") + 
+  theme_minimal()
+```
+
+Plots like these can help trace sentiments throughout a text - but note that these sentiment dictionaries are still limited by the data they contain (mostly modern English, which is why some of these lines look very flat and likely don't represent the actual sentiments in these plays).
+
+
+### ...by chapter and sentences
+
+For this next part, we'll use *Alice's Adventures in Wonderland*. Since the gutenbergr package preserves the line structure of the original text, we need to first paste the lines to form a coherent text. Otherwise, the get_sentences function won't work properly. 
+```{r}
+alice <- alice %>% 
+  group_by(chapter) %>% 
+  summarise(text_complete = paste(text, collapse=" ")) %>% 
+  ungroup()
+
+alice
+```
+
+Let's now get sentiment scores for each sentence:
+```{r}
+alice_sentences <- alice %>% 
+  get_sentences() %>% 
+  sentiment()
+```
+
+#### Plotting
+...and plot their development per chapter:
+```{r}
+ggplot(alice_sentences) + 
+  aes(sentence_id, sentiment, colour = chapter, fill = chapter) + 
+  geom_smooth(show.legend = FALSE) + 
+  facet_wrap(~chapter, scales = "free_x") + 
+  labs(x = "sentence", 
+       y = "average sentiment score",
+       title = "Sentiment scores in Alice in Wonderland chapters") + 
+  theme_minimal() +
+  scale_colour_viridis(discrete = TRUE) +
+  scale_fill_viridis(discrete = TRUE)
+```
+
+
+## Emotions
+
+We've focused on polarity (positive - negative) per sentences, but the sentimentr package also provides many other interesting functions. Here are some we won't have time to go into today:  
+- find and count instances of profanity
+- replace emojis and internet slang/abbreviations with their text equivalents
+- create your own sentiment dictionary
+- find emotions instead of sentiment (like the nrc dictionary - positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise)
+
+See the documentation here: https://cran.r-project.org/web/packages/sentimentr/sentimentr.pdf)
+
+
+## TRY IT
+
+Try to use sentimentr, for example go back to the song lyrics data:
+- To get sentence-based sentiment or emotion scores
+- Compare Beyoncé and Taylor Swift lyrics in terms of their sentiments/emotions etc.
+- Visualise your results
+
+Alternatively, you can look at sentence-based sentiment scores for the Animal Crossing review data:  
+- Use the sentimentr package to get sentiment scores for each user_name (don't drop the grade column!)
+- Compare your results to those of the word-based analysis. Do sentiment scores based on sentences better reflect the grades the users gave?
+
+
+
+# 6 Takeaway message and other resources
+
+- R offers powerful tools for working with and analysing texts
+- one pipeline: from reading in, to data cleaning (removing special characters and stopwords), to counts or other measures, and to visualisations
+- many more kinds of analyses are possible such as topic modeling, collocation analysis...
+
+- but: no automated analysis can be perfect
+- for example, sentiment analysis has difficulties dealing with non-standard language such as informal spoken or historical registers - these words will not occur in the sentiment dictionary
+- very useful preprocessing step: lemmatisation (finding a word's base form or 'lemma') 
+-> improves accuracy of counts/frequencies and sentiment analysis
+- also possible to enrich data with parts of speech or dependency parsing
+
+
+
+Primary source: Text Mining with R by Julia Silge & David Robinson 
+https://www.tidytextmining.com/
+
+
+Other recommendations:
+
+Supervised Machine Learning for Text Analysis in R by Emil Hvitfeldt and Julia Silge
+https://smltar.com/ 
+
+Tutorials by the Language Technology and Data Analysis Laboratory (LADAL, University of Queensland)
+https://ladal.edu.au/tutorials.html#5_Text_Analytics

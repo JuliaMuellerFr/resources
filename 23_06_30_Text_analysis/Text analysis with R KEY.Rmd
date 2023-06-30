@@ -64,7 +64,7 @@ Result is shown right under the block:
 ```{r}
 library(tidytext) #for text mining specifically
 library(gutenbergr) #to access full-text books that are in the public domain
-#library(scales) # for visualising percentages
+library(scales) # for visualising percentages
 library(readtext) # for reading in txt files
 library(igraph) # for creating networks of bigrams
 library(ggraph) # for visualising networks of bigrams
@@ -131,8 +131,6 @@ head(shakes)
 
 ### Book data from Project Gutenberg
 * Project Gutenberg: free downloads of books in the public domain (i.e. lots of classic literature)
-* Currently in a legal battle in Germany
--> impossible to download via the website
 * Still accessible via the R package gutenbergr by ID
 * Top 100 books for inspiration (changes daily based on demand): https://www.gutenberg.org/browse/scores/top
 * Catalog: https://www.gutenberg.org/catalog/ 
@@ -202,7 +200,7 @@ fairytales_raw %>%
 ```
 
 ### TRY IT
-Use the `unnest_tokens()` function on the Shakespeare texts.
+Use the `unnest_tokens()` function on the Shakespeare texts to split them into words. Save the resulting data frame as shakes_unnest.
 ```{r}
 (shakes_unnest <- shakes %>% 
   unnest_tokens(word, text))
@@ -311,7 +309,7 @@ shakes_freq
 
 #### Plotting word frequencies - bar graphs
 
-Bar graph of top words in Grimm's fairytales.
+Bar graph of top words in Grimm's fairytales
 
 Basic graph:
 ```{r}
@@ -368,7 +366,7 @@ fairytales_freq %>%
 We can also use colour to indicate which book a word is from:
 ```{r}
 fairytales_freq %>% 
-  filter(n > 80) %>% 
+  filter(n > 90) %>% 
   ggplot(aes(x=reorder(word, n), y=n, fill = gutenberg_id)) + # fill in the bars according to which book the word is from
   geom_col() +
   labs(x = "word",
@@ -384,7 +382,7 @@ Alternatively, we can find and plot the top n words from each book by adding a f
 ```{r}
 fairytales_freq %>% 
   group_by(gutenberg_id) %>% 
-  slice_max(order_by = n, n = 10) %>%  # find the ten words with the highest frequencies
+  slice_max(order_by = n, n = 10) %>%  # find the ten words with the highest frequencies separately for each book
   ggplot() +
   # when reordering with a facet, use reorder_within() and scale_x_reordered()
   aes(x = reorder_within(word, -n, gutenberg_id), y = n, fill = gutenberg_id) +
@@ -436,7 +434,8 @@ shakes_freq %>%
   labs(x = "word",
        y = "frequency",
        title = "Most frequent words") +
-  facet_wrap(~doc_id, scales = "free_x")
+  facet_wrap(~doc_id, scales = "free_x") +
+  scale_fill_viridis(discrete = TRUE)
 ```
 
 
@@ -681,56 +680,6 @@ ggraph(alice_graph, layout = "fr") +
 
 ## TRY IT
 
-### Characteristic bigrams in Taylor Swift's albums
-
-Using Taylor Swift's lyrics, recreate the tf-idf bar graph we made earlier. We're interested in characteristic bigrams per album.
-```{r}
-taylor_swift <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-29/taylor_swift_lyrics.csv')
-
-head(taylor_swift)
-```
-
-The steps you need to get there are:
-- use `unnest_tokens()` to extract bigrams from the `Lyrics` column
-- `separate()` the bigrams into single words
-- remove stopwords (making sure to remove them if they're the first or the second word in the bigram)
-- count how often each bigram appears per album
-- use `bind_tf_idf()`
-
-Plot the five bigrams with the highest `tf_idf` per album. As a bonus, create a custom stopword list of words like "uh" and "ah" that occur in the lyrics and remove those, too. The bar graph helps you identify them.
-
-```{r}
-custom_stop <- c("ooh", "ah", "na", "whoa", "uh", "ey", "ha", "eeh", "woah", "ohh", "yeah", "ohhh", "eh", "aah", "ahh")
-
-(taylor_tfidf <- taylor_swift %>% 
-  unnest_tokens(bigram, Lyrics, token = "ngrams", n = 2) %>% 
-  separate(bigram, c("word1", "word2"), sep = " ", remove = FALSE) %>% 
-  filter(!word1 %in% stop_words$word & 
-           !word2 %in% stop_words$word &
-           !word1 %in% custom_stop &
-           !word2 %in% custom_stop) %>% 
-  count(Album, bigram) %>% 
-  bind_tf_idf(bigram, Album, n))
-
-taylor_tfidf %>%
-  group_by(Album) %>%
-  slice_max(tf_idf, n = 5, with_ties = FALSE) %>%
-  ungroup() %>%
-  ggplot() +
-  aes(x = tf_idf, 
-      y = fct_reorder(bigram, tf_idf), 
-      fill = Album) +
-  geom_bar(stat = "identity") +
-  facet_wrap(~ Album, scales = "free") +
-  labs(x = "tf-idf", 
-       y = NULL,
-       title = "Top five bigrams in Taylor Swift's albums") +
-  theme_minimal() +
-  theme(legend.position = "none") +
-  tayloRswift::scale_fill_taylor(palette = "lover")
-```
-
-
 ### Bigram network of Beyoncé lyrics
 
 Use Beyoncé's lyrics to create a network graph of bigrams that occur at least 15 times.
@@ -754,6 +703,8 @@ Here are step-by-step tips:
 Additionally, you can create (or add to, if you completed the Taylor Swift exercise) a list of custom stopwords that often occur in songs ("uuh", "oh", etc.)
 
 ```{r}
+custom_stop <- c("ooh", "ah", "na", "whoa", "uh", "ey", "ha", "eeh", "woah", "ohh", "yeah", "ohhh", "eh", "aah", "ahh")
+
 beyonce_graph <- beyonce %>% 
   filter(song_name != "Halo Greek translation") %>% 
   unnest_tokens(bigram, line, token = "ngrams", n = 2) %>% 
@@ -983,7 +934,7 @@ alice_idf %>%
 
 
 ## TRY IT
-*TF-IDF with n-grams*
+### TF-IDF with n-grams
 Instead of looking at characteristic words per document, we can analyse characteristic bigrams or n-grams per document. Let's do this for the different chapters. 
 
 Start with the alice_bigrams_stop data we created earlier and follow these steps:
@@ -1005,15 +956,63 @@ The tf_idf column shows us characteristic words for each chapter. The mock turtl
 alice_bigram_tfidf %>%
   group_by(chapter) %>% 
   slice_max(order_by = tf_idf, n = 3) %>% 
-  ggplot(aes(reorder_within(bigram, tf_idf, chapter), tf_idf, fill = chapter)) +
+  ggplot(aes(y = reorder_within(bigram, tf_idf, chapter), x = tf_idf, fill = chapter)) +
   geom_col(show.legend = FALSE) +
   theme_light() +
-  labs(x = NULL, y = "tf-idf") +
+  labs(y = NULL, x = "tf-idf") +
   facet_wrap(~ chapter, scales = "free") +
-  coord_flip() +
-  scale_x_reordered()
+  scale_y_reordered()
 ```
 
+
+### Characteristic bigrams in Taylor Swift's albums
+
+Using Taylor Swift's lyrics, recreate the tf-idf bar graph we made earlier. We're interested in characteristic bigrams per album.
+```{r}
+taylor_swift <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-29/taylor_swift_lyrics.csv')
+
+head(taylor_swift)
+```
+
+The steps you need to get there are:
+- use `unnest_tokens()` to extract bigrams from the `Lyrics` column
+- `separate()` the bigrams into single words
+- remove stopwords (making sure to remove them if they're the first or the second word in the bigram)
+- count how often each bigram appears per album
+- use `bind_tf_idf()`
+
+Plot the five bigrams with the highest `tf_idf` per album. As a bonus, create a custom stopword list of words like "uh" and "ah" that occur in the lyrics and remove those, too. The bar graph helps you identify them.
+
+```{r}
+custom_stop <- c("ooh", "ah", "na", "whoa", "uh", "ey", "ha", "eeh", "woah", "ohh", "yeah", "ohhh", "eh", "aah", "ahh")
+
+(taylor_tfidf <- taylor_swift %>% 
+  unnest_tokens(bigram, Lyrics, token = "ngrams", n = 2) %>% 
+  separate(bigram, c("word1", "word2"), sep = " ", remove = FALSE) %>% 
+  filter(!word1 %in% stop_words$word & 
+           !word2 %in% stop_words$word &
+           !word1 %in% custom_stop &
+           !word2 %in% custom_stop) %>% 
+  count(Album, bigram) %>% 
+  bind_tf_idf(bigram, Album, n))
+
+taylor_tfidf %>%
+  group_by(Album) %>%
+  slice_max(tf_idf, n = 5, with_ties = FALSE) %>%
+  ungroup() %>%
+  ggplot() +
+  aes(x = tf_idf, 
+      y = fct_reorder(bigram, tf_idf), 
+      fill = Album) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ Album, scales = "free") +
+  labs(x = "tf-idf", 
+       y = NULL,
+       title = "Top five bigrams in Taylor Swift's albums") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  tayloRswift::scale_fill_taylor(palette = "lover")
+```
 
 
 # 5 Sentiment analysis
@@ -1238,7 +1237,7 @@ ggplot(shakes_sentiments) +
 
 Adding information on the kinds of plays and recreating the plot:
 ```{r}
-shakes_sentences <- shakes_sentences %>% 
+shakes_sentiments <- shakes_sentiments %>% 
   mutate(type_of_play = case_when(
     doc_id %in% c("Midsummer", "Tempest", "Merchant of Venice", "As You Like It", "Shrew") ~ "comedy",
     doc_id %in% c("King Lear", "Romeo and Juliet", "Macbeth", "Hamlet", "Julius Caesar", "Othello") ~ "tragedy",
@@ -1253,7 +1252,8 @@ ggplot(shakes_sentiments) +
        x = "average sentiment score",
        title = "Average sentiment scores by Shakespeare plays",
        subtitle = "Sentiment scores can distinguish tragedies from comedies",
-       colour = "Type of play")
+       colour = "Type of play") +
+  scale_colour_viridis(discrete = TRUE, direction = -1)
 ```
 So we can see that the sentiment scores accurately distinguish the comedies and tragedies, with the comedies receiving higher sentiment scores.
 
@@ -1324,13 +1324,15 @@ alice_sentences <- alice %>%
 ...and plot their development per chapter:
 ```{r}
 ggplot(alice_sentences) + 
-  aes(sentence_id, sentiment) + 
-  geom_smooth() + 
+  aes(sentence_id, sentiment, colour = chapter, fill = chapter) + 
+  geom_smooth(show.legend = FALSE) + 
   facet_wrap(~chapter, scales = "free_x") + 
   labs(x = "sentence", 
        y = "average sentiment score",
        title = "Sentiment scores in Alice in Wonderland chapters") + 
-  theme_minimal()
+  theme_minimal() +
+  scale_colour_viridis(discrete = TRUE) +
+  scale_fill_viridis(discrete = TRUE)
 ```
 
 
