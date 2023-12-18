@@ -1,7 +1,7 @@
 ---
 title: "Text analysis with R"
 author: "Julia Müller"
-date: "Data Café Kiel, June 29 2023"
+date: "Data Café Kiel, June 30 2023"
 output: html_document
 ---
 
@@ -43,11 +43,14 @@ Twitter: JuliaMuellerFr
 
 - In an R-Markdown document (like this one), R Code must be in a "code chunk":
 ```{r}
-
+2+1
 ```
 -> to add, click the green C (upper right)
 - R interprets anything in this block as code
 - be careful not to accidentally delete some of the backticks
+```{r}
+
+```
 
 Run code:
 - click on the line and press Ctrl + Enter (Windows) or Cmd + Enter (Mac) 
@@ -170,6 +173,8 @@ fairytales_raw <- fairytales_raw %>%
                                    "Alice's Adventures in Wonderland" = "11",
                                    "Grimm's Fairytales" = "2591",
                                    "Hans Christian Anderson's Fairytales" = "1597"))
+
+fairytales_raw
 ```
 
 
@@ -200,6 +205,10 @@ fairytales_raw %>%
 ```
 
 ### TRY IT
+```{r}
+shakes
+```
+
 Use the `unnest_tokens()` function on the Shakespeare texts to split them into words. Save the resulting data frame as shakes_unnest.
 ```{r}
 (shakes_unnest <- shakes %>% 
@@ -226,6 +235,7 @@ shakes_unnest <- shakes_unnest %>%
 We can take a look:
 ```{r}
 stop_words
+tidytext::get_stopwords(source = )
 ```
 
 ```{r}
@@ -283,6 +293,10 @@ fairytales_freq <- fairytales_tidy %>%
   ungroup() # to undo the grouping
 
 fairytales_freq
+
+# alternative syntax for counting
+fairytales_tidy %>% 
+  count(gutenberg_id, word)
 ```
 
 `filter()` can be used to look at subsets of the data, i.e. one book, all words with freq above 100, etc. Note here that I don't save this output!
@@ -291,7 +305,15 @@ fairytales_freq %>%
   filter(gutenberg_id == "Grimm's Fairytales")
 
 fairytales_freq %>% 
-  filter(n > 200)
+  filter(n == 1)
+```
+
+
+```{r}
+shakes_unnest %>% 
+  group_by(doc_id) %>% 
+  count(word) %>% 
+  ungroup()
 ```
 
 
@@ -302,6 +324,9 @@ shakes_freq <- shakes_unnest %>%
   group_by(doc_id) %>% 
   count(word, sort = TRUE) %>% 
   ungroup()
+
+shakes_freq <- shakes_freq %>% 
+  drop_na(word)
 
 shakes_freq
 ```
@@ -384,10 +409,11 @@ fairytales_freq %>%
   group_by(gutenberg_id) %>% 
   slice_max(order_by = n, n = 10) %>%  # find the ten words with the highest frequencies separately for each book
   ggplot() +
+  facet_wrap(~gutenberg_id, scales = "free_x") +
   # when reordering with a facet, use reorder_within() and scale_x_reordered()
+  #aes(x = word, y = n, fill = gutenberg_id) +
   aes(x = reorder_within(word, -n, gutenberg_id), y = n, fill = gutenberg_id) +
   geom_col() +
-  facet_wrap(~gutenberg_id, scales = "free_x") +
   theme_minimal() +
   scale_x_reordered() +
   theme(legend.position = "none",
@@ -405,6 +431,11 @@ Working with the Shakespeare data:
 
 Tip for both options: Copy-paste the code, then change the data frame, variable names, etc.
 
+```{r}
+shakes_freq
+```
+
+
 (a)
 ```{r}
 shakes_freq %>% 
@@ -421,6 +452,7 @@ shakes_freq %>%
 (b)
 ```{r}
 shakes_freq %>% 
+  drop_na(word) %>% 
   group_by(doc_id) %>% 
   slice_max(order_by = n, n = 10) %>% 
   ungroup() %>% 
