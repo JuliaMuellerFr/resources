@@ -10,7 +10,7 @@ format:
     fig-width: 6 # figure width is 6 inches
     fig-align: "left" # figures aligned to the left
 execute:
-  echo: false # code isn't shown in the document
+  echo: false # code isn't shown in the document (but is run)
   warning: false # warnings not shown
   message: false # messages not shown
 bibliography: penguins.bib # bibliography file with references
@@ -49,7 +49,7 @@ As everyone always says, penguins are very cute, so let's work with penguin data
 
 ![Penguin species drawing by Allison Horst](img/penguin_species.png){#fig-penguins width=10cm fig-align="left"}
 
-Note that the palmerpenguins dataset is meant as an alternative to the commonly used iris data.
+Note that the palmerpenguins dataset is meant as an alternative to the commonly used iris data and contains data on three species - see @fig-penguins.
 
 More information on this data set is available on [Allison Horst's Github page.](https://allisonhorst.github.io/palmerpenguins/)  
 
@@ -80,8 +80,8 @@ Some descriptive statistics:
 The data was collected between `r min(penguins$year)` and `r max(penguins$year)`.
 
 * bill lengths and depths
-  + the average bill length is `r mean(penguins$bill_length_mm)` mm 
-  + the average bill depth is `r mean(penguins$bill_depth_mm)` mm
+  + the average bill length is `r round(mean(penguins$bill_length_mm), digits = 2)` mm 
+  + the average bill depth is `r round(mean(penguins$bill_depth_mm), digits = 2)` mm
 
 ```{r}
 penguins_bill_length <- penguins %>% 
@@ -92,7 +92,7 @@ penguins_bill_length <- penguins %>%
 Penguins on the island `r penguins_bill_length %>% slice_min(order_by = m, n = 1) %>% select(island)` have the smallest average bill length.
 
 * body mass
-  + the average weight is `r mean(penguins$body_mass_g)` g
+  + the average weight is `r round(mean(penguins$body_mass_g), digits = 2)` g
 
 
 ## Separate per species
@@ -116,10 +116,10 @@ penguins %>%
 
 # Graphs
 
-***Hypotheses:***
+**Hypotheses:**
 
-1. Flipper length and body mass are positively associated.
-1. This is true for all three species in the data.
+1. Flipper length and body mass are *positively* associated.
+1. This is true for ***all*** three species in the data.
 
 
 ## Weight and flipper length
@@ -185,8 +185,6 @@ mass_flipper_species +
   facet_wrap(~sex)
 ```
 
-[^1]: Note that this removes any rows with missing values!
-
 <br>
 
 <br>
@@ -218,7 +216,7 @@ penguins_mdl_tidy <- tidy(penguins_mdl) %>%
   filter(effect == "fixed") %>% 
   select(-c(effect, group, df)) %>% 
   mutate(across(where(is.numeric), \(x) round(x, digits = 4)), # round numeric variables to 4 decimals
-         p.value = as.character(p.value), # this can cause p-values to show up as 0.0000
+         p.value = as.character(p.value), # this rounding can cause p-values to show up as 0.0000
          p.value = if_else(p.value == 0.0000, "< 0.0001", p.value) # ...so we're replacing those with "< 0.0001"
          ) %>% 
   rename( # renaming the columns
@@ -257,6 +255,9 @@ plot(ggeffect(penguins_mdl, term = "body_mass_g")) +
        x = "Body mass (in g)",
        y = "Predicted bill length (in mm)")
 ```
+
+[^1]: Note that this removes any rows with missing values!
+
 
 {{< pagebreak >}}
 

@@ -24,6 +24,8 @@ penguins_raw
 ```{r}
 penguins <- penguins_raw %>% 
   janitor::clean_names() %>%
+  separate(col = date_egg,
+           into = c("year", "month", "day")) %>% 
   mutate(sex = str_to_lower(sex),
          species = recode(species,
                           "Adelie Penguin (Pygoscelis adeliae)" = "Adelie",
@@ -32,7 +34,7 @@ penguins <- penguins_raw %>%
                           ),
          across(c(species, island, sex), as_factor)
          ) %>% 
-  select(species, island, culmen_length_mm:sex) %>% 
+  select(species, island, year, culmen_length_mm:sex) %>% 
   drop_na() %>% 
   rename("bill_length_mm" = culmen_length_mm,
          "bill_depth_mm" = culmen_depth_mm)

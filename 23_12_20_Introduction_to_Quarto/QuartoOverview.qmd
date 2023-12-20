@@ -101,7 +101,7 @@ Links can be simply copy-pasted and will work as-is, but if you want some other 
 
 ### Line breaks and empty lines
 For a line break, add two spaces at the end of the line before you hit Enter.  
-For an empty line, use <br> - simply adding more line breaks in the Rmd file won't do it!
+For an empty line, use <br> with the lines before and after empty - simply adding more line breaks in the Rmd file won't do it!
 
 ### Misc
 superscript^2^
@@ -221,6 +221,10 @@ By default, Quarto uses the Chicago format, but this can be altered by adding a 
 Download .csl files from, e.g., https://www.zotero.org/styles
 
 
+More info on Zotero integration:
+https://quarto.org/docs/visual-editor/vscode/#zotero-citations
+
+
 # Custom reference documents
 
 We can customise the design of the Word document by using a reference document:
@@ -233,28 +237,22 @@ We can customise the design of the Word document by using a reference document:
 
 # Journal templates
 
-[RStudio - Quarto Journal templates](https://quarto.org/docs/extensions/listing-journals.html)
-[RStudio - Quarto Journal authors](https://quarto.org/docs/journals/authors.html)
+Quarto provides templates for a couple of different journals: https://quarto.org/docs/journals/
+In the Terminal, run, e.g., quarto use template quarto-journals/elsevier
 
-``` yaml
+...and more are available through extensions: https://quarto.org/docs/extensions/listing-journals.html
+For example, for the Arxiv template, execute in the Terminal: quarto use template mikemahoney218/quarto-arxiv
+
+We can add author information in the YAML, for example:
+
+```
 author:
-  - name:
-      given: Norah
-      family: Jones
-      literal: Norah Jones
-      affiliations:
-        - ref: cmu
-        - ref: chicago
+  - name: Julia Müller
+    affiliations:
+      - name: University of Freiburg
+        department: English department
+    email: julia.mueller@anglistik.uni-freiburg.de
     attributes:
       corresponding: true
 ```
 
--   get arxiv template\
-    `quarto use template mikemahoney218/quarto-arxiv`
-
--   render it
-
--   walk through it
-
--   test another template\
-    `quarto use template quarto-journals/plos`
